@@ -1,4 +1,4 @@
-package com.awesome.smarthealthmanager;
+package com.awesome.medifofo;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.SeekBar;

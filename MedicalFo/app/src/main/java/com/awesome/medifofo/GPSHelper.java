@@ -1,4 +1,4 @@
-package com.awesome.smarthealthmanager;
+package com.awesome.medifofo;
 
 import android.app.Activity;
 import android.content.Context;

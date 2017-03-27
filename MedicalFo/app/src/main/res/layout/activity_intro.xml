@@ -9,5 +9,5 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/intro"
-    tools:context="com.awesome.smarthealthmanager.IntroActivity">
+    tools:context="com.awesome.medifofo.IntroActivity">
 </RelativeLayout>

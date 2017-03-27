@@ -2,76 +2,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#fff">
+    android:background="#fff"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/doctorroundicon"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        android:gravity="center"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:text="조효진 의사"
-            android:textSize="30dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:text="SW한방병원\n접근 권한 요청"
-            android:textSize="18dp"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="For" />
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="30dp">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tokenId"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="For" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Gender" />
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="30dp">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="gender" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="Age" />
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="30dp">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/age"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="age" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:orientation="horizontal"
+
+        android:orientation="vertical"
 
         >
-        <LinearLayout
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"></LinearLayout>
+
         <Button
-            android:layout_margin="6dp"
-            android:layout_width="match_parent"
+            android:id="@+id/submit_button"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="확인"
-            android:background="#0293a6"
-            android:layout_weight="45"
-            />
-        <LinearLayout
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"></LinearLayout>
-        <Button
-            android:layout_margin="6dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="45"
-            android:background="#0293a6"
-            android:text="거절"
-            />
-        <LinearLayout
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"></LinearLayout>
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_margin="15dp"
+            android:background="#4682B4"
+            android:text="submit"
+            android:textColor="#FFFFFF" />
+
 
     </LinearLayout>
 

@@ -1,10 +1,10 @@
-package com.awesome.smarthealthmanager;
+package com.awesome.medifofo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by yoonjae on 14/12/2016.
+ * Created by Eunsik on 26/03/2017.
  */
 
 public class AuthdoctorActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.awesome.smarthealthmanager;
+package com.awesome.medifofo;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
