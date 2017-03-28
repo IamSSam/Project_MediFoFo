@@ -18,27 +18,167 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:background="#FFFFFF"
-            android:layout_height="380dp">
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
 
-            <TextView
-                android:id="@+id/fbName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="16sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="For"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="30dp">
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/userId"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:textSize="16sp">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Gender"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="30dp">
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/gender"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Age"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="30dp">
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/age"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/submit_button"
+                        android:layout_width="130dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_margin="15dp"
+                        android:background="#4682B4"
+                        android:text="submit"
+                        android:textColor="#FFFFFF" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <com.facebook.login.widget.DeviceLoginButton
-            android:id="@+id/login_button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="30dp"
-            android:layout_weight="0.29" />
+            android:orientation="vertical">
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="0.29"
+                android:background="#FFFFFF"
+                android:text="Sign up for e-mail" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.29" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

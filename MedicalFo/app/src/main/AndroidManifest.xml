@@ -35,10 +35,6 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name="com.awesome.medifofo.UserInformationActivity"
-            android:theme="@style/AppTheme" />
-
-        <activity
             android:name="com.awesome.medifofo.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 

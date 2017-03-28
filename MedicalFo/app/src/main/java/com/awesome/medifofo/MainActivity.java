@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Reached to" , "UserInformationActivity");
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, UserInformationActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(this, UserInformationActivity.class);
+            //startActivity(intent);
             return true;
         }
 

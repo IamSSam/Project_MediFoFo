@@ -1,14 +1,17 @@
 package com.awesome.medifofo;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
@@ -24,9 +27,9 @@ import java.util.Arrays;
  * Created by Eunsik on 03/26/2017.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends FragmentActivity {
 
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
     public static String userName, userGender, userAge;
 
     @Override
@@ -37,13 +40,11 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
 
         final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-        // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(getApplicationContext(), "Can get AccessToken" , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Login Success" , Toast.LENGTH_LONG).show();
 
                 // Token, UserID
                 Log.d("TAG", "Facebook Token : " + loginResult.getAccessToken().getToken());
@@ -53,15 +54,23 @@ public class LoginActivity extends AppCompatActivity {
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback(){
                     @Override
                     public void onCompleted(JSONObject obj, GraphResponse response){
-                        //Log.d("TAG","로그인 결과: " + response.toString());
+                        Log.d("TAG","로그인 결과: " + response.toString());
+
 
                         try{
                             String name = obj.getString("name");
                             String gender = obj.getString("gender");
                             String ageRange = obj.getString("age_range");
+                            //String birthday = obj.getString("birthday");
 
-                            TextView facebookName = (TextView)findViewById(R.id.fbName);
-                            facebookName.setText("Welcome " + name);
+                            TextView userName = (TextView)findViewById(R.id.userId);
+                            userName.setText(name.toString());
+
+                            TextView userGender = (TextView)findViewById(R.id.gender);
+                            userGender.setText(gender.toString());
+
+                            TextView userAge = (TextView)findViewById(R.id.age);
+                            userAge.setText(ageRange.toString());
 
                         }catch (Exception e){
                             e.printStackTrace();
@@ -87,6 +96,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        Button submitButton = (Button)findViewById(R.id.submit_button);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
 
     }
 
