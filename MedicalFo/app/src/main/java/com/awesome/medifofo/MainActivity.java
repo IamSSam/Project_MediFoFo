@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("Reached to" , "AuthdoctorActivity");
+        Log.d("Reached to" , "UserInformationActivity");
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, AuthdoctorActivity.class);
+            Intent intent = new Intent(this, UserInformationActivity.class);
             startActivity(intent);
             return true;
         }

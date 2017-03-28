@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
  * Created by Eunsik on 26/03/2017.
  */
 
-public class AuthdoctorActivity extends AppCompatActivity {
+public class UserInformationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authdoctor);
+        setContentView(R.layout.activity_userinformation);
     }
 }

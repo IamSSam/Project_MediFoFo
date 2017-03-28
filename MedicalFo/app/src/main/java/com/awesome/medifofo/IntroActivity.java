@@ -30,7 +30,9 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
         init();
 
-        // Grid View Memory 를 위해서 먼저 불러옴
+        /*
+         Before GridView is loaded, ImageLoader should be loaded for Memory out of bounce
+          */
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
@@ -40,7 +42,7 @@ public class IntroActivity extends AppCompatActivity {
                 .build();
         ImageLoader.getInstance().init(config);
 
-        handler.postDelayed(runnable, 3000);
+        handler.postDelayed(runnable, 2000);
 
 
     }

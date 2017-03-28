@@ -29,8 +29,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.awesome.medifofo.LoginActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name="com.awesome.medifofo.UserInformationActivity"
             android:theme="@style/AppTheme" />
 
         <activity

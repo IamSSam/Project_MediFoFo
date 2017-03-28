@@ -17,6 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/border"
         android:orientation="vertical">
 
         <LinearLayout
@@ -30,6 +32,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="For" />
 
@@ -43,6 +46,7 @@
                 android:id="@+id/tokenId"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:text="For" />
 
@@ -60,6 +64,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="Gender" />
 
@@ -73,6 +78,7 @@
                 android:id="@+id/gender"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:text="gender" />
 
@@ -90,6 +96,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="Age" />
 
@@ -103,6 +110,7 @@
                 android:id="@+id/age"
                 android:layout_width="50dp"
                 android:layout_height="30dp"
+                android:layout_weight="3"
                 android:gravity="center"
                 android:text="age" />
 
