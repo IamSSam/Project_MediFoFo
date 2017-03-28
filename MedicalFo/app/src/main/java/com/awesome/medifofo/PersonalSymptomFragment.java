@@ -68,8 +68,8 @@ public class PersonalSymptomFragment extends Fragment implements View.OnClickLis
             {"머리", "내과"},
             {"얼굴", "외과"},
             {"식도", "내과"},
-            //{ "가슴", "" },
-            //{ "배", "" },
+            { "가슴", "" },
+            { "배", "" },
             {"등", "정형외과"},
             {"다리", "정형외과"},
             {"팔", "정형외과"},
@@ -78,11 +78,11 @@ public class PersonalSymptomFragment extends Fragment implements View.OnClickLis
             {"폐", "내과"},
             {"손", "외과"},
             {"간", "내과"},
-            //{ "엉덩이", "비뇨기과" },
+            { "엉덩이", "비뇨기과" },
             {"두개골", "내과"},
             {"치아", "치과"},
-            //{ "생식기 (남자)", "" },
-            //{ "생식기 (여자)", "" },
+            { "생식기 (남자)", "" },
+            { "생식기 (여자)", "" },
             {"목", "소아과"},
             {"코", "소아과"},
             {"발바닥", "피부과"},
@@ -110,8 +110,8 @@ public class PersonalSymptomFragment extends Fragment implements View.OnClickLis
                 R.drawable.head,
                 R.drawable.face,
                 R.drawable.neck,
-                //R.drawable.breast,
-                //R.drawable.belly,
+                R.drawable.breast,
+                R.drawable.belly,
                 R.drawable.back,
                 R.drawable.leg,
                 R.drawable.arm,
@@ -120,11 +120,11 @@ public class PersonalSymptomFragment extends Fragment implements View.OnClickLis
                 R.drawable.respiratory,
                 R.drawable.hand,
                 R.drawable.heart,
-                //R.drawable.hip,
+                R.drawable.hip,
                 R.drawable.jaw,
                 R.drawable.teeth,
-                //R.drawable.man,
-                //R.drawable.woman,
+                R.drawable.man,
+                R.drawable.woman,
                 R.drawable.neck2,
                 R.drawable.nouse,
                 R.drawable.sole,
@@ -146,11 +146,7 @@ public class PersonalSymptomFragment extends Fragment implements View.OnClickLis
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-//                Toast.makeText(getActivity(),
-//                        "position:" + position + " , " +
-//                                "krplacename: " + st_place[position][0] + " , " +
-//                                "hospital: " + st_place[position][1],
-//                        Toast.LENGTH_SHORT).show();
+
                 ((TextView) levelDialog.findViewById(R.id.evaluation_title)).setText(st_place[position][0]);
                 current_position = position;
                 levelDialog.show();
