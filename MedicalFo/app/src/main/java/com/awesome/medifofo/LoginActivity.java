@@ -1,10 +1,15 @@
 package com.awesome.medifofo;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,56 +43,87 @@ public class LoginActivity extends FragmentActivity {
         setContentView(R.layout.activity_login);
 
         callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("user_birthday"));
 
+        facebookLogIn(callbackManager);
+        moveToMainActivity();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    private void facebookLogIn(CallbackManager callbackManager) {
         final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(getApplicationContext(), "Login Success" , Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_LONG).show();
 
                 // Token, UserID
                 Log.d("TAG", "Facebook Token : " + loginResult.getAccessToken().getToken());
                 Log.d("TAG", "Facebook UserID : " + loginResult.getAccessToken().getUserId());
 
-                // Request information to get info
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback(){
-                    @Override
-                    public void onCompleted(JSONObject obj, GraphResponse response){
-                        Log.d("TAG","로그인 결과: " + response.toString());
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.d("TAG", "로그인 결과: " + response.toString());
+
+                                try {
+                                    String name = object.getString("name");
+                                    String gender = object.getString("gender");
+                                    //String ageRange = object.getString("age_range");
+                                    String birthday = object.getString("birthday");
+
+                                    TextView userName = (TextView) findViewById(R.id.userId);
+                                    userName.setText(name.toString());
+
+                                    TextView userGender = (TextView) findViewById(R.id.gender);
+                                    userGender.setText(gender.toString());
+
+                                    TextView userBirthday = (TextView) findViewById(R.id.birth);
+                                    userBirthday.setText(birthday.toString());
+
+                                    String age = birthday.substring(6,10);
+                                    java.util.Calendar calendar = java.util.Calendar.getInstance();
+                                    int calenderYear = calendar.get(calendar.YEAR);
+                                    int year = calenderYear - Integer.parseInt(age);
+                                    TextView userAge = (TextView) findViewById(R.id.age);
+                                    userAge.setText(String.valueOf(year));
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
 
-                        try{
-                            String name = obj.getString("name");
-                            String gender = obj.getString("gender");
-                            String ageRange = obj.getString("age_range");
-                            //String birthday = obj.getString("birthday");
+                                if(response.getError() == null){
+                                    LinearLayout buttonContainer = (LinearLayout)findViewById(R.id.button_container);
+                                    buttonContainer.setVisibility(View.GONE);
 
-                            TextView userName = (TextView)findViewById(R.id.userId);
-                            userName.setText(name.toString());
-
-                            TextView userGender = (TextView)findViewById(R.id.gender);
-                            userGender.setText(gender.toString());
-
-                            TextView userAge = (TextView)findViewById(R.id.age);
-                            userAge.setText(ageRange.toString());
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-
-                    }
-                });
+                                    LinearLayout mainContainer = (LinearLayout)findViewById(R.id.main_container);
+                                    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.class);
+                                    animation.setFillAfter(true);
+                                    mainContainer.setGravity(Gravity.CENTER_VERTICAL);
+                                }
+                            }
+                        });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, name, gender, age_range");
+                // 혹시 몰라서 사진 받아놓기..
+                parameters.putString("fields", "id,name,gender,birthday,age_range,picture");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
 
             @Override
             public void onCancel() {
-
+                Toast.makeText(getApplicationContext(), "User cancel Login" , Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -95,22 +131,15 @@ public class LoginActivity extends FragmentActivity {
                 Toast.makeText(getApplicationContext(), "Login error : " + error, Toast.LENGTH_LONG).show();
             }
         });
+    }
 
-        Button submitButton = (Button)findViewById(R.id.submit_button);
+    private void moveToMainActivity() {
+        Button submitButton = (Button) findViewById(R.id.submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
     }
-
-    @Override
-    protected  void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-
 }

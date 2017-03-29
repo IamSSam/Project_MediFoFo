@@ -11,7 +11,7 @@
     tools:context="com.awesome.medifofo.LoginActivity">
 
     <LinearLayout
-        android:id="@+id/email_login_form"
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -112,6 +112,38 @@
                         android:layout_height="30dp"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:text="Birthday"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="30dp">
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/birth"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:text="Age"
                         android:textSize="16sp" />
 
@@ -153,31 +185,35 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/button_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
-
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_weight="0.29"
-                android:background="#FFFFFF"
-                android:text="Sign up for e-mail" />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="0.29" />
+
+            <Button
+                android:id="@+id/login_email"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="0.29"
+                android:background="#FFFFFF"
+                android:text="Sign up with e-mail" />
+
         </LinearLayout>
 
     </LinearLayout>
