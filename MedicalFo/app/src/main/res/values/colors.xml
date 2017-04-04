@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#f58bad</color>
+    <color name="accent_material_light">#40a8ff</color>
     <drawable name="btn_select">#0293a6</drawable>
     <drawable name="btn_default">#808080</drawable>
     <drawable name="btn_press">#000000</drawable>

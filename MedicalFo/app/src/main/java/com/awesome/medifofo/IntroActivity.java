@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -21,6 +23,7 @@ public class IntroActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         }
     };
 
@@ -42,7 +45,7 @@ public class IntroActivity extends AppCompatActivity {
                 .build();
         ImageLoader.getInstance().init(config);
 
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(runnable, 1000);
 
 
     }

@@ -8,6 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/intro"
+    android:layout_marginTop="80dp"
+    android:layout_marginBottom="80dp"
+    android:background="@drawable/doctorroundicon"
     tools:context="com.awesome.medifofo.IntroActivity">
 </RelativeLayout>
