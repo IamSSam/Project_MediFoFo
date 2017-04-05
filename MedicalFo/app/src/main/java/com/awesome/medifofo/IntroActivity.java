@@ -14,8 +14,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 public class IntroActivity extends AppCompatActivity {
 
-    private Handler handler;
 
+    private Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -31,11 +31,27 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        init();
+        imageLoader();
+    }
 
-        /*
-         Before GridView is loaded, ImageLoader should be loaded for Memory out of bounce
-          */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 다시 화면에 들어어왔을 때 예약 걸어주기
+        handler.postDelayed(runnable, 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 화면이 멈추면, runnable 해제
+        handler.removeCallbacks(runnable);
+    }
+
+    /*
+    Before GridView is loaded, ImageLoader should be loaded for Memory out of bounce
+  */
+    private void imageLoader(){
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
@@ -44,14 +60,6 @@ public class IntroActivity extends AppCompatActivity {
                 .writeDebugLogs()
                 .build();
         ImageLoader.getInstance().init(config);
-
-        handler.postDelayed(runnable, 1000);
-
-
-    }
-
-    public void init() {
-        handler = new Handler();
     }
 
     @Override

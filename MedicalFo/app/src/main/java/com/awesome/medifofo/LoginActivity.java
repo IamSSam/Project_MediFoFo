@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -35,14 +37,28 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     public static String publicPictureURL;
+    private AccessTokenTracker accessTokenTracker;
+    private AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
+
+        accessToken = AccessToken.getCurrentAccessToken();
+        Log.d("Current Token: ", accessToken.getToken().toString());
+
+        /*
+        if(!accessToken.getToken().isEmpty()){
+            setContentView(R.layout.activity_login);
+            facebookLogIn(callbackManager);
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }else{
+
+        }
+        */
 
     }
 
@@ -118,19 +134,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void setLayerAfterLogin() {
-        // TODO:중앙으로 내려올 때 스무스한 애니메이션 적용하기
-        LinearLayout informationContainer = (LinearLayout) findViewById(R.id.information_container);
-        informationContainer.setVisibility(View.VISIBLE);
-        TextView mainTitle = (TextView) findViewById(R.id.main_title);
-        mainTitle.setVisibility(View.GONE);
-        LinearLayout buttonContainer = (LinearLayout) findViewById(R.id.button_container);
-        buttonContainer.setVisibility(View.GONE);
-        LinearLayout mainContainer = (LinearLayout) findViewById(R.id.main_container);
-        mainContainer.setGravity(Gravity.CENTER_VERTICAL);
-    }
-
-
     /*
     private void logOutFromFacebook() {
 
@@ -144,5 +147,11 @@ public class LoginActivity extends AppCompatActivity {
         };
 
     }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
+    }
 
 }

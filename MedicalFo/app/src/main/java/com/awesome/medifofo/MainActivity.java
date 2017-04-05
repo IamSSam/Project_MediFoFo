@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ImageView myPicture = (ImageView) findViewById(R.id.myPicture);
-        new ImageLoadTask(LoginActivity.publicPictureURL, myPicture).execute();
+        //new ImageLoadTask(LoginActivity.publicPictureURL, myPicture).execute();
 
         TextView myName = (TextView) findViewById(R.id.myName);
         myName.setText(PersonalInputActivity.userName);
