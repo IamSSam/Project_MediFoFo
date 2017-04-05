@@ -1,10 +1,6 @@
 package com.awesome.medifofo;
 
-import android.Manifest;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,17 +11,8 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,7 +22,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -99,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new ImageLoadTask(LoginActivity.publicPictureURL, myPicture).execute();
 
         TextView myName = (TextView) findViewById(R.id.myName);
-        myName.setText(LoginActivity.publicName);
+        myName.setText(PersonalInputActivity.userName);
 
         TextView myAge = (TextView) findViewById(R.id.myAge);
-        myAge.setText(LoginActivity.publicAge + " years old");
+        myAge.setText(PersonalInputActivity.userAge + " years old");
 
          /* Dialog 부분 */
         levelDialog = new Dialog(getApplicationContext());
@@ -155,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tmp_st_scale = 10;
 
         /* SeekBar 부분, 통증 선택하기 */
-/*
+        /*
         final TextView levelTxt = (TextView) levelDialog.findViewById(R.id.level_txt);
         final SeekBar levelSeek = (SeekBar) levelDialog.findViewById(R.id.level_seek);
 
@@ -180,7 +166,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-*/
+        */
+
         final TextView moreTxt = (TextView) moreDialog.findViewById(R.id.more_txt);
         final SeekBar moreSeek = (SeekBar) moreDialog.findViewById(R.id.more_seek);
 
@@ -225,10 +212,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 */
-    }
-
-    private void getMyPicture() {
-
     }
 
     @Override

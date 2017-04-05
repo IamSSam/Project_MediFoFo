@@ -32,6 +32,11 @@
         </activity>
 
         <activity
+            android:name="com.awesome.medifofo.PersonalInputActivity"
+            android:label="User Input">
+        </activity>
+
+        <activity
             android:name="com.awesome.medifofo.MainActivity"
             android:label="Symptom Checker">
         </activity>
