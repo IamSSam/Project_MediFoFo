@@ -86,20 +86,20 @@ public class PersonalInputActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 year = (EditText) findViewById(R.id.year);
+                year.setNextFocusDownId(R.id.month);
                 month = (EditText) findViewById(R.id.month);
+                month.setNextFocusDownId(R.id.day);
                 day = (EditText) findViewById(R.id.day);
 
                 // User Input Exception
                 if ((year.getText().toString().equals("")) && (year.getText().toString().length() != 4)) {
-                    year.findFocus();
-                    //TODO: color changed and twinkling
+                    year.requestFocus();
                     Toast.makeText(getApplicationContext(), "Please check 'the year' field again.", Toast.LENGTH_LONG).show();
                 } else if (month.getText().toString().equals("") && (month.getText().length() != 2)) {
-
-                    month.findFocus();
+                    month.requestFocus();
                     Toast.makeText(getApplicationContext(), "Please check 'the month' field again.", Toast.LENGTH_LONG).show();
                 } else if (day.getText().toString().equals("") && (day.getText().length() != 2)) {
-                    day.findFocus();
+                    day.requestFocus();
                     Toast.makeText(getApplicationContext(), "Please check 'the day' field again.", Toast.LENGTH_LONG).show();
                 } else {
                     Calendar current = Calendar.getInstance();
@@ -107,6 +107,7 @@ public class PersonalInputActivity extends AppCompatActivity {
                     int userYear = currentYear - Integer.parseInt(year.getText().toString());
                     userAge = String.valueOf(userYear);
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             }
         });
@@ -124,6 +125,6 @@ public class PersonalInputActivity extends AppCompatActivity {
         TextView gender = (TextView) findViewById(R.id.gender);
         gender.setText(userGender);
     }
-    
+
 
 }
