@@ -1,7 +1,7 @@
 
 # 2017 MediFoFo(Medical Software Application for foreigner)
 ## Simple Symptom Checker
-### Platform : Android Stduio
+### Platform : Android
 
 
 ### Author
