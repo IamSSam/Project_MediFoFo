@@ -1,2 +1,9 @@
-# MediFoFo
-Medical Software Application using digital health care 
+# [2017. March ~ ] MediFoFo
+## Medical Software Application for foreigner
+## Simple Symptom Checker
+### Platform : Android Stduio
+
+
+### Author
+[Eunsik Park](https://github.com/IamSSam)
+
