@@ -1,6 +1,8 @@
 package com.awesome.medifofo;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,6 +24,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -82,13 +87,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         ImageView myPicture = (ImageView) findViewById(R.id.myPicture);
-        //new ImageLoadTask(LoginActivity.publicPictureURL, myPicture).execute();
+        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
+        new ImageLoadTask(sharedPreferences.getString("URL", ""), myPicture).execute();
 
         TextView myName = (TextView) findViewById(R.id.myName);
-        myName.setText(PersonalInputActivity.userName);
+        myName.setText(sharedPreferences.getString("NAME", ""));
 
         TextView myAge = (TextView) findViewById(R.id.myAge);
-        myAge.setText(PersonalInputActivity.userAge + " years old");
+        if (PersonalInputActivity.userAge == null) {
+            SharedPreferences sf = getSharedPreferences(PersonalInputActivity.sfYear, 1);
+            myAge.setText(sf.getString("YEAR", "") + " years old");
+        } else {
+            myAge.setText(PersonalInputActivity.userAge + " years old");
+        }
 
          /* Dialog 부분 */
         levelDialog = new Dialog(getApplicationContext());
@@ -211,7 +222,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 moreDialog.show();
             }
         });
-*/
+      */
+
+        if (AccessToken.getCurrentAccessToken() == null) {
+            goLoginActivity();
+        }
+
+    }
+
+    private void logOut(View view) {
+        LoginManager.getInstance().logOut();
+        goLoginActivity();
+    }
+
+    private void goLoginActivity() {
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override

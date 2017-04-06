@@ -1,20 +1,13 @@
 package com.awesome.medifofo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -25,10 +18,6 @@ import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-
 /**
  * Created by Eunsik on 03/26/2017.
  */
@@ -36,9 +25,7 @@ import java.util.Locale;
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    public static String publicPictureURL;
-    private AccessTokenTracker accessTokenTracker;
-    private AccessToken accessToken;
+    public static String sharedPreferenceFile = "userFILE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
 
-        accessToken = AccessToken.getCurrentAccessToken();
-        Log.d("Current Token: ", accessToken.getToken().toString());
-
-        /*
-        if(!accessToken.getToken().isEmpty()){
-            setContentView(R.layout.activity_login);
-            facebookLogIn(callbackManager);
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        }else{
-
+        if(AccessToken.getCurrentAccessToken() != null){
+            goMainAcitivty();
         }
-        */
-
     }
 
     @Override
@@ -73,14 +50,9 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setReadPermissions("public_profile");
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            // TODO: resist auto login
             @Override
             public void onSuccess(final LoginResult loginResult) {
                 Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_LONG).show();
-
-                // Token, UserID
-                Log.d("TAG", "Facebook Token : " + loginResult.getAccessToken().getToken());
-                Log.d("TAG", "Facebook UserID : " + loginResult.getAccessToken().getUserId());
 
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
@@ -92,15 +64,22 @@ public class LoginActivity extends AppCompatActivity {
                                     String name = object.getString("name");
                                     String gender = object.getString("gender");
                                     //String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                    String pictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
 
-                                    Intent intent = new Intent(LoginActivity.this, PersonalInputActivity.class);
-                                    intent.putExtra("name", name);
-                                    intent.putExtra("gender", gender);
+                                    Log.d("Go PersonalInput", AccessToken.getCurrentAccessToken().toString());
 
-                                    moveToPersonalInputActivity(intent);
+                                    /**
+                                     * Save user information "sharedPreferenceFile"
+                                     * Information : name, gender, pictureURL
+                                     */
+                                    SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, 0);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("NAME", name);
+                                    editor.putString("GENDER", gender);
+                                    editor.putString("URL", pictureURL);
+                                    editor.commit();
 
-                                    //publicPictureURL = picture;
-                                    publicPictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
+                                    goPersonalInputActivity();
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -110,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,gender,picture");
+                parameters.putString("fields", "id,name,gender");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -130,12 +109,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void moveToPersonalInputActivity(Intent intent) {
+    private void goPersonalInputActivity() {
+        Intent intent = new Intent(LoginActivity.this, PersonalInputActivity.class);
         startActivity(intent);
     }
 
+    private void goMainAcitivty() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
     /*
-    private void logOutFromFacebook() {
+    private void logOut() {
 
         accessTokenTracker = new AccessTokenTracker() {
             @Override
@@ -147,11 +132,4 @@ public class LoginActivity extends AppCompatActivity {
         };
 
     }*/
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        accessTokenTracker.stopTracking();
-    }
-
 }

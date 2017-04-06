@@ -1,15 +1,19 @@
 package com.awesome.medifofo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.AccessToken;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -55,6 +59,8 @@ public class PersonalInputActivity extends AppCompatActivity {
             R.drawable.vn, R.drawable.vu, R.drawable.wf, R.drawable.ws, R.drawable.ye, R.drawable.yt, R.drawable.za, R.drawable.zm, R.drawable.zm, R.drawable.zw
     };
 
+    public static String sfYear = "userYear";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +69,18 @@ public class PersonalInputActivity extends AppCompatActivity {
         setMyCountry();
         setPersonalInfo();
         moveToMainActivity();
+
     }
 
+    @Override
+    protected void onStop(){
+        super.onStop();
+        calculateUserAge();
+        SharedPreferences sharedPreferences = getSharedPreferences(sfYear, 1);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("YEAR", userAge);
+        editor.commit();
+    }
 
     private void setMyCountry() {
         countriesName = Locale.getISOCountries();
@@ -102,10 +118,7 @@ public class PersonalInputActivity extends AppCompatActivity {
                     day.requestFocus();
                     Toast.makeText(getApplicationContext(), "Please check 'the day' field again.", Toast.LENGTH_LONG).show();
                 } else {
-                    Calendar current = Calendar.getInstance();
-                    int currentYear = current.get(Calendar.YEAR);
-                    int userYear = currentYear - Integer.parseInt(year.getText().toString());
-                    userAge = String.valueOf(userYear);
+                    calculateUserAge();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
@@ -114,10 +127,10 @@ public class PersonalInputActivity extends AppCompatActivity {
     }
 
     private void setPersonalInfo() {
-        Intent intent = getIntent();
 
-        userName = intent.getStringExtra("name").toString();
-        userGender = intent.getStringExtra("gender").toString();
+        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
+        userName = sharedPreferences.getString("NAME", "");
+        userGender = sharedPreferences.getString("GENDER", "");
 
         TextView name = (TextView) findViewById(R.id.userId);
         name.setText(userName);
@@ -126,5 +139,11 @@ public class PersonalInputActivity extends AppCompatActivity {
         gender.setText(userGender);
     }
 
+    private void calculateUserAge(){
+        Calendar current = Calendar.getInstance();
+        int currentYear = current.get(Calendar.YEAR);
+        int userYear = currentYear - Integer.parseInt(year.getText().toString());
+        userAge = String.valueOf(userYear);
+    }
 
 }
