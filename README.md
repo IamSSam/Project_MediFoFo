@@ -4,6 +4,6 @@
 ### Platform : Android
 
 
-### Author
-[Eunsik Park](https://github.com/IamSSam)
+## [Team Member](#team-members)
+<a name="team-members"></a> [Eunsik Park](https://github.com/IamSSam) <kongse92@gmail.com>
 
