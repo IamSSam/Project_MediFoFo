@@ -3,8 +3,10 @@ package com.awesome.medifofo;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -15,6 +17,10 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.json.JSONObject;
 
@@ -25,17 +31,18 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    public static String sharedPreferenceFile = "userFILE";
+    public static String sharedPreferenceFile = "userInfoFILE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        imageLoader();
         callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
 
         if(AccessToken.getCurrentAccessToken() != null){
-            goMainAcitivty();
+            goMainActivity();
         }
     }
 
@@ -44,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
 
     private void facebookLogIn(CallbackManager callbackManager) {
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -65,8 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                                     String gender = object.getString("gender");
                                     //String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
                                     String pictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
-
-                                    Log.d("Go PersonalInput", AccessToken.getCurrentAccessToken().toString());
 
                                     /**
                                      * Save user information "sharedPreferenceFile"
@@ -97,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Toast.makeText(getApplicationContext(), "User cancel Login", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "User cancels login", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -108,28 +114,30 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     private void goPersonalInputActivity() {
         Intent intent = new Intent(LoginActivity.this, PersonalInputActivity.class);
         startActivity(intent);
     }
 
-    private void goMainAcitivty() {
+    private void goMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
+
+
     /*
-    private void logOut() {
+ Before GridView is loaded, ImageLoader should be loaded for Memory out of bounce
+*/
+    private void imageLoader() {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .discCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs()
+                .build();
+        ImageLoader.getInstance().init(config);
+    }
 
-        accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if (currentAccessToken == null) {
-                }
-
-            }
-        };
-
-    }*/
 }

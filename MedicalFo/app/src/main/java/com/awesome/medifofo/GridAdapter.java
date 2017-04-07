@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * Created by yoonjae on 29/11/2016.
+ * Created by Eunsik on 03/26/2017.
  */
 
 public class GridAdapter extends BaseAdapter {

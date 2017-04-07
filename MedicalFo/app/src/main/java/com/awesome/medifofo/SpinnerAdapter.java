@@ -12,15 +12,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by 17 on 2017-04-03.
+ * Created by Eunsik on 2017-04-03.
  */
 
 public class SpinnerAdapter extends ArrayAdapter<CountryItem> {
 
-    int groupId;
-    Activity context;
-    ArrayList<CountryItem> list;
-    LayoutInflater inflater;
+    private int groupId;
+    private Activity context;
+    private ArrayList<CountryItem> list;
+    private LayoutInflater inflater;
 
     public SpinnerAdapter(Activity context, int groupId, int id, ArrayList<CountryItem> list) {
         super(context, id, list);

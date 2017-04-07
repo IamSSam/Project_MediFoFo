@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * Created by 17 on 2017-04-05.
+ * Created by Eunsik on 2017-04-05.
  */
 
 public class PersonalInputActivity extends AppCompatActivity {
@@ -69,7 +69,6 @@ public class PersonalInputActivity extends AppCompatActivity {
         setMyCountry();
         setPersonalInfo();
         moveToMainActivity();
-
     }
 
     @Override
@@ -127,7 +126,6 @@ public class PersonalInputActivity extends AppCompatActivity {
     }
 
     private void setPersonalInfo() {
-
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
         userName = sharedPreferences.getString("NAME", "");
         userGender = sharedPreferences.getString("GENDER", "");

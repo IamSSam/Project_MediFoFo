@@ -29,7 +29,6 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        imageLoader();
     }
 
     @Override
@@ -44,20 +43,6 @@ public class IntroActivity extends AppCompatActivity {
         super.onPause();
         // 화면이 멈추면, runnable 해제
         handler.removeCallbacks(runnable);
-    }
-
-    /*
-    Before GridView is loaded, ImageLoader should be loaded for Memory out of bounce
-  */
-    private void imageLoader() {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .discCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs()
-                .build();
-        ImageLoader.getInstance().init(config);
     }
 
     @Override

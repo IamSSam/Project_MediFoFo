@@ -13,8 +13,11 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -24,6 +27,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -32,6 +36,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Created by Eunsik on 03/26/2017.
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     GridView gridView;
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText tmp_st_comment;
     private Dialog levelDialog;
     private Dialog moreDialog;
+    private long pressTime;
 
     //private final static int REQUEST_LOCATION = 1;
     final String[ /* For UI */][ /* For Naver Maps */] st_place = {
@@ -100,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             myAge.setText(PersonalInputActivity.userAge + " years old");
         }
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
 
          /* Dialog 부분 */
         levelDialog = new Dialog(getApplicationContext());
@@ -227,16 +240,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (AccessToken.getCurrentAccessToken() == null) {
             goLoginActivity();
         }
-
     }
 
-    private void logOut(View view) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //do what you want
+                onBackPressed();
+                return true;
+            case R.id.action_logout:
+                this.logOut();
+                goLoginActivity();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private void logOut() {
         LoginManager.getInstance().logOut();
         goLoginActivity();
     }
 
     private void goLoginActivity() {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
@@ -280,6 +314,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    /*
+    @Override
+    public void onBackPressed() {
+        if (pressTime == 0) {
+            Toast.makeText(MainActivity.this, "Press again to exit.", Toast.LENGTH_LONG).show();
+            pressTime = System.currentTimeMillis();
+        } else {
+            int seconds = (int) (System.currentTimeMillis() - pressTime);
+
+            if (seconds > 2000)
+                pressTime = 0;
+            else
+                finish();
+        }
+    }
+    */
 
     public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 
