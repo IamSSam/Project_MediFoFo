@@ -44,7 +44,7 @@ import java.net.URL;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    GridView gridView;
+    private GridView gridView;
     Button symptom_main_btn1;
     Button symptom_main_btn2;
     Button symptom_main_btn3;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CheckBox detail_symptom_cb2;
     CheckBox detail_symptom_cb3;
     private String tmp_st_main;
-    private int current_position;
+    private int currentPosition;
     private int tmp_st_scale;
     private StringBuilder tmp_st_sub;
     private EditText tmp_st_comment;
@@ -62,7 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Dialog moreDialog;
     private long pressTime;
 
-    //private final static int REQUEST_LOCATION = 1;
+    private int image[] = {
+            R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
+            R.drawable.jaw, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.spine,
+            R.drawable.arm, R.drawable.elbow, R.drawable.hand, R.drawable.finger, R.drawable.leg,
+            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.man, R.drawable.woman,
+            R.drawable.digestive, R.drawable.respiratory, R.drawable.heart
+    };
+
     final String[ /* For UI */][ /* For Naver Maps */] st_place = {
             {"머리", "내과"},
             {"얼굴", "외과"},
@@ -78,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {"손", "외과"},
             {"간", "내과"},
             {"엉덩이", "비뇨기과"},
-            {"두개골", "내과"},
+            {"턱", "내과"},
             {"치아", "치과"},
             {"생식기 (남자)", ""},
             {"생식기 (여자)", ""},
@@ -117,21 +124,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-         /* Dialog 부분 */
+        /* Dialog 부분
         levelDialog = new Dialog(getApplicationContext());
         levelDialog.setTitle("Select level:");
         levelDialog.setContentView(R.layout.dialog_evaluation);
 
         moreDialog = new Dialog(getApplicationContext());
         moreDialog.setContentView(R.layout.dialog_more);
+        */
 
-        int image[] = {
-                R.drawable.head, R.drawable.face, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.leg, R.drawable.arm,
-                R.drawable.ankle, R.drawable.digestive, R.drawable.respiratory, R.drawable.hand, R.drawable.heart, R.drawable.hip, R.drawable.jaw, R.drawable.teeth,
-                R.drawable.man, R.drawable.woman, R.drawable.neck2, R.drawable.nouse, R.drawable.sole, R.drawable.finger, R.drawable.tongue, R.drawable.spine, R.drawable.ear, R.drawable.elbow
-        };
 
-        GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
+        final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
 
         gridView = (GridView) findViewById(R.id.gridView);
         gridView.invalidateViews();
@@ -143,14 +146,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 /*
                 ((TextView) levelDialog.findViewById(R.id.evaluation_title)).setText(st_place[position][0]);
-                current_position = position;
+                currentPosition = position;
                 levelDialog.show();
                 */
-
-                startActivity(new Intent(MainActivity.this, SymptomListActivity.class));
+                Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
+                intent.putExtra("POSITION", position); // Pass gridview's position
+                startActivity(intent);
             }
         });
 
+        /*
         symptom_main_btn1 = (Button) levelDialog.findViewById(R.id.symptom_main_btn1);
         symptom_main_btn2 = (Button) levelDialog.findViewById(R.id.symptom_main_btn2);
         symptom_main_btn3 = (Button) levelDialog.findViewById(R.id.symptom_main_btn3);
@@ -171,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tmp_st_comment = (EditText) moreDialog.findViewById(R.id.symptom_comment);
         tmp_st_scale = 10;
 
+        */
         /* SeekBar 부분, 통증 선택하기 */
         /*
         final TextView levelTxt = (TextView) levelDialog.findViewById(R.id.level_txt);
@@ -199,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         */
 
+        /*
         final TextView moreTxt = (TextView) moreDialog.findViewById(R.id.more_txt);
         final SeekBar moreSeek = (SeekBar) moreDialog.findViewById(R.id.more_seek);
 
@@ -235,49 +242,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 levelDialog.dismiss();
             }
         });
-/*
+
         level_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 moreDialog.show();
             }
         });
-      */
+        */
 
         if (AccessToken.getCurrentAccessToken() == null) {
             goLoginActivity();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                //do what you want
-                onBackPressed();
-                return true;
-            case R.id.action_logout:
-                this.logOut();
-                goLoginActivity();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void logOut() {
-        LoginManager.getInstance().logOut();
-        goLoginActivity();
-    }
-
-    private void goLoginActivity() {
-        startActivity(new Intent(this, LoginActivity.class));
-    }
 
     @Override
     public void onClick(View v) {
@@ -305,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 tmp_st_sub.append(detail_symptom_cb3.isChecked() ? "true " : "false ");
 
                 Person.st_main = tmp_st_main;
-                Person.st_place = st_place[current_position][0];
+                Person.st_place = st_place[currentPosition][0];
                 Person.st_scale = tmp_st_scale;
                 Person.st_sub = tmp_st_sub.toString();
                 Person.st_comment = tmp_st_comment.getText().toString();
@@ -320,6 +298,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.action_logout:
+                this.logOut();
+                goLoginActivity();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        goLoginActivity();
+    }
+
+    private void goLoginActivity() {
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+
 
     @Override
     public void onBackPressed() {

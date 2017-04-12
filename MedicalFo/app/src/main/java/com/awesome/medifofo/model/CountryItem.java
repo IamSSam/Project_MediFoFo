@@ -5,8 +5,8 @@ package com.awesome.medifofo.model;
  */
 
 public class CountryItem {
-    String countryName;
-    Integer flagId;
+    private String countryName;
+    private Integer flagId;
 
     public CountryItem(String countryName, Integer flagId){
         this.countryName = countryName;

@@ -23,6 +23,7 @@ public class GridAdapter extends BaseAdapter {
 
     Context context;
     int layout;
+    // image에 position 값이 연결되어있음.
     int image[];
     LayoutInflater inflater;
 
@@ -52,8 +53,8 @@ public class GridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null)
             convertView = inflater.inflate(layout, null);
-        ImageLoader imageLoader = ImageLoader.getInstance();
 
+        ImageLoader imageLoader = ImageLoader.getInstance();
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
         //imageView.setImageResource(image[position]);
         imageLoader.displayImage("drawable://" + image[position], imageView);

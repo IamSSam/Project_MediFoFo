@@ -5,15 +5,28 @@
     android:id="@+id/symptom_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
     android:orientation="vertical"
     tools:context="com.awesome.medifofo.activity.SymptomListActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4682B4">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rec_list"
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#FAFAFA" />
 
 
 </LinearLayout>

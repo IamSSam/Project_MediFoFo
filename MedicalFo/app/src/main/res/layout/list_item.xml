@@ -5,6 +5,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <!--
+    <TextView
+        android:id="@+id/symptom_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="Scalp"
+        android:textSize="10.5pt" />
+    -->
+
     <TextView
         android:id="@+id/symptom_item"
         android:layout_width="match_parent"
@@ -12,11 +23,7 @@
         android:paddingLeft="8dp"
         android:text="item_test"
         android:textColor="#000"
-        android:layout_marginBottom="1dp"
-        android:textSize="10.5pt" />
+        android:layout_margin="3dp"
+        android:textSize="20sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#07669b"></LinearLayout>
 </LinearLayout>

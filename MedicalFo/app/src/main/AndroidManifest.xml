@@ -37,7 +37,10 @@
             android:label="Symptom Checker" />
         <activity
             android:name=".activity.SymptomListActivity"
-            android:label="Symptom Checker"></activity>
+            android:label="Symptom Checker">
+
+
+        </activity>
     </application>
 
 </manifest>
