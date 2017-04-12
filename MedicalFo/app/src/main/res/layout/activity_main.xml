@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#FAFAFA"
-    tools:context="com.awesome.medifofo.MainActivity">
+    tools:context="com.awesome.medifofo.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

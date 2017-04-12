@@ -1,4 +1,4 @@
-package com.awesome.medifofo;
+package com.awesome.medifofo.model;
 
 /**
  * Created by 17 on 2017-04-03.

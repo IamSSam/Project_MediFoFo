@@ -1,4 +1,4 @@
-package com.awesome.medifofo;
+package com.awesome.medifofo.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -29,6 +29,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awesome.medifofo.Person;
+import com.awesome.medifofo.R;
+import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 
@@ -138,9 +141,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
+                /*
                 ((TextView) levelDialog.findViewById(R.id.evaluation_title)).setText(st_place[position][0]);
                 current_position = position;
                 levelDialog.show();
+                */
+
+                startActivity(new Intent(MainActivity.this, SymptomListActivity.class));
             }
         });
 
@@ -263,7 +270,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     private void logOut() {
         LoginManager.getInstance().logOut();
         goLoginActivity();
@@ -315,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    /*
     @Override
     public void onBackPressed() {
         if (pressTime == 0) {
@@ -330,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 finish();
         }
     }
-    */
+
 
     public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 

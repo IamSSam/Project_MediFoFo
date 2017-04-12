@@ -18,7 +18,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".IntroActivity"
+            android:name=".adapter.GridAdapter$IntroActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,13 +27,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
-            android:label="Login"></activity>
+            android:name=".activity.LoginActivity"
+            android:label="Login" />
         <activity
-            android:name=".PersonalInputActivity"
-            android:label="User Input"></activity>
+            android:name=".activity.PersonalInputActivity"
+            android:label="User Input" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
+            android:label="Symptom Checker" />
+        <activity
+            android:name=".activity.SymptomListActivity"
             android:label="Symptom Checker"></activity>
     </application>
 

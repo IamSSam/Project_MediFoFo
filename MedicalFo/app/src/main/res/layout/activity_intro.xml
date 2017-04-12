@@ -11,5 +11,5 @@
     android:layout_marginTop="80dp"
     android:layout_marginBottom="80dp"
     android:background="@drawable/doctorroundicon"
-    tools:context="com.awesome.medifofo.IntroActivity">
+    tools:context="com.awesome.medifofo.adapter.GridAdapter$IntroActivity">
 </RelativeLayout>
