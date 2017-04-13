@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        imageLoader();
+
         callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
 
@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
     private void goPersonalInputActivity() {
         Intent intent = new Intent(LoginActivity.this, PersonalInputActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void goMainActivity() {
@@ -124,18 +125,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    /*
- Before GridView is loaded, ImageLoader should be loaded for Memory out of bounce
-*/
-    private void imageLoader() {
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .discCacheFileNameGenerator(new Md5FileNameGenerator())
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs()
-                .build();
-        ImageLoader.getInstance().init(config);
-    }
+
 
 }

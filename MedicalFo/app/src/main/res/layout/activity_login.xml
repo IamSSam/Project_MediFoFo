@@ -23,7 +23,7 @@
             android:layout_height="320dp"
             android:gravity="center_horizontal|center_vertical"
             android:textColor="#000"
-            android:text="MediFOFO" />
+            android:text="medifofo"/>
 
         <LinearLayout
             android:id="@+id/button_container"

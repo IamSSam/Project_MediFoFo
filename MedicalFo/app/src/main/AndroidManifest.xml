@@ -13,31 +13,42 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MediTheme">
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".adapter.GridAdapter$IntroActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".activity.IntroActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/MediTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.LoginActivity"
-            android:label="Login" />
+            android:label="@string/title_activity_login"
+            android:parentActivityName=".activity.IntroActivity" />
+
         <activity
             android:name=".activity.PersonalInputActivity"
-            android:label="User Input" />
+            android:label="@string/title_user_information"
+            android:parentActivityName=".activity.IntroActivity" />
+
         <activity
             android:name=".activity.MainActivity"
-            android:label="Symptom Checker" />
+            android:label="@string/symptom_checker_view"
+            android:parentActivityName=".activity.IntroActivity" />
+
         <activity
             android:name=".activity.SymptomListActivity"
-            android:label="Symptom Checker">
+            android:label="@string/symptom_checker_view"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar_">
 
 
         </activity>

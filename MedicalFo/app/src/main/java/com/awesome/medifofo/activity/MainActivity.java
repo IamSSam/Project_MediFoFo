@@ -34,6 +34,7 @@ import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -45,6 +46,9 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private GridView gridView;
+    private ImageView myPicture;
+    private TextView myName, myAge;
+    private long pressTime;
     Button symptom_main_btn1;
     Button symptom_main_btn2;
     Button symptom_main_btn3;
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText tmp_st_comment;
     private Dialog levelDialog;
     private Dialog moreDialog;
-    private long pressTime;
 
     private int image[] = {
             R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
@@ -104,25 +107,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageView myPicture = (ImageView) findViewById(R.id.myPicture);
+        myPicture = (ImageView) findViewById(R.id.myPicture);
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
         new ImageLoadTask(sharedPreferences.getString("URL", ""), myPicture).execute();
 
-        TextView myName = (TextView) findViewById(R.id.myName);
+        myName = (TextView) findViewById(R.id.myName);
         myName.setText(sharedPreferences.getString("NAME", ""));
 
-        TextView myAge = (TextView) findViewById(R.id.myAge);
+        myAge = (TextView) findViewById(R.id.myAge);
         if (PersonalInputActivity.userAge == null) {
             SharedPreferences sf = getSharedPreferences(PersonalInputActivity.sfYear, 1);
             myAge.setText(sf.getString("YEAR", "") + " years old");
         } else {
             myAge.setText(PersonalInputActivity.userAge + " years old");
         }
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-
 
         /* Dialog 부분
         levelDialog = new Dialog(getApplicationContext());

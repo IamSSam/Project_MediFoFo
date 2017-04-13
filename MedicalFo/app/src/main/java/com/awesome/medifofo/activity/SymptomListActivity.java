@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,12 +28,19 @@ public class SymptomListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         position = intent.getExtras().getInt("POSITION"); // Get gridview's position
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_recycler_view);
+        setSupportActionBar(toolbar);
 
-        connectRecyclerViewWithSymptomListAdapter(position);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        initRecyclerView(position);
     }
 
 
-    private void connectRecyclerViewWithSymptomListAdapter(int position) {
+    private void initRecyclerView(int position) {
+
         recyclerView = (RecyclerView) findViewById(R.id.rec_list);
         recyclerView.setHasFixedSize(true);
 
