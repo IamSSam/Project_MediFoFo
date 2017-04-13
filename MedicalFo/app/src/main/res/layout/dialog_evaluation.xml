@@ -77,7 +77,7 @@
             android:layout_margin="3dp"
             android:background="@drawable/btn_select"
             android:text="열이 납니다."
-            android:textColor="@drawable/white" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/symptom_main_btn2"
@@ -86,7 +86,7 @@
             android:layout_margin="3dp"
             android:background="@drawable/btn_select"
             android:text="어지러움증이 있습니다."
-            android:textColor="@drawable/white" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/symptom_main_btn3"
@@ -95,7 +95,7 @@
             android:layout_margin="3dp"
             android:background="@drawable/btn_select"
             android:text="두통이 있습니다."
-            android:textColor="@drawable/white" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
     <LinearLayout

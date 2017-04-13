@@ -54,7 +54,7 @@
                 android:layout_marginRight="15dp"
                 android:background="#4682B4"
                 android:text="Sign up"
-                android:textColor="@drawable/white" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
