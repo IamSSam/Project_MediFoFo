@@ -1,6 +1,5 @@
 package com.awesome.medifofo.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,28 +12,26 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.SeekBar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.awesome.medifofo.Person;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -43,27 +40,14 @@ import java.net.URL;
 /**
  * Created by Eunsik on 03/26/2017.
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private GridView gridView;
-    private ImageView myPicture;
-    private TextView myName, myAge;
-    private long pressTime;
-    Button symptom_main_btn1;
-    Button symptom_main_btn2;
-    Button symptom_main_btn3;
-    Button find_hospital;
-    Button more_confirm;
-    CheckBox detail_symptom_cb1;
-    CheckBox detail_symptom_cb2;
-    CheckBox detail_symptom_cb3;
-    private String tmp_st_main;
-    private int currentPosition;
-    private int tmp_st_scale;
-    private StringBuilder tmp_st_sub;
-    private EditText tmp_st_comment;
-    private Dialog levelDialog;
-    private Dialog moreDialog;
+    private ImageView userPicture;
+    private TextView userName, userAge;
+
+
+    private DrawerLayout drawerLayout;
 
     private int image[] = {
             R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
@@ -107,29 +91,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myPicture = (ImageView) findViewById(R.id.myPicture);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        LinearLayout nav_header = (LinearLayout) headerView.findViewById(R.id.nav_header);
+
+        nav_header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+
+
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
-        new ImageLoadTask(sharedPreferences.getString("URL", ""), myPicture).execute();
+        userPicture = (ImageView) headerView.findViewById(R.id.navigation_my_picture);
+        new ImageLoadTask(sharedPreferences.getString("URL", ""), userPicture).execute();
 
-        myName = (TextView) findViewById(R.id.myName);
-        myName.setText(sharedPreferences.getString("NAME", ""));
+        userName = (TextView) headerView.findViewById(R.id.navigation_my_name);
+        userName.setText(sharedPreferences.getString("NAME", ""));
 
-        myAge = (TextView) findViewById(R.id.myAge);
+        userAge = (TextView) headerView.findViewById(R.id.navigation_my_age);
         if (PersonalInputActivity.userAge == null) {
             SharedPreferences sf = getSharedPreferences(PersonalInputActivity.sfYear, 1);
-            myAge.setText(sf.getString("YEAR", "") + " years old");
+            userAge.setText(sf.getString("YEAR", "") + " years old");
         } else {
-            myAge.setText(PersonalInputActivity.userAge + " years old");
+            userAge.setText(PersonalInputActivity.userAge + " years old");
         }
-
-        /* Dialog 부분
-        levelDialog = new Dialog(getApplicationContext());
-        levelDialog.setTitle("Select level:");
-        levelDialog.setContentView(R.layout.dialog_evaluation);
-
-        moreDialog = new Dialog(getApplicationContext());
-        moreDialog.setContentView(R.layout.dialog_more);
-        */
 
 
         final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
@@ -152,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
             }
         });
+
+        if (AccessToken.getCurrentAccessToken() == null) {
+            goLoginActivity();
+        }
+
 
         /*
         symptom_main_btn1 = (Button) levelDialog.findViewById(R.id.symptom_main_btn1);
@@ -249,12 +257,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         */
 
-        if (AccessToken.getCurrentAccessToken() == null) {
-            goLoginActivity();
-        }
+
     }
 
-
+    /*
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -296,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -309,9 +316,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.action_logout:
-                this.logOut();
-                goLoginActivity();
+            //case R.id.main_about:
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -329,17 +335,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (pressTime == 0) {
-            Toast.makeText(MainActivity.this, "Press again to exit.", Toast.LENGTH_LONG).show();
-            pressTime = System.currentTimeMillis();
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            int seconds = (int) (System.currentTimeMillis() - pressTime);
-
-            if (seconds > 2000)
-                pressTime = 0;
-            else
-                finish();
+            super.onBackPressed();
         }
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        Intent intent = new Intent();
+
+        switch (item.getItemId()) {
+
+            case R.id.navigation_about:
+                intent.setClass(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+
+
+            case R.id.navigation_share:
+                intent.setClass(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.nav_logout:
+                this.logOut();
+                break;
+
+            case R.id.nav_settings:
+                intent.setClass(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 

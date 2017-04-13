@@ -36,17 +36,20 @@
 
         <activity
             android:name=".activity.PersonalInputActivity"
-            android:label="@string/title_user_information"
+            android:label="@string/title_activity_user_information"
             android:parentActivityName=".activity.IntroActivity" />
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/symptom_checker_view"
-            android:parentActivityName=".activity.IntroActivity" />
+            android:label="@string/title_activity_symptom_checker"
+            android:launchMode="singleTop"
+            android:theme="@style/MediTheme.NoActionBar"
+            android:parentActivityName=".activity.IntroActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
 
         <activity
             android:name=".activity.SymptomListActivity"
-            android:label="@string/symptom_checker_view"
+            android:label="@string/title_activity_symptom_checker"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar_">
 
