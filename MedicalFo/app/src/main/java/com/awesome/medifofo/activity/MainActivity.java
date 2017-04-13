@@ -27,6 +27,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
@@ -106,18 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        LinearLayout nav_header = (LinearLayout) headerView.findViewById(R.id.nav_header);
-
-        nav_header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-            }
-        });
-
 
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
         userPicture = (ImageView) headerView.findViewById(R.id.navigation_my_picture);
@@ -157,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         if (AccessToken.getCurrentAccessToken() == null) {
+            Toast.makeText(getApplicationContext(), "Please Login again", Toast.LENGTH_SHORT).show();
             goLoginActivity();
         }
 

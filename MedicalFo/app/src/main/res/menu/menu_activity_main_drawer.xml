@@ -8,6 +8,12 @@
                 <item
                     android:id="@+id/navigation_about"
                     android:title="@string/navigation_about_us" />
+
+                <item
+                    android:id="@+id/navigation_phr"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="@string/navigation_share" />
+
                 <item
                     android:id="@+id/navigation_share"
                     android:icon="@drawable/ic_menu_share"
@@ -19,13 +25,16 @@
             </menu>
         </item>
 
-        <item
-            android:id="@+id/nav_logout"
-            android:title="@string/navigation_logout" />
 
         <item
             android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
             android:title="@string/navigation_settings" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="@string/navigation_logout" />
     </group>
 
 </menu>
