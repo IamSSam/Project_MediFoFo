@@ -5,8 +5,8 @@
     <color name="colorAccent">#f58bad</color>
     <color name="accent_material_light">#40a8ff</color>
     <drawable name="btn_select">#0293a6</drawable>
-    <drawable name="btn_default">#808080</drawable>
-    <drawable name="btn_press">#000000</drawable>
+    <drawable name="btn_default">#4682B4</drawable>
+    <drawable name="btn_press">#2c5171</drawable>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

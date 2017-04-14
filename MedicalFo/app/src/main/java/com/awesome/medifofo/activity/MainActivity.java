@@ -1,5 +1,6 @@
 package com.awesome.medifofo.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -332,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.navigation_phr:
-                intent.setClass(this, PersonalInfoActivity.class);
+                intent.setClass(this, PersonalHealthRecordActivity.class);
                 startActivity(intent);
                 break;
 

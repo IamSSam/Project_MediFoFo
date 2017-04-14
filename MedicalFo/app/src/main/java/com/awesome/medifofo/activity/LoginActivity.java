@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.awesome.medifofo.R;
@@ -39,7 +40,11 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
 
-        if(AccessToken.getCurrentAccessToken() != null){
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        ImageView imageView = (ImageView) findViewById(R.id.login_image);
+        imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
+
+        if (AccessToken.getCurrentAccessToken() != null) {
             goMainActivity();
         }
     }
@@ -123,8 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
 
 
 }

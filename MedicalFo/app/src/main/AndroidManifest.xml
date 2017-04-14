@@ -54,10 +54,11 @@
             android:theme="@style/MediTheme.NoActionBar_" />
 
         <activity
-            android:name=".activity.PersonalInfoActivity"
+            android:name=".activity.PersonalHealthRecordActivity"
             android:label="@string/title_activity_personal_health_record"
             android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar_" />
+            android:theme="@style/MediTheme.NoActionBar_"
+            android:windowSoftInputMode="stateHidden|adjustUnspecified" />
 
     </application>
 

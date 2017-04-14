@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +35,7 @@ import java.util.Date;
  * Created by yoonjae on 29/11/2016.
  */
 
-public class PersonalInfoActivity extends AppCompatActivity {
+public class PersonalHealthRecordActivity extends AppCompatActivity {
 
     public static EditText tab1_abo;
     static EditText tab1_allergy;
@@ -119,6 +121,27 @@ public class PersonalInfoActivity extends AppCompatActivity {
         tab1_sex.setText(user_sex);
         */
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            // TODO: Implement goAboutPage();
+            // case R.id.main_about:
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setInformationIfExist() {
