@@ -37,14 +37,13 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_intro);
         imageLoader = ImageLoader.getInstance();
         ImageView imageView = (ImageView) findViewById(R.id.medifofo);
-        imageView.setImageResource(R.drawable.medifofo);
-        imageLoader.displayImage("", imageView);
+        imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        handler.postDelayed (runnable, 2000);
+        handler.postDelayed(runnable, 2000);
     }
 
     @Override

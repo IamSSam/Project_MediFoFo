@@ -32,6 +32,9 @@ import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -108,7 +111,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
         userPicture = (ImageView) headerView.findViewById(R.id.navigation_my_picture);
-        new ImageLoadTask(sharedPreferences.getString("URL", ""), userPicture).execute();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000))
+                .cacheInMemory(true)
+                .bitmapConfig(Bitmap.Config.RGB_565).build();
+        imageLoader.displayImage(sharedPreferences.getString("URL", "").toString(), userPicture, displayImageOptions);
+        // new ImageLoadTask(sharedPreferences.getString("URL", ""), userPicture).execute();
 
         userName = (TextView) headerView.findViewById(R.id.navigation_my_name);
         userName.setText(sharedPreferences.getString("NAME", ""));
@@ -364,6 +372,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.BLACK;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }
 
     public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
 
