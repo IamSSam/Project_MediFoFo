@@ -43,18 +43,22 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_symptom_checker"
             android:launchMode="singleTop"
-            android:theme="@style/MediTheme.NoActionBar"
             android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
 
         <activity
             android:name=".activity.SymptomListActivity"
             android:label="@string/title_activity_symptom_checker"
             android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar_">
+            android:theme="@style/MediTheme.NoActionBar_" />
 
+        <activity
+            android:name=".activity.PersonalInfoActivity"
+            android:label="@string/title_activity_personal_health_record"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar_" />
 
-        </activity>
     </application>
 
 </manifest>

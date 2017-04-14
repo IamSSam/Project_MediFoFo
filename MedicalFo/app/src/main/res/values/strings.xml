@@ -3,8 +3,9 @@
     <string name="facebook_app_id">1870585023157218</string>
 
     <string name="title_activity_login">Log in</string>
-    <string name="title_activity_symptom_checker">Symptom Checker</string>
     <string name="title_activity_user_information">User information</string>
+    <string name="title_activity_symptom_checker">Symptom Checker</string>
+    <string name="title_activity_personal_health_record">Personal Health Record</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -26,5 +27,14 @@
     <string name="navigation_logout">Logout</string>
     <string name="navigation_settings">Settings</string>
 
+    <!-- String about PHR -->
+    <string name="phr_height">Height (kg)</string>
+    <string name="phr_weight">Weight (kg)</string>
+    <string name="phr_blood">Blood pressure / Blood type</string>
+    <string name="phr_medicine">Medicine list</string>
+    <string name="phr_allergy">Allergy</string>
+    <string name="phr_history">History</string>
+    <string name="phr_sleeptime">Sleep time</string>
+    <string name="phr_dailystride">Daily stride</string>
 
 </resources>

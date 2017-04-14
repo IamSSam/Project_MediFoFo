@@ -3,15 +3,6 @@ package com.awesome.medifofo.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,10 +26,6 @@ import com.facebook.login.LoginManager;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 /**
  * Created by Eunsik on 03/26/2017.
@@ -97,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -116,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .cacheInMemory(true)
                 .bitmapConfig(Bitmap.Config.RGB_565).build();
         imageLoader.displayImage(sharedPreferences.getString("URL", "").toString(), userPicture, displayImageOptions);
-        // new ImageLoadTask(sharedPreferences.getString("URL", ""), userPicture).execute();
 
         userName = (TextView) headerView.findViewById(R.id.navigation_my_name);
         userName.setText(sharedPreferences.getString("NAME", ""));
@@ -346,13 +331,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
 
+            case R.id.navigation_phr:
+                intent.setClass(this, PersonalInfoActivity.class);
+                startActivity(intent);
+                break;
+
             case R.id.navigation_about:
                 intent.setClass(this, LoginActivity.class);
                 startActivity(intent);
                 break;
 
-
             case R.id.navigation_share:
+                intent.setClass(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_feedback:
+                intent.setClass(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_settings:
                 intent.setClass(this, LoginActivity.class);
                 startActivity(intent);
                 break;
@@ -361,95 +360,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.logOut();
                 break;
 
-            case R.id.navigation_settings:
-                intent.setClass(this, LoginActivity.class);
-                startActivity(intent);
-                break;
-
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
-
-        final int color = Color.BLACK;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
-    }
-
-    public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
-
-        private String url;
-        private ImageView imageView;
-
-        public ImageLoadTask(String url, ImageView imageView) {
-            this.url = url;
-            this.imageView = imageView;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            try {
-                URL urlConnection = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) urlConnection
-                        .openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                return myBitmap;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-
-            imageView.setImageBitmap(getCircleBitmap(result));
-        }
-
-        private Bitmap getCircleBitmap(Bitmap bitmap) {
-            final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                    bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-            final Canvas canvas = new Canvas(output);
-
-            final int color = Color.BLACK;
-            final Paint paint = new Paint();
-            final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-            final RectF rectF = new RectF(rect);
-
-            paint.setAntiAlias(true);
-            canvas.drawARGB(0, 0, 0, 0);
-            paint.setColor(color);
-            canvas.drawOval(rectF, paint);
-
-            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-            canvas.drawBitmap(bitmap, rect, rect, paint);
-
-            bitmap.recycle();
-
-            return output;
-        }
-    }
 }

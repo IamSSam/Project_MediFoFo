@@ -1,18 +1,18 @@
-package com.awesome.medifofo;
+package com.awesome.medifofo.activity;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.awesome.medifofo.Person;
+import com.awesome.medifofo.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -33,14 +33,9 @@ import java.util.Date;
  * Created by yoonjae on 29/11/2016.
  */
 
-public class PersonalInfoFragment extends Fragment {
-    Context context;
-    static TextView tab1_name;
-    static TextView tab1_age;
-    static TextView tab1_sex;
-    static Button saveButton;
+public class PersonalInfoActivity extends AppCompatActivity {
 
-    static EditText tab1_abo;
+    public static EditText tab1_abo;
     static EditText tab1_allergy;
     static EditText tab1_dailyStride;
     static EditText tab1_height;
@@ -49,11 +44,18 @@ public class PersonalInfoFragment extends Fragment {
     static EditText tab1_sleepTime;
     static EditText tab1_weight;
 
+    static Button saveButton;
+
     String currentDateTime;
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        context = getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_phr);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_phr);
+        setSupportActionBar(toolbar);
 
         int year = Calendar.getInstance().get(Calendar.YEAR);
         int age = year - Person.birth.getYear();
@@ -61,25 +63,18 @@ public class PersonalInfoFragment extends Fragment {
         int cmonth = Calendar.getInstance().get(Calendar.MONTH);
         int myMonth = Person.birth.getMonth();
 
-        final View view = inflater.inflate(R.layout.fragment_personal_info, container, false);
-
-        tab1_name = (TextView) view.findViewById(R.id.tab1_name);
-        tab1_age = (TextView) view.findViewById(R.id.tab1_age);
-        tab1_sex = (TextView) view.findViewById(R.id.tab1_sex);
-
-        tab1_height = (EditText) view.findViewById(R.id.tab1_height);
-        tab1_weight = (EditText) view.findViewById(R.id.tab1_weight);
-        tab1_abo = (EditText) view.findViewById(R.id.tab1_abo);
-        tab1_medicine = (EditText) view.findViewById(R.id.tab1_medicine);
-        tab1_allergy = (EditText) view.findViewById(R.id.tab1_allergy);
-        tab1_history = (EditText) view.findViewById(R.id.tab1_history);
-        tab1_sleepTime = (EditText) view.findViewById(R.id.tab1_sleepTime);
-        tab1_dailyStride = (EditText) view.findViewById(R.id.tab1_dailyStride);
-        tab1_height.setNextFocusDownId(R.id.tab1_weight);
+        tab1_height = (EditText) findViewById(R.id.phr_height);
+        tab1_weight = (EditText) findViewById(R.id.phr_weight);
+        tab1_abo = (EditText) findViewById(R.id.phr_abo);
+        tab1_medicine = (EditText) findViewById(R.id.phr_medicine);
+        tab1_allergy = (EditText) findViewById(R.id.phr_allergy);
+        tab1_history = (EditText) findViewById(R.id.phr_history);
+        tab1_sleepTime = (EditText) findViewById(R.id.phr_sleepTime);
+        tab1_dailyStride = (EditText) findViewById(R.id.phr_dailyStride);
 
         setInformationIfExist();
 
-        saveButton = (Button) view.findViewById(R.id.save_button);
+        saveButton = (Button) findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +83,7 @@ public class PersonalInfoFragment extends Fragment {
                 SimpleDateFormat sdfNow = new SimpleDateFormat("0yyyy-MM-dd");
                 currentDateTime = sdfNow.format(date);
 
+                /*
                 new HttpAsyncTask().execute("http://igrus.mireene.com/applogin/personInfo.php/?userid=" + Person.userId + "&height=" + PersonalInfoFragment.tab1_height.getText().toString()
                         + "&weight=" + PersonalInfoFragment.tab1_weight.getText().toString() + "&abo=" + PersonalInfoFragment.tab1_abo.getText().toString() + "&medicine=" + PersonalInfoFragment.tab1_medicine.getText().toString()
                         + "&allergy=" + PersonalInfoFragment.tab1_allergy.getText().toString() + "&history=" + PersonalInfoFragment.tab1_history.getText().toString() + "&sleeptime=" + PersonalInfoFragment.tab1_sleepTime.getText().toString()
@@ -99,11 +95,12 @@ public class PersonalInfoFragment extends Fragment {
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
+                */
             }
         });
 
+        /*
         String user_name = Person.name;
-        tab1_name.setText(user_name);
         String user_age = "" + age;
 
         if (((cmonth + 1) - myMonth) >= 0) {
@@ -120,37 +117,36 @@ public class PersonalInfoFragment extends Fragment {
         else
             user_sex = "여";
         tab1_sex.setText(user_sex);
+        */
 
-        return view;
     }
 
     private void setInformationIfExist() {
-        if(!Person.d_height.equals("-1")) {
+        if (!Person.d_height.equals("-1")) {
             tab1_height.setText(Person.d_height, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_weight.equals("-1")) {
-            tab1_weight.setText(Person.d_weight,TextView.BufferType.EDITABLE);
+        if (!Person.d_weight.equals("-1")) {
+            tab1_weight.setText(Person.d_weight, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_abo.equals("-1")) {
-            tab1_abo.setText(Person.d_abo,TextView.BufferType.EDITABLE);
+        if (!Person.d_abo.equals("-1")) {
+            tab1_abo.setText(Person.d_abo, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_medicine.equals("-1")) {
-            tab1_medicine.setText(Person.d_medicine,TextView.BufferType.EDITABLE);
+        if (!Person.d_medicine.equals("-1")) {
+            tab1_medicine.setText(Person.d_medicine, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_allergy.equals("-1")) {
-            tab1_allergy.setText(Person.d_allergy,TextView.BufferType.EDITABLE);
+        if (!Person.d_allergy.equals("-1")) {
+            tab1_allergy.setText(Person.d_allergy, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_history.equals("-1")) {
-            tab1_history.setText(Person.d_history,TextView.BufferType.EDITABLE);
+        if (!Person.d_history.equals("-1")) {
+            tab1_history.setText(Person.d_history, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_sleeptime.equals("-1")) {
-            tab1_sleepTime.setText(Person.d_sleeptime,TextView.BufferType.EDITABLE);
+        if (!Person.d_sleeptime.equals("-1")) {
+            tab1_sleepTime.setText(Person.d_sleeptime, TextView.BufferType.EDITABLE);
         }
-        if(!Person.d_dailystride.equals("-1")) {
-            tab1_dailyStride.setText(Person.d_dailystride,TextView.BufferType.EDITABLE);
+        if (!Person.d_dailystride.equals("-1")) {
+            tab1_dailyStride.setText(Person.d_dailystride, TextView.BufferType.EDITABLE);
         }
     }
-
 
     public class HttpAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -163,15 +159,15 @@ public class PersonalInfoFragment extends Fragment {
         protected void onPostExecute(String result) {
 //            Log.d("check result", result);
             if (result.equals("Did not work!")) {
-                Toast.makeText(context, "데이터 저장 실패, 인터넷 연결을 확인하세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "데이터 저장 실패, 인터넷 연결을 확인하세요.", Toast.LENGTH_SHORT).show();
             } else {
                 //TODO : 전송완료 후 할일
-                Toast.makeText(context, "데이터가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "데이터가 저장되었습니다.", Toast.LENGTH_SHORT).show();
 
                 try {
                     JSONObject jobj = new JSONObject(result);
 
-                    Log.d("RESULT" , result);
+                    Log.d("RESULT", result);
 
                     Person.d_height = jobj.getString("height");
                     Person.d_weight = jobj.getString("weight");
@@ -182,7 +178,7 @@ public class PersonalInfoFragment extends Fragment {
                     Person.d_sleeptime = jobj.getString("sleeptime");
                     Person.d_dailystride = jobj.getString("dailystride");
                 } catch (JSONException e) {
-                    Log.d("ERROR" , result);
+                    Log.d("ERROR", result);
                     e.printStackTrace();
                 }
 //                Person.name = jobj.getString("name");
