@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -16,10 +18,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.json.JSONObject;
 
@@ -37,12 +36,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        callbackManager = CallbackManager.Factory.create();
-        facebookLogIn(callbackManager);
-
         ImageLoader imageLoader = ImageLoader.getInstance();
         ImageView imageView = (ImageView) findViewById(R.id.login_image);
         imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
+
+        callbackManager = CallbackManager.Factory.create();
+        facebookLogIn(callbackManager);
+        signUp();
 
         if (AccessToken.getCurrentAccessToken() != null) {
             goMainActivity();
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void facebookLogIn(CallbackManager callbackManager) {
-        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.button_login_facebook);
         loginButton.setReadPermissions("public_profile");
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -115,6 +115,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void signUp() {
+        Button loginEmail = (Button) findViewById(R.id.button_sign_up);
+        loginEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void goPersonalInputActivity() {

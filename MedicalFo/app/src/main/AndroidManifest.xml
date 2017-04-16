@@ -30,6 +30,12 @@
         </activity>
 
         <activity
+            android:name=".activity.SignUpActivity"
+            android:label="@string/title_activity_sign_up"
+            android:parentActivityName=".activity.IntroActivity"
+            android:windowSoftInputMode="stateHidden|adjustUnspecified" />
+
+        <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".activity.IntroActivity" />

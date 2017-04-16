@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.awesome.medifofo.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -35,8 +34,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:verticalSpacing="10dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </GridView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></GridView>
 
 
 </android.support.design.widget.CoordinatorLayout>

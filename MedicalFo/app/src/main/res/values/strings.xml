@@ -2,13 +2,32 @@
     <string name="app_name">MediFoFo</string>
     <string name="facebook_app_id">1870585023157218</string>
 
+    <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_login">Log In</string>
     <string name="title_activity_user_information">User Information</string>
     <string name="title_activity_symptom_checker">Symptom Checker</string>
     <string name="title_activity_personal_health_record">Personal Health Record</string>
+
+    <!-- Email Form -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="user_email">Email</string>
+    <string name="user_password">Password</string>
+    <string name="user_year_example">ex) 1992</string>
+    <string name="user_year">Year</string>
+    <string name="user_month">Month</string>
+    <string name="user_day">Day</string>
+    <string name="user_country">Country</string>
+    <string name="user_men">Men</string>
+    <string name="user_women">Women</string>
+    <string name="button_sign_up">Sign Up</string>
+    <string name="button_register">Register</string>
+    <string name="button_forgot_password">Forgot password?</string>
+
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_no_password">This field is required</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."

@@ -91,7 +91,7 @@ public class PersonalInputActivity extends AppCompatActivity {
         }
 
         Spinner spinner = (Spinner) findViewById(R.id.country_spinner);
-        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.layout_spinner, R.id.country_name, list);
+        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.content_spinner, R.id.country_name, list);
         spinner.setAdapter(adapter);
     }
 
