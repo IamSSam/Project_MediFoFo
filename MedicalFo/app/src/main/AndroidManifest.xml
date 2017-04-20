@@ -13,7 +13,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/MediTheme">
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -25,26 +24,27 @@
             android:windowSoftInputMode="stateHidden|stateUnchanged">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".activity.FirstActivity"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar" />
         <activity
             android:name=".activity.SignUpActivity"
             android:label="@string/title_activity_sign_up"
             android:parentActivityName=".activity.IntroActivity"
             android:windowSoftInputMode="stateHidden|adjustUnspecified" />
-
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:parentActivityName=".activity.IntroActivity" />
-
         <activity
             android:name=".activity.PersonalInputActivity"
             android:label="@string/title_activity_user_information"
             android:parentActivityName=".activity.IntroActivity" />
-
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_symptom_checker"
@@ -52,20 +52,22 @@
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
-
         <activity
             android:name=".activity.SymptomListActivity"
             android:label="@string/title_activity_symptom_checker"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar_" />
-
         <activity
             android:name=".activity.PersonalHealthRecordActivity"
             android:label="@string/title_activity_personal_health_record"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar_"
             android:windowSoftInputMode="stateHidden|adjustUnspecified" />
-
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

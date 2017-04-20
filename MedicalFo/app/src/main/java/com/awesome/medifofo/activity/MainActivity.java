@@ -1,6 +1,5 @@
 package com.awesome.medifofo.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +24,8 @@ import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GridView gridView;
     private ImageView userPicture;
     private TextView userName, userAge;
-
+    private FirebaseAuth firebaseAuth;
 
     private DrawerLayout drawerLayout;
 
@@ -96,23 +98,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View headerView = navigationView.getHeaderView(0);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
         userPicture = (ImageView) headerView.findViewById(R.id.navigation_my_picture);
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000))
-                .cacheInMemory(true)
-                .bitmapConfig(Bitmap.Config.RGB_565).build();
-        imageLoader.displayImage(sharedPreferences.getString("URL", "").toString(), userPicture, displayImageOptions);
-
         userName = (TextView) headerView.findViewById(R.id.navigation_my_name);
-        userName.setText(sharedPreferences.getString("NAME", ""));
-
         userAge = (TextView) headerView.findViewById(R.id.navigation_my_age);
-        if (PersonalInputActivity.userAge == null) {
-            SharedPreferences sf = getSharedPreferences(PersonalInputActivity.sfYear, 1);
-            userAge.setText(sf.getString("YEAR", "") + " years old");
-        } else {
-            userAge.setText(PersonalInputActivity.userAge + " years old");
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if (firebaseAuth.getCurrentUser() != null) {
+            userPicture.setBackground(getDrawable(R.drawable.ic_no_image));
+            SharedPreferences sharedPreferences = getSharedPreferences(FirstActivity.sharedPreferenceFile, 2);
+            userName.setText(sharedPreferences.getString("FIRSTNAME", "") + " " + sharedPreferences.getString("LASTNAME", ""));
+            userAge.setText(sharedPreferences.getString("AGE", "") + " years old");
+
+        } else if (AccessToken.getCurrentAccessToken() != null) {
+            SharedPreferences sharedPreferences = getSharedPreferences(FirstActivity.sharedPreferenceFile, 0);
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000))
+                    .cacheInMemory(true)
+                    .bitmapConfig(Bitmap.Config.RGB_565).build();
+            imageLoader.displayImage(sharedPreferences.getString("URL", ""), userPicture, displayImageOptions);
+
+            userName.setText(sharedPreferences.getString("NAME", ""));
+
+            if (PersonalInputActivity.userAge == null) {
+                SharedPreferences sf = getSharedPreferences(PersonalInputActivity.sfYear, 1);
+                userAge.setText(sf.getString("YEAR", "") + " years old");
+            } else {
+                userAge.setText(PersonalInputActivity.userAge + " years old");
+            }
         }
 
 
@@ -126,21 +138,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                /*
-                ((TextView) levelDialog.findViewById(R.id.evaluation_title)).setText(st_place[position][0]);
-                currentPosition = position;
-                levelDialog.show();
-                */
                 Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
                 intent.putExtra("POSITION", position); // Pass gridview's position
                 startActivity(intent);
             }
         });
 
-        if (AccessToken.getCurrentAccessToken() == null) {
+        if (AccessToken.getCurrentAccessToken() == null && firebaseAuth.getCurrentUser() == null) {
             Toast.makeText(getApplicationContext(), "Please Login again", Toast.LENGTH_SHORT).show();
-            goLoginActivity();
+            goFirstActivity();
         }
+
 
 
         /*
@@ -305,13 +313,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void logOut() {
+    private void facebookLogOut() {
         LoginManager.getInstance().logOut();
-        goLoginActivity();
+        goFirstActivity();
     }
 
-    private void goLoginActivity() {
-        startActivity(new Intent(this, LoginActivity.class));
+    private void firebaseLogOut() {
+        firebaseAuth.signOut();
+        goFirstActivity();
+    }
+
+    private void goFirstActivity() {
+        startActivity(new Intent(this, FirstActivity.class));
     }
 
 
@@ -338,27 +351,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.navigation_about:
-                intent.setClass(this, LoginActivity.class);
+                intent.setClass(this, FirstActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_qna:
+                intent.setClass(this, FirstActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_share:
-                intent.setClass(this, LoginActivity.class);
+                intent.setClass(this, FirstActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_feedback:
-                intent.setClass(this, LoginActivity.class);
+                intent.setClass(this, FirstActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_settings:
-                intent.setClass(this, LoginActivity.class);
+                intent.setClass(this, FirstActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_logout:
-                this.logOut();
+
+                if (firebaseAuth.getCurrentUser() != null) {
+                    this.firebaseLogOut();
+
+                }
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    this.facebookLogOut();
+                }
                 break;
 
         }

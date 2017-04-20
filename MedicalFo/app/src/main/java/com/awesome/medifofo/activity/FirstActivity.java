@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * Created by Eunsik on 03/26/2017.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class FirstActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     public static String sharedPreferenceFile = "userInfoFILE";
@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_first);
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         ImageView imageView = (ImageView) findViewById(R.id.login_image);
@@ -42,7 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
-        signUp();
+        goSignUpActivity();
+        geLogInActivity();
 
         if (AccessToken.getCurrentAccessToken() != null) {
             goMainActivity();
@@ -117,36 +118,36 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void signUp() {
+    private void goSignUpActivity() {
         Button signUp = (Button) findViewById(R.id.button_sign_up);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                Intent intent = new Intent(FirstActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void logIn(){
+    private void geLogInActivity(){
         Button loginEmail = (Button) findViewById(R.id.button_have_account);
         loginEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+                Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
     }
 
     private void goPersonalInputActivity() {
-        Intent intent = new Intent(LoginActivity.this, PersonalInputActivity.class);
+        Intent intent = new Intent(FirstActivity.this, PersonalInputActivity.class);
         startActivity(intent);
         finish();
     }
 
     private void goMainActivity() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(FirstActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }

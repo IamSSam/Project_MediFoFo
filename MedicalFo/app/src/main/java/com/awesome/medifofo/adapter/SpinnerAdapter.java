@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class SpinnerAdapter extends ArrayAdapter<CountryItem> {
 
     private int groupId;
-    private Activity context;
     private ArrayList<CountryItem> list;
     private LayoutInflater inflater;
 

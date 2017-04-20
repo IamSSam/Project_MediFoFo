@@ -190,7 +190,7 @@
                 android:textSize="16sp" />
 
             <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/country_spinner"
+                android:id="@+id/spinner_personal_input_country"
                 android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center|left"

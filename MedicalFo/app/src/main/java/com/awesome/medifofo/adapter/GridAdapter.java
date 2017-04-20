@@ -1,10 +1,6 @@
 package com.awesome.medifofo.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.awesome.medifofo.R;
-import com.awesome.medifofo.activity.LoginActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -23,7 +18,6 @@ public class GridAdapter extends BaseAdapter {
 
     Context context;
     int layout;
-    // image에 position 값이 연결되어있음.
     int image[];
     LayoutInflater inflater;
 

@@ -78,7 +78,7 @@ public class PersonalInputActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(sfYear, 1);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("YEAR", userAge);
-        editor.commit();
+        editor.apply();
     }
 
     private void setMyCountry() {
@@ -90,7 +90,7 @@ public class PersonalInputActivity extends AppCompatActivity {
             list.add(new CountryItem(object.getDisplayName() + " (" + countriesName[i] + ")", flagData[i]));
         }
 
-        Spinner spinner = (Spinner) findViewById(R.id.country_spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_personal_input_country);
         SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.content_spinner, R.id.country_name, list);
         spinner.setAdapter(adapter);
     }
@@ -120,13 +120,14 @@ public class PersonalInputActivity extends AppCompatActivity {
                     calculateUserAge();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
                 }
             }
         });
     }
 
     private void setPersonalInfo() {
-        SharedPreferences sharedPreferences = getSharedPreferences(LoginActivity.sharedPreferenceFile, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(FirstActivity.sharedPreferenceFile, 0);
         userName = sharedPreferences.getString("NAME", "");
         userGender = sharedPreferences.getString("GENDER", "");
 

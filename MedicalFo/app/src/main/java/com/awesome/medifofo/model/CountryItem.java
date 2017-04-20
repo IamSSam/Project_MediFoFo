@@ -8,6 +8,10 @@ public class CountryItem {
     private String countryName;
     private Integer flagId;
 
+    public CountryItem(String countryName){
+        this.countryName = countryName;
+    }
+
     public CountryItem(String countryName, Integer flagId){
         this.countryName = countryName;
         this.flagId = flagId;

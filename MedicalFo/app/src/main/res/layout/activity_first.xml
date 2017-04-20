@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/login_image"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="380dp"
             android:gravity="center_horizontal|center_vertical" />
 
         <LinearLayout
@@ -45,7 +45,7 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/button_sign_up"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/button_selector"
@@ -65,8 +65,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:text="@string/button_have_account"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="4pt" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="5pt" />
 
             </RelativeLayout>
 

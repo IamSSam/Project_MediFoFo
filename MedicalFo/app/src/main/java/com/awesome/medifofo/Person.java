@@ -8,11 +8,13 @@ import java.util.Date;
 
 public class Person {
 
-    public static String userId;
+    public static String fistName;
+    public static String lastName;
+    public static String email;
     public static String password;
-    public static Date birth = new Date(9999, 01, 01);
-    public static int sex;
-    public static String name;
+    public static int gender;
+    public static int age;
+    public static String country;
 
     public static String st_place;
     public static String st_main;
