@@ -1,27 +1,41 @@
 package com.awesome.medifofo.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.awesome.medifofo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
+    private Animation animationShake;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        ImageView imageView = (ImageView) findViewById(R.id.reset_password_image);
+        imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
+
+        animationShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
 
         Button buttonSendEmail = (Button) findViewById(R.id.button_send_email);
         buttonSendEmail.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +58,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(emailAddress)) {
             textInputLayout.setError("This field is required");
+            textInputLayout.setAnimation(animationShake);
+            textInputLayout.startAnimation(animationShake);
             focus = textInputLayout;
+            cancel = true;
         } else if (!this.isEmailValid(emailAddress)) {
             textInputLayout.setError("This email address is invalid");
             focus = textInputLayout;
@@ -58,7 +75,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Email sent", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Sent Email", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
+                        overridePendingTransition(R.anim.anim_slide_out_bottom, R.anim.anim_slide_in_top);
+                        finish();
                     }
                 }
             });
@@ -67,6 +87,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private boolean isEmailValid(String email) {
         return email.contains("@");
+    }
+
+    private boolean isEmailValid2(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 }
