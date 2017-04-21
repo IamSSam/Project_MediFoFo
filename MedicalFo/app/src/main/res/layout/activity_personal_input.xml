@@ -141,7 +141,7 @@
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/user_day"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="2"
                         android:maxLines="1"

@@ -6,13 +6,15 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,10 +46,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public EditText userEmail, userPassword;
     private Button manButton, womanButton;
     private ScrollView scrollView;
-    private AutoCompleteTextView userFirstName, userLastName, userEmailView, userBirth;
+    private AutoCompleteTextView userFirstName, userLastName, userEmailView, userYear, userMonth, userDay;
 
     public static String sharedPreferenceFile = "userSignUpFILE";
     private FirebaseAuth firebaseAuth;
+    private Animation animationShake;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         userLastName = (AutoCompleteTextView) findViewById(R.id.user_last_name);
         userEmailView = (AutoCompleteTextView) findViewById(R.id.user_email);
         userPassword = (EditText) findViewById(R.id.user_password);
-        userBirth = (AutoCompleteTextView) findViewById(R.id.user_year);
+        userYear = (AutoCompleteTextView) findViewById(R.id.user_year);
+        userMonth = (AutoCompleteTextView) findViewById(R.id.user_month);
+        userDay = (AutoCompleteTextView) findViewById(R.id.user_day);
 
         userPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -85,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         signUpButton.setOnClickListener(this);
 
         scrollView = (ScrollView) findViewById(R.id.form_sign_up);
+        animationShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
     }
 
     @Override
@@ -154,51 +160,81 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void attemptSignUp() {
 
-        userFirstName.setError(null);
-        userLastName.setError(null);
-        userEmailView.setError(null);
-        userPassword.setError(null);
-        userBirth.setError(null);
+        TextInputLayout textInputLayoutFirstName = (TextInputLayout) findViewById(R.id.text_input_layout_user_first_name);
+        TextInputLayout textInputLayoutLastName = (TextInputLayout) findViewById(R.id.text_input_layout_user_last_name);
+        TextInputLayout textInputLayoutEmail = (TextInputLayout) findViewById(R.id.text_input_layout_user_email);
+        TextInputLayout textInputLayoutPassword = (TextInputLayout) findViewById(R.id.text_input_layout_user_password);
+        TextInputLayout textInputLayoutMonth = (TextInputLayout) findViewById(R.id.text_input_layout_user_month);
+        TextInputLayout textInputLayoutDay = (TextInputLayout) findViewById(R.id.text_input_layout_user_day);
+        TextInputLayout textInputLayoutYear = (TextInputLayout) findViewById(R.id.text_input_layout_user_year);
 
         String firstName = userFirstName.getText().toString();
         String lastName = userLastName.getText().toString();
         String email = userEmailView.getText().toString();
         String password = userPassword.getText().toString();
-        String age = userBirth.getText().toString();
+        String month = userMonth.getText().toString();
+        String day = userDay.getText().toString();
+        String age = userYear.getText().toString();
 
         boolean cancel = false;
         View focus = null;
 
         if (TextUtils.isEmpty(firstName)) {
-            userFirstName.setError(getString(R.string.error_field_required));
+            textInputLayoutFirstName.setError(getString(R.string.error_field_required));
+            textInputLayoutFirstName.setAnimation(animationShake);
+            textInputLayoutFirstName.startAnimation(animationShake);
             focus = userFirstName;
             cancel = true;
         } else if (TextUtils.isEmpty(lastName)) {
-            userLastName.setError(getString(R.string.error_field_required));
+            textInputLayoutLastName.setError(getString(R.string.error_field_required));
+            textInputLayoutLastName.setAnimation(animationShake);
+            textInputLayoutLastName.startAnimation(animationShake);
             focus = userLastName;
             cancel = true;
         } else if (TextUtils.isEmpty(email)) {
-            userEmailView.setError(getString(R.string.error_field_required));
+            textInputLayoutEmail.setError(getString(R.string.error_field_required));
+            textInputLayoutEmail.setAnimation(animationShake);
+            textInputLayoutEmail.startAnimation(animationShake);
             focus = userEmailView;
             cancel = true;
         } else if (!this.isEmailValid(email)) {
-            userEmailView.setError(getString(R.string.error_invalid_email));
+            textInputLayoutEmail.setError(getString(R.string.error_invalid_email));
+            textInputLayoutEmail.setAnimation(animationShake);
+            textInputLayoutEmail.startAnimation(animationShake);
             focus = userEmailView;
             cancel = true;
         } else if (!this.isPasswordValid(password)) {
-            userPassword.setError(getString(R.string.error_invalid_password));
+            textInputLayoutPassword.setError(getString(R.string.error_invalid_password));
+            textInputLayoutPassword.setAnimation(animationShake);
+            textInputLayoutPassword.startAnimation(animationShake);
             focus = userPassword;
             cancel = true;
         } else if (TextUtils.isEmpty(password) && isEmailValid(email)) {
-            userPassword.setError(getString(R.string.error_field_required));
+            textInputLayoutPassword.setError(getString(R.string.error_field_required));
+            textInputLayoutPassword.setAnimation(animationShake);
+            textInputLayoutPassword.startAnimation(animationShake);
             focus = userPassword;
             cancel = true;
         } else if (!manButton.isSelected() && !womanButton.isSelected()) {
             Toast.makeText(getApplication(),
                     "Please press one of the men and women.", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(month)) {
+            textInputLayoutMonth.setError(getString(R.string.error_field_required));
+            textInputLayoutMonth.setAnimation(animationShake);
+            textInputLayoutMonth.startAnimation(animationShake);
+            focus = userMonth;
+            cancel = true;
+        } else if (TextUtils.isEmpty(day)) {
+            textInputLayoutDay.setError(getString(R.string.error_field_required));
+            textInputLayoutDay.setAnimation(animationShake);
+            textInputLayoutDay.startAnimation(animationShake);
+            focus = userDay;
+            cancel = true;
         } else if (TextUtils.isEmpty(age)) {
-            userBirth.setError(getString(R.string.error_field_required));
-            focus = userBirth;
+            textInputLayoutYear.setError(getString(R.string.error_field_required));
+            textInputLayoutYear.setAnimation(animationShake);
+            textInputLayoutYear.startAnimation(animationShake);
+            focus = userYear;
             cancel = true;
         }
 
@@ -219,7 +255,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
+        return email.contains("@") && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
@@ -229,7 +265,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private int calculateUserAge() {
         Calendar current = Calendar.getInstance();
         int currentYear = current.get(Calendar.YEAR);
-        return currentYear - Integer.parseInt(userBirth.getText().toString());
+        return currentYear - Integer.parseInt(userYear.getText().toString());
     }
 
     private void setMyCountry() {
@@ -242,9 +278,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             list.add(new CountryItem(object.getDisplayName() + " (" + countriesName[i] + ")"));
         }
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_sign_up_country);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_sign_up_country);
         SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.content_spinner, R.id.country_name, list);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = spinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 }

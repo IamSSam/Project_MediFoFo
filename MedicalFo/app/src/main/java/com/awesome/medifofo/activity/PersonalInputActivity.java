@@ -85,39 +85,39 @@ public class PersonalInputActivity extends AppCompatActivity {
 
                 // User Input Exception
                 if (TextUtils.isEmpty(userMonth)) {
-                    textInputLayoutMonth.setError(getString(R.string.error_field_required));
+                    Toast.makeText(getApplicationContext(), R.string.error_field_required, Toast.LENGTH_SHORT).show();
                     textInputLayoutMonth.setAnimation(animationShake);
                     textInputLayoutMonth.setAnimation(animationShake);
                     focus = month;
                     cancel = true;
                 } else if (userMonth.length() != 2) {
-                    textInputLayoutMonth.setError(getString(R.string.error_invalid_field));
+                    Toast.makeText(getApplicationContext(), R.string.error_invalid_field, Toast.LENGTH_SHORT).show();
                     textInputLayoutMonth.setAnimation(animationShake);
                     textInputLayoutMonth.setAnimation(animationShake);
                     focus = month;
                     cancel = true;
                 } else if (TextUtils.isEmpty(userDay)) {
-                    textInputLayoutDay.setError(getString(R.string.error_field_required));
+                    Toast.makeText(getApplicationContext(), R.string.error_field_required, Toast.LENGTH_SHORT).show();
                     textInputLayoutDay.setAnimation(animationShake);
                     textInputLayoutDay.setAnimation(animationShake);
                     focus = day;
                     cancel = true;
                 } else if (userDay.length() != 2) {
-                    textInputLayoutMonth.setError(getString(R.string.error_invalid_field));
-                    textInputLayoutMonth.setAnimation(animationShake);
-                    textInputLayoutMonth.setAnimation(animationShake);
+                    Toast.makeText(getApplicationContext(), R.string.error_invalid_field, Toast.LENGTH_SHORT).show();
+                    textInputLayoutDay.setAnimation(animationShake);
+                    textInputLayoutDay.setAnimation(animationShake);
                     focus = day;
                     cancel = true;
                 } else if (TextUtils.isEmpty(userYear)) {
-                    textInputLayoutYear.setError(getString(R.string.error_field_required));
+                    Toast.makeText(getApplicationContext(), R.string.error_field_required, Toast.LENGTH_SHORT).show();
                     textInputLayoutYear.setAnimation(animationShake);
                     textInputLayoutYear.setAnimation(animationShake);
                     focus = year;
                     cancel = true;
                 } else if (userYear.length() != 4) {
-                    textInputLayoutMonth.setError(getString(R.string.error_invalid_field));
-                    textInputLayoutMonth.setAnimation(animationShake);
-                    textInputLayoutMonth.setAnimation(animationShake);
+                    Toast.makeText(getApplicationContext(), R.string.error_invalid_field, Toast.LENGTH_SHORT).show();
+                    textInputLayoutYear.setAnimation(animationShake);
+                    textInputLayoutYear.setAnimation(animationShake);
                     focus = year;
                     cancel = true;
                 }
