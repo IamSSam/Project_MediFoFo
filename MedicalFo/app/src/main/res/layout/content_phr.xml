@@ -28,6 +28,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/phr_height"
                 android:src="@drawable/ic_phr_person" />
 
             <EditText
@@ -70,6 +71,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/phr_blood"
                 android:src="@drawable/ic_phr_heart" />
 
             <EditText
@@ -97,14 +99,14 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/ic_phr_medicine" />
+                android:background="@drawable/ic_phr_medicine"
+                android:contentDescription="@string/phr_medicine" />
 
             <EditText
                 android:id="@+id/phr_medicine"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
                 android:layout_marginStart="@dimen/text_margin_small"
                 android:layout_weight="1"
                 android:background="@color/white"
@@ -124,6 +126,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/phr_allergy"
                 android:src="@drawable/ic_phr_allergy" />
 
             <EditText
@@ -131,7 +134,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/text_margin_small"
+                android:layout_marginStart="@dimen/text_margin_small"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:hint="@string/phr_allergy"
@@ -149,13 +152,14 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/phr_history"
                 android:src="@drawable/ic_phr_history" />
 
             <EditText
                 android:id="@+id/phr_history"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/text_margin_small"
+                android:layout_marginStart="@dimen/text_margin_small"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:hint="@string/phr_history"
@@ -174,6 +178,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/phr_sleeptime"
                 android:src="@drawable/ic_phr_sleeptime" />
 
             <EditText
@@ -199,6 +204,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/phr_dailystride"
                 android:src="@drawable/ic_phr_stride" />
 
             <EditText
@@ -224,7 +230,7 @@
         <Button
             android:id="@+id/save_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@drawable/button_selector"
             android:text="@string/phr_save_button"

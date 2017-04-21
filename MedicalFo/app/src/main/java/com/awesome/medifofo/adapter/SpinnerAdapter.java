@@ -33,8 +33,6 @@ public class SpinnerAdapter extends ArrayAdapter<CountryItem> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView = inflater.inflate(groupId, parent, false);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.flag);
-        imageView.setImageResource(list.get(position).getFlagId());
         TextView textView = (TextView) itemView.findViewById(R.id.country_name);
         textView.setText(list.get(position).getCountryName());
         return itemView;

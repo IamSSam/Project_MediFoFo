@@ -8,6 +8,8 @@
     <string name="title_activity_symptom_checker">Symptom Checker</string>
     <string name="title_activity_personal_health_record">Personal Health Record</string>
     <string name="title_activity_reset_password">Reset Password</string>
+    <string name="medifofo_logo">Medifofo logo</string>
+    <string name="grid_row">grid row</string>
 
     <!-- Email Form -->
     <string name="first_name">First Name</string>
@@ -15,9 +17,9 @@
     <string name="user_email">Email</string>
     <string name="user_password">Password</string>
     <string name="user_year_example">ex) 1992</string>
-    <string name="user_year">Year</string>
-    <string name="user_month">Month</string>
-    <string name="user_day">Day</string>
+    <string name="user_year">YYYY</string>
+    <string name="user_month">MM</string>
+    <string name="user_day">DD</string>
     <string name="user_country">Country</string>
     <string name="user_men">Men</string>
     <string name="user_women">Women</string>
@@ -26,9 +28,14 @@
     <string name="button_forgot_password">Forgot password?</string>
     <string name="button_have_account">Have an account? LOGIN</string>
     <string name="button_login">LOGIN</string>
-    <string name="text_send_email">We will send to you an Email to reset your password.</string>
 
+    <!-- String about PersonalInputActivity -->
+    <string name="user_for">For</string>
+    <string name="user_gender">Gender</string>
+    <string name="user_birth">Birthday</string>
+    <string name="text_lets_go_symptom">Let\'s go symptom checker</string>
     <!-- String about ResetPasswordActivity -->
+    <string name="text_send_email">We will send to you an Email to reset your password.</string>
     <string name="button_send">SEND</string>
 
 
@@ -37,6 +44,7 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_no_password">This field is required</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_field">Please enter this field correctly.</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

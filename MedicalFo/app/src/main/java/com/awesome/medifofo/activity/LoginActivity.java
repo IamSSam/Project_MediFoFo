@@ -3,11 +3,14 @@ package com.awesome.medifofo.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,8 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    private EditText userEmail;
-    private EditText userPassword;
+    private EditText userEmail, userPassword;
+    private Animation animationShake;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                emailLogin();
+                attemptLogin();
             }
         });
 
@@ -66,34 +69,13 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-    }
-
-    public void emailLogin() {
-        final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Please wait...", "Proccessing...", true);
-
-        (firebaseAuth.signInWithEmailAndPassword(userEmail.getText().toString(), userPassword.getText().toString()))
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Login Success",
-                                    Toast.LENGTH_SHORT).show();
-
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        } else {
-                            Toast.makeText(LoginActivity.this, task.getException().toString(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        animationShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
     }
 
     private void attemptLogin() {
 
-        userEmail.setError(null);
+        TextInputLayout textInputLayoutEmail = (TextInputLayout) findViewById(R.id.text_input_layout_user_email);
+        TextInputLayout textInputLayoutPassword = (TextInputLayout) findViewById(R.id.text_input_layout_user_email);
 
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
@@ -102,30 +84,58 @@ public class LoginActivity extends AppCompatActivity {
         View focus = null;
 
         if (TextUtils.isEmpty(email)) {
-            userEmail.setError(getString(R.string.error_field_required));
+            textInputLayoutEmail.setError(getString(R.string.error_field_required));
+            textInputLayoutEmail.setAnimation(animationShake);
+            textInputLayoutEmail.startAnimation(animationShake);
             focus = userEmail;
             cancel = true;
         } else if (!this.isEmailValid(email)) {
-            userEmail.setError(getString(R.string.error_invalid_email));
+            textInputLayoutEmail.setError(getString(R.string.error_invalid_email));
+            textInputLayoutEmail.setAnimation(animationShake);
+            textInputLayoutEmail.startAnimation(animationShake);
             focus = userEmail;
             cancel = true;
         } else if (!this.isPasswordValid(password)) {
-            userPassword.setError(getString(R.string.error_invalid_password));
+            textInputLayoutPassword.setError(getString(R.string.error_invalid_password));
+            textInputLayoutPassword.setAnimation(animationShake);
+            textInputLayoutPassword.startAnimation(animationShake);
             focus = userPassword;
             cancel = true;
         } else if (TextUtils.isEmpty(password) && isEmailValid(email)) {
-            userPassword.setError(getString(R.string.error_field_required));
+            textInputLayoutPassword.setAnimation(animationShake);
+            textInputLayoutPassword.startAnimation(animationShake);
+            textInputLayoutPassword.setError(getString(R.string.error_field_required));
             focus = userPassword;
             cancel = true;
         }
 
         if (cancel) {
             focus.requestFocus();
+        } else {
+            final ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "Please wait...", "Signing in ...", true);
+
+            (firebaseAuth.signInWithEmailAndPassword(userEmail.getText().toString(), userPassword.getText().toString()))
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            progressDialog.dismiss();
+
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Login Success",
+                                        Toast.LENGTH_SHORT).show();
+
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            } else {
+                                Toast.makeText(LoginActivity.this, task.getException().toString(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
+        return email.contains("@") && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {

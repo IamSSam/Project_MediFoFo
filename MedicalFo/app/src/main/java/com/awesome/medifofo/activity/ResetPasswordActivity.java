@@ -64,6 +64,8 @@ public class ResetPasswordActivity extends AppCompatActivity {
             cancel = true;
         } else if (!this.isEmailValid(emailAddress)) {
             textInputLayout.setError("This email address is invalid");
+            textInputLayout.setAnimation(animationShake);
+            textInputLayout.startAnimation(animationShake);
             focus = textInputLayout;
             cancel = true;
         }
@@ -86,11 +88,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isEmailValid2(String email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        return email.contains("@") && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 }
