@@ -10,6 +10,6 @@
         android:layout_height="wrap_content"
         android:text="Korea(KR)"
         android:textColor="@color/black"
-        android:textSize="6pt" />
+        android:textSize="8pt" />
 
 </LinearLayout>

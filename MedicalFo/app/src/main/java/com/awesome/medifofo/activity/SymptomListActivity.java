@@ -136,7 +136,7 @@ public class SymptomListActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                System.out.println(s);
+
                 return false;
             }
 

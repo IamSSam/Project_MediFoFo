@@ -202,13 +202,12 @@
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/spinner_personal_input_country"
                 android:layout_width="80dp"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:dropDownWidth="200dp"
                 android:popupTheme="@android:style/ThemeOverlay.Material.Light"
-                android:textColor="@color/black"
-                android:textSize="16pt" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <LinearLayout

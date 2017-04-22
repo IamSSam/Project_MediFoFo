@@ -345,7 +345,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -384,13 +383,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.navigation_logout:
-
                 if (firebaseAuth.getCurrentUser() != null) {
                     this.firebaseLogOut();
-
+                    finish();
                 }
                 if (AccessToken.getCurrentAccessToken() != null) {
                     this.facebookLogOut();
+                    finish();
                 }
                 break;
 
