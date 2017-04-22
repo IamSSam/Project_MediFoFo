@@ -35,16 +35,18 @@
     <string name="user_birth">Birthday</string>
     <string name="text_lets_go_symptom">Let\'s go symptom checker</string>
     <!-- String about ResetPasswordActivity -->
-    <string name="text_send_email">We will send to you an Email to reset your password.</string>
+    <string name="text_send_email">We\'ll send to you an Email to reset your password.</string>
     <string name="button_send">SEND</string>
 
 
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">Please enter at least 8 characters.</string>
+    <string name="error_invalid_password">Please enter at least 8 characters</string>
     <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_no_gender">Please press one of the men and women.</string>
     <string name="error_no_password">This field is required</string>
     <string name="error_field_required">This field is required</string>
-    <string name="error_invalid_field">Please enter this field correctly.</string>
+    <string name="error_invalid_field">This field is incorrect</string>
+    <string name="error_login">The password is invalid or There is no user record corresponding to this identifier.</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

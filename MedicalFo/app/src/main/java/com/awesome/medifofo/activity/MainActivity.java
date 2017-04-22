@@ -1,8 +1,10 @@
 package com.awesome.medifofo.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,7 +32,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
-/**
+/*
  * Created by Eunsik on 03/26/2017.
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -84,65 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        View headerView = navigationView.getHeaderView(0);
-
-        userPicture = (ImageView) headerView.findViewById(R.id.navigation_my_picture);
-        userName = (TextView) headerView.findViewById(R.id.navigation_my_name);
-        userAge = (TextView) headerView.findViewById(R.id.navigation_my_age);
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        if (firebaseAuth.getCurrentUser() != null) {
-            userPicture.setBackground(getDrawable(R.drawable.ic_no_image));
-            SharedPreferences sharedPreferences = getSharedPreferences(FirstActivity.sharedPreferenceFile, 2);
-            userName.setText(sharedPreferences.getString("FIRSTNAME", "") + " " + sharedPreferences.getString("LASTNAME", ""));
-            userAge.setText(sharedPreferences.getString("AGE", "") + " years old");
-
-        } else if (AccessToken.getCurrentAccessToken() != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences(FirstActivity.sharedPreferenceFile, 0);
-            ImageLoader imageLoader = ImageLoader.getInstance();
-            DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000))
-                    .cacheInMemory(true)
-                    .bitmapConfig(Bitmap.Config.RGB_565).build();
-            imageLoader.displayImage(sharedPreferences.getString("URL", ""), userPicture, displayImageOptions);
-
-            userName.setText(sharedPreferences.getString("NAME", ""));
-
-            if (PersonalInputActivity.userAge == null) {
-                SharedPreferences sf = getSharedPreferences(PersonalInputActivity.sfYear, 1);
-                userAge.setText(sf.getString("YEAR", "") + " years old");
-            } else {
-                userAge.setText(PersonalInputActivity.userAge + " years old");
-            }
-        }
-
-
-        final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
-
-        gridView = (GridView) findViewById(R.id.gridView);
-        gridView.invalidateViews();
-        gridView.setAdapter(gridAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
-                intent.putExtra("POSITION", position); // Pass gridview's position
-                startActivity(intent);
-            }
-        });
+        initView();
+        loadUserInformation();
 
         if (AccessToken.getCurrentAccessToken() == null && firebaseAuth.getCurrentUser() == null) {
             Toast.makeText(getApplicationContext(), "Please Login again", Toast.LENGTH_SHORT).show();
@@ -294,6 +239,69 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     */
 
+    public void initView() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+
+        userPicture = (ImageView) headerView.findViewById(R.id.navigation_my_picture);
+        userName = (TextView) headerView.findViewById(R.id.navigation_my_name);
+        userAge = (TextView) headerView.findViewById(R.id.navigation_my_age);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
+
+        gridView = (GridView) findViewById(R.id.gridView);
+        gridView.invalidateViews();
+        gridView.setAdapter(gridAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
+                intent.putExtra("POSITION", position); // Pass gridview's position
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void loadUserInformation() {
+
+        if (firebaseAuth.getCurrentUser() != null) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userSignUpFILE", Activity.MODE_PRIVATE);
+            userPicture.setBackground(getDrawable(R.drawable.ic_no_image));
+            userName.setText(sharedPreferences.getString("FIRSTNAME", "") + " " + sharedPreferences.getString("LASTNAME", ""));
+            userAge.setText(sharedPreferences.getInt("AGE", 0) + " years old");
+        }
+
+        if (AccessToken.getCurrentAccessToken() != null) {
+            SharedPreferences sharedPreferences = getSharedPreferences("userFacebookFILE", Activity.MODE_PRIVATE);
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            DisplayImageOptions displayImageOptions = new DisplayImageOptions.Builder().displayer(new RoundedBitmapDisplayer(1000))
+                    .cacheInMemory(true)
+                    .bitmapConfig(Bitmap.Config.RGB_565).build();
+            imageLoader.displayImage(sharedPreferences.getString("URL", ""), userPicture, displayImageOptions);
+
+            userName.setText(sharedPreferences.getString("NAME", ""));
+
+            SharedPreferences sf = getSharedPreferences("userAGE", Activity.MODE_PRIVATE);
+            userAge.setText(sf.getString("YEAR", "") + " years old");
+
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -339,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         Intent intent = new Intent();
 

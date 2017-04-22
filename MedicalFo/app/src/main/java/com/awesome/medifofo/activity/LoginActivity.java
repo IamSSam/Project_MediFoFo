@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptLogin() {
 
         TextInputLayout textInputLayoutEmail = (TextInputLayout) findViewById(R.id.text_input_layout_user_email);
-        TextInputLayout textInputLayoutPassword = (TextInputLayout) findViewById(R.id.text_input_layout_user_email);
+        TextInputLayout textInputLayoutPassword = (TextInputLayout) findViewById(R.id.text_input_layout_user_password);
 
         String email = userEmail.getText().toString();
         String password = userPassword.getText().toString();
@@ -95,13 +95,17 @@ public class LoginActivity extends AppCompatActivity {
             textInputLayoutEmail.startAnimation(animationShake);
             focus = userEmail;
             cancel = true;
+        } else if (this.isEmailValid(email)) {
+            textInputLayoutEmail.setError(null);
+            focus = userPassword;
+            cancel = true;
         } else if (!this.isPasswordValid(password)) {
             textInputLayoutPassword.setError(getString(R.string.error_invalid_password));
             textInputLayoutPassword.setAnimation(animationShake);
             textInputLayoutPassword.startAnimation(animationShake);
             focus = userPassword;
             cancel = true;
-        } else if (TextUtils.isEmpty(password) && isEmailValid(email)) {
+        } else if (TextUtils.isEmpty(password)) {
             textInputLayoutPassword.setAnimation(animationShake);
             textInputLayoutPassword.startAnimation(animationShake);
             textInputLayoutPassword.setError(getString(R.string.error_field_required));
@@ -125,9 +129,10 @@ public class LoginActivity extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
 
                                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
                             } else {
-                                Toast.makeText(LoginActivity.this, task.getException().toString(),
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, R.string.error_login,
+                                        Toast.LENGTH_LONG).show();
                             }
                         }
                     });

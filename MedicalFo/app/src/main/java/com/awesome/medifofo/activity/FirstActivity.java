@@ -1,5 +1,6 @@
 package com.awesome.medifofo.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,25 +23,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONObject;
 
-/**
+/*
  * Created by Eunsik on 03/26/2017.
  */
 
 public class FirstActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
-    public static String sharedPreferenceFile = "userInfoFILE";
+    public static String sharedPreferenceFile = "userFacebookFILE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        ImageView imageView = (ImageView) findViewById(R.id.login_image);
-        imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
+        initView();
 
-        callbackManager = CallbackManager.Factory.create();
         facebookLogIn(callbackManager);
         goSignUpActivity();
         geLogInActivity();
@@ -48,6 +46,14 @@ public class FirstActivity extends AppCompatActivity {
         if (AccessToken.getCurrentAccessToken() != null) {
             goMainActivity();
         }
+    }
+
+    public void initView() {
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        ImageView imageView = (ImageView) findViewById(R.id.login_image);
+        imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
+
+        callbackManager = CallbackManager.Factory.create();
     }
 
     @Override
@@ -78,16 +84,16 @@ public class FirstActivity extends AppCompatActivity {
                                     //String picture = object.getJSONObject("picture").getJSONObject("data").getString("url");
                                     String pictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
 
-                                    /**
+                                    /*
                                      * Save user information "sharedPreferenceFile"
                                      * Information : name, gender, pictureURL
                                      */
-                                    SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, 0);
+                                    SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
                                     editor.putString("NAME", name);
                                     editor.putString("GENDER", gender);
                                     editor.putString("URL", pictureURL);
-                                    editor.commit();
+                                    editor.apply();
 
                                     goPersonalInputActivity();
 
@@ -129,7 +135,7 @@ public class FirstActivity extends AppCompatActivity {
         });
     }
 
-    private void geLogInActivity(){
+    private void geLogInActivity() {
         Button loginEmail = (Button) findViewById(R.id.button_have_account);
         loginEmail.setOnClickListener(new View.OnClickListener() {
             @Override

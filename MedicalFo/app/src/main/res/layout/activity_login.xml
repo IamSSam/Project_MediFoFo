@@ -68,7 +68,7 @@
                 android:imeActionLabel="@string/title_activity_login"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
-                android:maxLength="20"
+                android:maxLength="15"
                 android:maxLines="1"
                 android:textSize="8pt"
                 app:theme="@style/editText" />

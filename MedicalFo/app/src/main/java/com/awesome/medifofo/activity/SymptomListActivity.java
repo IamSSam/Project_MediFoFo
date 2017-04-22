@@ -27,7 +27,7 @@ public class SymptomListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_symptom);
 
         Intent intent = getIntent();
-        position = intent.getExtras().getInt("POSITION"); // Get gridview's position
+        position = intent.getExtras().getInt("POSITION"); // Get gridView's position
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_recycler_view);
         setSupportActionBar(toolbar);
@@ -128,7 +128,7 @@ public class SymptomListActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            // TODO: 검색하면 recyclerView에 있는 아이템 나오게하기.
+            // TODO: 검색하면 recyclerView 에 있는 아이템 나오게하기.
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;

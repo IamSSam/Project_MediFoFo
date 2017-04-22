@@ -17,8 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by yoonjae on 29/11/2016.
+/*
+ * Created by Eunsik on 11/29/s2016.
  */
 
 public class PersonalHealthRecordActivity extends AppCompatActivity {

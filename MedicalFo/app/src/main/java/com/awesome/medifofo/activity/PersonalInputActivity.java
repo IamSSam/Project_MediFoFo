@@ -1,5 +1,6 @@
 package com.awesome.medifofo.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,8 +25,8 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-/**
- * Created by Eunsik on 2017-04-05.
+/*
+ * Created by Eunsik on 04/05/2017.
  */
 
 public class PersonalInputActivity extends AppCompatActivity {
@@ -34,7 +35,7 @@ public class PersonalInputActivity extends AppCompatActivity {
     public static String userName, userGender, userAge;
     private Animation animationShake;
 
-    public static String sfYear = "userYear";
+    public String sharedPreferenceFile = "userAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +128,7 @@ public class PersonalInputActivity extends AppCompatActivity {
                     focus.requestFocus();
                 } else {
                     calculateUserAge();
-                    SharedPreferences sharedPreferences = getSharedPreferences(sfYear, 1);
+                    SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("YEAR", userAge);
                     editor.apply();

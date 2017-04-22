@@ -1,20 +1,18 @@
 package com.awesome.medifofo;
 
-import java.util.Date;
-
 /**
- * Created by yoonjae on 28/11/2016.
+ * Created by Eunsik on 04/22/2017.
  */
 
 public class Person {
 
-    public static String fistName;
-    public static String lastName;
-    public static String email;
-    public static String password;
-    public static int gender;
-    public static int age;
-    public static String country;
+    public String fistName;
+    public String lastName;
+    public String email;
+    public String password;
+    public String gender;
+    public int age;
+    public String country;
 
     public static String st_place;
     public static String st_main;

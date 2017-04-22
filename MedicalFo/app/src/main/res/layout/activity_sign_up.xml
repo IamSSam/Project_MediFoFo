@@ -11,8 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.awesome.medifofo.activity.SignUpActivity">
-
-
+    
     <ScrollView
         android:id="@+id/form_sign_up"
         android:layout_width="match_parent"
@@ -84,7 +83,7 @@
                     android:maxLines="1"
                     android:textSize="8pt"
                     app:errorEnabled="true"
-                    app:errorTextAppearance="@style/errorText"/>
+                    app:errorTextAppearance="@style/errorText" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -113,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Gender"
+                android:text="@string/user_gender"
                 android:textSize="4pt" />
 
             <LinearLayout
@@ -154,7 +153,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bithday"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_birth"
                 android:textSize="4pt" />
 
             <LinearLayout
@@ -180,7 +180,7 @@
                         android:inputType="number"
                         android:maxLength="2"
                         android:maxLines="1"
-                        android:textSize="6pt" />
+                        android:textSize="7pt" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -201,7 +201,7 @@
                         android:inputType="number"
                         android:maxLength="2"
                         android:maxLines="1"
-                        android:textSize="6pt" />
+                        android:textSize="7pt" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -220,7 +220,7 @@
                         android:inputType="number"
                         android:maxLength="4"
                         android:maxLines="1"
-                        android:textSize="6pt" />
+                        android:textSize="7pt" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -229,19 +229,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Country"
+                android:layout_marginTop="20dp"
+                android:text="@string/user_country"
                 android:textSize="4pt" />
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/spinner_sign_up_country"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:dropDownWidth="300dp"
+                android:popupTheme="@android:style/ThemeOverlay.Material.Light"
                 android:textColor="@color/black"
-                android:textSize="10pt" />.
+                android:textSize="10pt" />
 
 
             <Button
@@ -255,6 +256,10 @@
                 android:text="@string/button_register"
                 android:textColor="@color/white"
                 android:textSize="7.5pt" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"></LinearLayout>
 
         </LinearLayout>
     </ScrollView>

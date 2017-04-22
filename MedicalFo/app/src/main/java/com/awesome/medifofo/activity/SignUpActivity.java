@@ -1,5 +1,6 @@
 package com.awesome.medifofo.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awesome.medifofo.Person;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.SpinnerAdapter;
 import com.awesome.medifofo.model.CountryItem;
@@ -36,19 +38,19 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-/**
- * Created by Eunsik on 2017-04-16.
+/*
+ * Created by Eunsik on 04/16/2017.
  */
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public String gender, month;
-    public EditText userEmail, userPassword;
+    public String temp_gender, country;
+    public EditText userPassword;
     private Button manButton, womanButton;
     private ScrollView scrollView;
     private AutoCompleteTextView userFirstName, userLastName, userEmailView, userYear, userMonth, userDay;
 
-    public static String sharedPreferenceFile = "userSignUpFILE";
+    public String sharedPreferenceFile = "userSignUpFILE";
     private FirebaseAuth firebaseAuth;
     private Animation animationShake;
 
@@ -93,6 +95,18 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         animationShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
     }
 
+    public void saveUserInformation(String firstName, String lastName, String email, String gender, int age, String country) {
+        SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("FIRSTNAME", firstName);
+        editor.putString("LASTNAME", lastName);
+        editor.putString("EMAIL", email);
+        editor.putString("GENDER", gender);
+        editor.putInt("AGE", age);
+        editor.putString("COUNTRY", country);
+        editor.apply();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -103,12 +117,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     manButton.setTextColor(Color.BLACK);
                     womanButton.setSelected(false);
                     womanButton.setTextColor(Color.parseColor("#999999"));
-                    gender = "Male";
+                    temp_gender = "Male";
 
                 } else {
                     manButton.setSelected(false);
                     manButton.setTextColor(Color.parseColor("#999999"));
-                    gender = null;
+                    temp_gender = null;
                 }
 
                 break;
@@ -120,12 +134,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     womanButton.setTextColor(Color.BLACK);
                     manButton.setSelected(false);
                     manButton.setTextColor(Color.parseColor("#999999"));
-                    gender = "Female";
+                    temp_gender = "Female";
 
                 } else {
                     womanButton.setSelected(false);
                     womanButton.setTextColor(Color.parseColor("#999999"));
-                    gender = null;
+                    temp_gender = null;
                 }
 
                 break;
@@ -137,7 +151,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void createUser(String email, String password) {
-
         final ProgressDialog progressDialog = ProgressDialog.show(SignUpActivity.this, "Please wait...", "Processing...", true);
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -148,18 +161,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             Toast.makeText(SignUpActivity.this, "Registration successful",
                                     Toast.LENGTH_SHORT).show();
-
                         } else {
                             Toast.makeText(SignUpActivity.this, task.getException().toString(),
                                     Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });
     }
 
     private void attemptSignUp() {
-
         TextInputLayout textInputLayoutFirstName = (TextInputLayout) findViewById(R.id.text_input_layout_user_first_name);
         TextInputLayout textInputLayoutLastName = (TextInputLayout) findViewById(R.id.text_input_layout_user_last_name);
         TextInputLayout textInputLayoutEmail = (TextInputLayout) findViewById(R.id.text_input_layout_user_email);
@@ -172,6 +182,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String lastName = userLastName.getText().toString();
         String email = userEmailView.getText().toString();
         String password = userPassword.getText().toString();
+        String gender = temp_gender;
         String month = userMonth.getText().toString();
         String day = userDay.getText().toString();
         String age = userYear.getText().toString();
@@ -217,7 +228,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             cancel = true;
         } else if (!manButton.isSelected() && !womanButton.isSelected()) {
             Toast.makeText(getApplication(),
-                    "Please press one of the men and women.", Toast.LENGTH_SHORT).show();
+                    R.string.error_no_gender, Toast.LENGTH_SHORT).show();
+            focus = manButton;
+            cancel = true;
         } else if (TextUtils.isEmpty(month)) {
             textInputLayoutMonth.setError(getString(R.string.error_field_required));
             textInputLayoutMonth.setAnimation(animationShake);
@@ -242,13 +255,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             focus.requestFocus();
         } else {
             createUser(email, password);
+            saveUserInformation(firstName, lastName, email, gender, calculateUserAge(), country);
             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-            SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, 2);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("FIRSTNAME", firstName);
-            editor.putString("LASTNAME", lastName);
-            editor.putString("AGE", String.valueOf(calculateUserAge()));
-            editor.apply();
             startActivity(intent);
 
         }
@@ -286,6 +294,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = spinner.getSelectedItem().toString();
+                country = selectedItem;
             }
 
             @Override

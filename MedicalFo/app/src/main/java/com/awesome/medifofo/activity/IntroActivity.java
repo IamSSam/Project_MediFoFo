@@ -12,8 +12,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
-/**
- * Created by 17 on 2017-04-12.
+/*
+ * Created by Eunsik on 04/12/2017.
  */
 
 public class IntroActivity extends AppCompatActivity {
