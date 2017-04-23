@@ -20,6 +20,15 @@ public class Person {
     public static String st_sub;
     public static String st_comment;
 
+    public String height = "-1";
+    public String weight = "-1";
+    public String abo = "-1";
+    public String medicine = "-1";
+    public String allergy = "-1";
+    public String history = "-1";
+    public String sleeptime = "-1";
+    public String dailystride = "-1";
+
     public static String d_height = "-1"; //detail height
     public static String d_weight = "-1";
     public static String d_abo = "-1";

@@ -1,6 +1,7 @@
 package com.awesome.medifofo.adapter;
 
 import android.content.Context;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by 17 on 2017-04-09.
+/*
+ * Created by Eunsik on 04/09/2017.
  */
 
 public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.ListHolder> {
@@ -24,6 +25,7 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
     private List<ListItem> listData;
     private LayoutInflater layoutInflater;
     private ArrayList<ListItem> arrayList;
+
 
     public SymptomListAdapter(List<ListItem> listData, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
@@ -65,6 +67,7 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
         notifyDataSetChanged();
     }
 
+
     class ListHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
@@ -77,7 +80,4 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
             container = view.findViewById(R.id.symptom_container);
         }
     }
-
 }
-
-

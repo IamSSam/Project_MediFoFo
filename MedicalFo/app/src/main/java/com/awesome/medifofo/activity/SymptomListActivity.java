@@ -1,5 +1,7 @@
 package com.awesome.medifofo.activity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +12,18 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 
 import com.awesome.medifofo.R;
+import com.awesome.medifofo.RecyclerItemClickListener;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
+import com.awesome.medifofo.model.ListItem;
 import com.awesome.medifofo.model.SymptomData;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class SymptomListActivity extends AppCompatActivity {
@@ -22,11 +31,13 @@ public class SymptomListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SymptomListAdapter adapter;
     private int position = 0;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptom);
+
 
         Intent intent = getIntent();
         position = intent.getExtras().getInt("POSITION"); // Get gridView's position
@@ -39,11 +50,26 @@ public class SymptomListActivity extends AppCompatActivity {
         }
 
         initRecyclerView(position);
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        createDialog();
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                })
+        );
     }
 
 
     private void initRecyclerView(int position) {
-
+        context = getApplicationContext();
         recyclerView = (RecyclerView) findViewById(R.id.rec_list);
         recyclerView.setHasFixedSize(true);
 
@@ -120,6 +146,7 @@ public class SymptomListActivity extends AppCompatActivity {
         }
 
         recyclerView.setAdapter(adapter);
+
     }
 
 
@@ -130,7 +157,6 @@ public class SymptomListActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            // TODO: 검색하면 recyclerView 에 있는 아이템 나오게하기.
             @Override
             public boolean onQueryTextSubmit(String s) {
                 return false;
@@ -157,4 +183,23 @@ public class SymptomListActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void createDialog() {
+        final Dialog dialog = new Dialog(getApplicationContext());
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_more);
+
+        dialog.show();
+
+        Button dialogFinishButton = (Button) findViewById(R.id.button_symptom_finish);
+        dialogFinishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
 }
+

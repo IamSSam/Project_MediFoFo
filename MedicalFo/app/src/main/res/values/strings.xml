@@ -78,4 +78,13 @@
     <string name="phr_dailystride">Daily stride</string>
     <string name="phr_save_button">SAVE YOUR INFORMATION</string>
 
+    <!-- String about treatment Dialog -->
+    <string name="dialog_title">Refine your symptoms</string>
+    <string name="dialog_scale">● Please pick level about your sickness.</string>
+    <string name="dialog_question">Question</string>
+    <string name="dialog_comment">Comment</string>
+    <string name="dialog_user_comment">Please tell your doctor what you want to say.</string>
+    <string name="button_dialog_finish">Finish</string>
+
+
 </resources>

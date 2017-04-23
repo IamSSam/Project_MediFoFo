@@ -85,7 +85,7 @@
                 android:background="@color/white"
                 android:hint="@string/phr_blood"
                 android:inputType="text"
-                android:maxLength="20"
+                android:maxLength="10"
                 android:textColorHint="@color/colorPrimary"
                 android:textSize="8pt" />
         </LinearLayout>
@@ -112,7 +112,7 @@
                 android:background="@color/white"
                 android:hint="@string/phr_medicine"
                 android:inputType="text"
-                android:maxLength="20"
+                android:maxLength="10"
                 android:textColorHint="@color/colorPrimary" />
 
         </LinearLayout>
@@ -139,7 +139,7 @@
                 android:background="@color/white"
                 android:hint="@string/phr_allergy"
                 android:inputType="text"
-                android:maxLength="20"
+                android:maxLength="10"
                 android:textColorHint="@color/colorPrimary" />
         </LinearLayout>
 
@@ -164,7 +164,7 @@
                 android:background="@color/white"
                 android:hint="@string/phr_history"
                 android:inputType="text"
-                android:maxLength="5"
+                android:maxLength="10"
                 android:textColorHint="@color/colorPrimary" />
 
         </LinearLayout>
@@ -224,7 +224,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="16dp"
         android:gravity="center">
 
         <Button
