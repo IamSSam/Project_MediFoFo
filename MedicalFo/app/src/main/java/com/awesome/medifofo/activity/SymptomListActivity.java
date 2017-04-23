@@ -15,10 +15,12 @@ import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
 import com.awesome.medifofo.model.SymptomData;
 
+import java.util.Locale;
+
 public class SymptomListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private SymptomListAdapter adapter;
     private int position = 0;
 
     @Override
@@ -136,12 +138,11 @@ public class SymptomListActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-
+                String text = s;
+                adapter.filter(text);
                 return false;
             }
-
         });
-
         return true;
     }
 

@@ -13,6 +13,7 @@ import com.google.android.gms.common.data.DataHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by 17 on 2017-04-09.
@@ -22,12 +23,15 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
 
     private List<ListItem> listData;
     private LayoutInflater layoutInflater;
-    private List<DataHolder> dataHolderList;
+    private ArrayList<ListItem> arrayList;
 
     public SymptomListAdapter(List<ListItem> listData, Context context) {
         this.layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+        this.arrayList = new ArrayList<ListItem>();
+        this.arrayList.addAll(listData);
     }
+
 
     @Override
     public ListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,11 +50,20 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
         return listData.size();
     }
 
-    public void updateList(List<DataHolder> list) {
-        dataHolderList = list;
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        listData.clear();
+        if (charText.length() == 0) {
+            listData.addAll(arrayList);
+        } else {
+            for (ListItem item : arrayList) {
+                if (item.getTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    listData.add(item);
+                }
+            }
+        }
         notifyDataSetChanged();
     }
-
 
     class ListHolder extends RecyclerView.ViewHolder {
 
@@ -62,13 +75,6 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
 
             title = (TextView) view.findViewById(R.id.symptom_item);
             container = view.findViewById(R.id.symptom_container);
-        }
-    }
-
-    public void filter() {
-        List<DataHolder> list = new ArrayList<>();
-        for (DataHolder dataHolder : dataHolderList) {
-
         }
     }
 
