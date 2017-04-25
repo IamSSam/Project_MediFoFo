@@ -23,6 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONObject;
 
+
 /*
  * Created by Eunsik on 03/26/2017.
  */
@@ -78,6 +79,8 @@ public class FirstActivity extends AppCompatActivity {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 try {
+                                    //String birthday = object.getString("birthday");
+                                    //System.out.println("user_birthday : " + birthday);
                                     String id = object.getString("id");
                                     String name = object.getString("name");
                                     String gender = object.getString("gender");

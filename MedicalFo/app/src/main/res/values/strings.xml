@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MediFoFo</string>
-    <string name="facebook_app_id">1870585023157218</string>
+    <string name="facebook_app_id">1860969180836342</string>
 
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_login">Log In</string>
@@ -26,7 +26,7 @@
     <string name="button_sign_up">Sign Up</string>
     <string name="button_register">Register</string>
     <string name="button_forgot_password">Forgot password?</string>
-    <string name="button_have_account">Have an account? LOGIN</string>
+    <string name="button_have_account">Have an account? Log in</string>
     <string name="button_login">LOGIN</string>
 
     <!-- String about PersonalInputActivity -->

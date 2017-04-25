@@ -50,6 +50,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@drawable/button_selector"
                 android:text="@string/button_sign_up"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="7.5pt" />
 
@@ -65,6 +66,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:text="@string/button_have_account"
+                    android:textAllCaps="false"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="5pt" />
 

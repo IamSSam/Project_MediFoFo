@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
     private void initView() {
         userEmail = (EditText) findViewById(R.id.login_user_email);
         userPassword = (EditText) findViewById(R.id.login_user_password);
@@ -94,10 +93,6 @@ public class LoginActivity extends AppCompatActivity {
             textInputLayoutEmail.setAnimation(animationShake);
             textInputLayoutEmail.startAnimation(animationShake);
             focus = userEmail;
-            cancel = true;
-        } else if (this.isEmailValid(email)) {
-            textInputLayoutEmail.setError(null);
-            focus = userPassword;
             cancel = true;
         } else if (!this.isPasswordValid(password)) {
             textInputLayoutPassword.setError(getString(R.string.error_invalid_password));
