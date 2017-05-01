@@ -1,6 +1,7 @@
 package com.awesome.medifofo.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.awesome.medifofo.Person;
 import com.awesome.medifofo.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -29,7 +31,10 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -46,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -60,7 +66,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private LoginButton facebookLoginButton;
     public static String sharedPreferenceFile = "userFacebookFILE";
-    private String tokenId;
+
+    /* Database table information */
+    private String tokenId, emailId;
     private final String platform = "2"; // platform of facebook
 
     @Override
@@ -80,13 +88,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
     }
 
     public void initView() {
+        imageLoader();
         ImageLoader imageLoader = ImageLoader.getInstance();
         ImageView imageView = (ImageView) findViewById(R.id.login_image);
         imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
         firebaseAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -100,42 +108,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
-            public void onSuccess(LoginResult loginResult) {
+            public void onSuccess(final LoginResult loginResult) {
                 Log.d("TAG", "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
-
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                // Insert your code here
-                                System.out.println("loginResult JSON : " + object.toString());
-                                String id = object.getString("id");
-                                String name = object.getString("name");
-                                String gender = object.getString("gender");
-                                String pictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
-                                String email = object.getString("email");
-
-                                /*
-                                 * Save user information "sharedPreferenceFile"
-                                 * Information : name, gender, pictureURL
-                                 */
-                                SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("NAME", name);
-                                editor.putString("GENDER", gender);
-                                editor.putString("URL", pictureURL);
-                                editor.apply();
-
-                                goPersonalInputActivity();
-                            }
-                        });
-
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,birthday,email");
-                request.setParameters(parameters);
-                request.executeAsync();
             }
 
             @Override
@@ -151,8 +126,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
+    private void handleFacebookAccessToken(final AccessToken token) {
         Log.d("TAG", "handleFacebookAccessToken:" + token);
+        final ProgressDialog progressDialog = ProgressDialog.show(FacebookLoginActivity.this, "Please wait...", "Signing in ...", true);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -160,6 +136,53 @@ public class FacebookLoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            token,
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+
+                                    System.out.println("loginResult JSON : " + object.toString());
+                                    try {
+                                        String id = object.getString("id");
+                                        String name = object.getString("name");
+                                        String gender = object.getString("gender");
+                                        String pictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
+                                        String birthday = object.getString("birthday");
+                                        String birth[] = birthday.split("/");
+                                        String email = object.getString("email");
+
+                                        tokenId = token.toString();
+                                        emailId = email;
+
+                                        /*
+                                         * Save user information "sharedPreferenceFile"
+                                         * Information : name, gender, pictureURL
+                                         */
+                                        SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("NAME", name);
+                                        editor.putString("GENDER", gender);
+                                        editor.putString("AGE", String.valueOf(calculateUserAge(birth[2])));
+                                        editor.putString("URL", pictureURL);
+                                        editor.apply();
+
+                                        goMainActivity();
+
+                                    } catch (Exception e) {
+                                        Log.d("TAG", "Error get userinfo: " + e.getMessage());
+                                    }
+                                }
+                            });
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name,birthday,gender,email");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+
+
                 } else {
                     Log.w("TAG", "signInWithCredential:failure", task.getException());
                     Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
@@ -191,16 +214,28 @@ public class FacebookLoginActivity extends AppCompatActivity {
         });
     }
 
-    private void goPersonalInputActivity() {
-        Intent intent = new Intent(FacebookLoginActivity.this, PersonalInputActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void goMainActivity() {
         Intent intent = new Intent(FacebookLoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private int calculateUserAge(String age) {
+        Calendar current = Calendar.getInstance();
+        int currentYear = current.get(Calendar.YEAR);
+        int userAge = currentYear - Integer.parseInt(age);
+        return userAge;
+    }
+
+    private void imageLoader() {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory()
+                .discCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(QueueProcessingType.FIFO)
+                .writeDebugLogs()
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -244,16 +279,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
             // 3. build jsonObject
             JSONObject jsonObject = new JSONObject();
-            //jsonObject.accumulate("name", person.getName());
-            //jsonObject.accumulate("country", person.getCountry());
-            //jsonObject.accumulate("twitter", person.getTwitter());
 
             // 4. convert JSONObject to JSON to String
             json = jsonObject.toString();
 
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
-            //nameValuePair.add(new BasicNameValuePair("token_id", tokenId));
-            //nameValuePair.add(new BasicNameValuePair("email_id", userEmailView.getText().toString()));
+            nameValuePair.add(new BasicNameValuePair("token_id", tokenId));
+            nameValuePair.add(new BasicNameValuePair("email_id", emailId));
             nameValuePair.add(new BasicNameValuePair("platform", platform));
 
             // 5. set json to StringEntity

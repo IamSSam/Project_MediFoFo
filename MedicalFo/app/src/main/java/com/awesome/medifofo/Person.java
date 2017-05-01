@@ -6,13 +6,12 @@ package com.awesome.medifofo;
 
 public class Person {
 
-    public String fistName;
-    public String lastName;
-    public String email;
-    public String password;
-    public String gender;
-    public int age;
-    public String country;
+    public static String fistName;
+    public static String lastName;
+    public static String email;
+    public static String gender;
+    public static String age;
+    public static String country;
 
     public static String st_place;
     public static String st_main;
