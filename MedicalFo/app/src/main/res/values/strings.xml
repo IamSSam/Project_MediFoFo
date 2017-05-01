@@ -23,6 +23,7 @@
     <string name="user_country">Country</string>
     <string name="user_men">Men</string>
     <string name="user_women">Women</string>
+    <string name="user_phr">Personal Health Record</string>
     <string name="button_sign_up">Sign Up</string>
     <string name="button_register">Register</string>
     <string name="button_forgot_password">Forgot password?</string>

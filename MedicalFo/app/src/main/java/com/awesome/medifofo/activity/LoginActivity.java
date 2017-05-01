@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private EditText userEmail, userPassword;
     private Animation animationShake;
+    private final String platform = "2"; // platform of facebook
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

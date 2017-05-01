@@ -5,12 +5,6 @@
 
         <item android:title="@string/navigation_about">
             <menu>
-
-                <item
-                    android:id="@+id/navigation_phr"
-                    android:icon="@drawable/ic_menu_phr"
-                    android:title="@string/navigation_phr" />
-
                 <item
                     android:id="@+id/navigation_about"
                     android:icon="@drawable/ic_menu_about"

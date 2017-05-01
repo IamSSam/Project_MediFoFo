@@ -44,7 +44,7 @@ public class PersonalHealthRecordActivity extends AppCompatActivity {
 
         //setInformationIfExist();
 
-        saveButton = (Button) findViewById(R.id.save_button);
+        saveButton = (Button) findViewById(R.id.button_register);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -33,10 +34,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
-
 
 /*
  * Created by Eunsik on 04/16/2017.
@@ -47,12 +62,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public String temp_gender, country;
     public EditText userPassword;
     private Button manButton, womanButton;
-    private ScrollView scrollView;
     private AutoCompleteTextView userFirstName, userLastName, userEmailView, userYear, userMonth, userDay;
-
     public String sharedPreferenceFile = "userSignUpFILE";
+
     private FirebaseAuth firebaseAuth;
     private Animation animationShake;
+
+    private final String platform = "1"; // platform of firebase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +107,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Button signUpButton = (Button) findViewById(R.id.button_register);
         signUpButton.setOnClickListener(this);
 
-        scrollView = (ScrollView) findViewById(R.id.form_sign_up);
         animationShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_shake);
     }
 
@@ -146,6 +161,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             case R.id.button_register:
                 attemptSignUp();
+                new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/patient_register_firebase.php");
                 break;
         }
     }
@@ -161,12 +177,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             Toast.makeText(SignUpActivity.this, "Registration successful",
                                     Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(SignUpActivity.this, task.getException().toString(),
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
     }
 
     private void attemptSignUp() {
@@ -256,9 +276,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             createUser(email, password);
             saveUserInformation(firstName, lastName, email, gender, calculateUserAge(), country);
-            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-            startActivity(intent);
-
         }
     }
 
@@ -303,5 +320,98 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
     }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            return POST(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result.equals("Did not work!")) {
+                Toast.makeText(SignUpActivity.this, "Fail. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            }
+            try {
+                JSONObject jobj = new JSONObject(result);
+                if (jobj.getString("error").equals("true"))
+                    Toast.makeText(SignUpActivity.this, "이미 있는 아이디이거나 서버 오류입니다.", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(SignUpActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String POST(String url) {
+        InputStream inputStream = null;
+        String result = "";
+
+        try {
+            // 1. create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // 2. make POST request to the given URL
+            HttpPost httpPost = new HttpPost(url);
+
+            String json = "";
+
+            // 3. build jsonObject
+            JSONObject jsonObject = new JSONObject();
+            //jsonObject.accumulate("name", person.getName());
+            //jsonObject.accumulate("country", person.getCountry());
+            //jsonObject.accumulate("twitter", person.getTwitter());
+
+            // 4. convert JSONObject to JSON to String
+            json = jsonObject.toString();
+
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+            nameValuePair.add(new BasicNameValuePair("email_id", userEmailView.getText().toString()));
+            nameValuePair.add(new BasicNameValuePair("platform", platform));
+
+            // 5. set json to StringEntity
+            //StringEntity se = new StringEntity(json);
+
+            // 6. set httpPost Entity
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+
+            // 7. Set some headers to inform server about the type of the content
+            //httpPost.setHeader("Accept", "application/json");
+            //httpPost.setHeader("Content-type", "application/json");
+
+            // 8. Execute POST request to the given URL
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // 9. receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // 10. convert inputstream to string
+            if (inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            // Log.d("InputStream", e.getLocalizedMessage());
+        }
+        // Log.d("http", result);
+
+        // 11. return result
+        return result;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line = "", result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+        inputStream.close();
+        return result;
+    }
+
 
 }
