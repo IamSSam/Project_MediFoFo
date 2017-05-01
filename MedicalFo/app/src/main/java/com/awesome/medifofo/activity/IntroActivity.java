@@ -24,7 +24,7 @@ public class IntroActivity extends AppCompatActivity {
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(IntroActivity.this, FirstActivity.class));
+            startActivity(new Intent(IntroActivity.this, FacebookLoginActivity.class));
             finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }

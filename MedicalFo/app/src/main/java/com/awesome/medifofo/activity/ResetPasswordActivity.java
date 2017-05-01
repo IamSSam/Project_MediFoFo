@@ -79,7 +79,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "Sent Email", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
-                        overridePendingTransition(R.anim.anim_slide_out_bottom, R.anim.anim_slide_in_top);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                     }
                 }

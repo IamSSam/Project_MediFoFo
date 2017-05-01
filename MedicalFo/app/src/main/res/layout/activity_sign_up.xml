@@ -242,7 +242,7 @@
                 android:dropDownWidth="300dp"
                 android:popupTheme="@android:style/ThemeOverlay.Material.Light"
                 android:textColor="@color/black"
-                android:textSize="10pt" />
+                android:textSize="8.5pt" />
 
             <TextView
                 android:layout_width="match_parent"

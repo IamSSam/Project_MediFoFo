@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.awesome.medifofo.activity.FirstActivity">
+    tools:context="com.awesome.medifofo.activity.FacebookLoginActivity">
 
     <LinearLayout
         android:id="@+id/main_container"

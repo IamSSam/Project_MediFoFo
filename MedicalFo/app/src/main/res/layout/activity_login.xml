@@ -35,8 +35,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLength="20"
                 android:maxLines="1"
-                android:textSize="8pt"
-                app:theme="@style/editText" />
+                android:textSize="8pt" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -58,8 +57,7 @@
                 android:inputType="textPassword"
                 android:maxLength="15"
                 android:maxLines="1"
-                android:textSize="8pt"
-                app:theme="@style/editText" />
+                android:textSize="8pt" />
         </android.support.design.widget.TextInputLayout>
 
         <Button

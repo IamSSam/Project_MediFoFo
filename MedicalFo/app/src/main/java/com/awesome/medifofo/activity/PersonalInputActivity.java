@@ -23,7 +23,6 @@ import com.awesome.medifofo.adapter.SpinnerAdapter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 /*
  * Created by Eunsik on 04/05/2017.
@@ -142,7 +141,7 @@ public class PersonalInputActivity extends AppCompatActivity {
 
 
     private void setPersonalInfo() {
-        SharedPreferences sharedPreferences = getSharedPreferences(FirstActivity.sharedPreferenceFile, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(FacebookLoginActivity.sharedPreferenceFile, 0);
         userName = sharedPreferences.getString("NAME", "");
         userGender = sharedPreferences.getString("GENDER", "");
 

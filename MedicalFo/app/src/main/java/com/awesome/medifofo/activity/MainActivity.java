@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +26,6 @@ import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
@@ -240,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     */
 
     public void initView() {
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
@@ -332,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void goFirstActivity() {
-        startActivity(new Intent(this, FirstActivity.class));
+        startActivity(new Intent(this, FacebookLoginActivity.class));
     }
 
 
@@ -352,33 +351,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
 
-            case R.id.navigation_phr:
-                intent.setClass(this, PersonalHealthRecordActivity.class);
-                startActivity(intent);
-                break;
-
             case R.id.navigation_about:
-                intent.setClass(this, FirstActivity.class);
+                intent.setClass(this, FacebookLoginActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_qna:
-                intent.setClass(this, FirstActivity.class);
+                intent.setClass(this, FacebookLoginActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_share:
-                intent.setClass(this, FirstActivity.class);
+                intent.setClass(this, FacebookLoginActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_feedback:
-                intent.setClass(this, FirstActivity.class);
+                intent.setClass(this, FacebookLoginActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_settings:
-                intent.setClass(this, FirstActivity.class);
+                intent.setClass(this, FacebookLoginActivity.class);
                 startActivity(intent);
                 break;
 
