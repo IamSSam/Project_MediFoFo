@@ -198,38 +198,32 @@ public class SymptomListActivity extends AppCompatActivity {
 
         final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
 
-        final List SelectedItems = new ArrayList();
-
+        final List SelectedItems  = new ArrayList();
+        int defaultItem = 0;
+        SelectedItems.add(defaultItem);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(SymptomData.symptomList[gridViewPosition][position]);
-
-        builder.setMultiChoiceItems(items, null,
-                new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setSingleChoiceItems(items, defaultItem,
+                new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which,
-                                        boolean isChecked) {
-                        if (isChecked) {
-                            //사용자가 체크한 경우 리스트에 추가
-                            SelectedItems.add(which);
-                        } else if (SelectedItems.contains(which)) {
-                            //이미 리스트에 들어있던 아이템이면 제거
-                            SelectedItems.remove(Integer.valueOf(which));
-                        }
+                    public void onClick(DialogInterface dialog, int which) {
+                        SelectedItems.clear();
+                        SelectedItems.add(which);
                     }
                 });
         builder.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String msg = "";
-                        for (int i = 0; i < SelectedItems.size(); i++) {
-                            int index = (int) SelectedItems.get(i);
 
-                            msg = msg + "\n" + (i + 1) + " : " + ListItems.get(index);
+                        if (!SelectedItems.isEmpty()) {
+                            int index = (int) SelectedItems.get(0);
+                            msg = ListItems.get(index);
                         }
                         Toast.makeText(getApplicationContext(),
-                                "Total " + SelectedItems.size() + " Items Selected.\n" + msg, Toast.LENGTH_LONG)
+                                "Items Selected.\n" + msg, Toast.LENGTH_LONG)
                                 .show();
                     }
                 });
@@ -239,6 +233,7 @@ public class SymptomListActivity extends AppCompatActivity {
 
                     }
                 });
+
         System.out.println("POSITION: " + position); // recyclerView의 item
         builder.show();
     }
