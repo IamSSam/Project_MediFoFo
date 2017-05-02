@@ -2,8 +2,10 @@ package com.awesome.medifofo.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.RecyclerItemClickListener;
@@ -24,13 +27,14 @@ import com.awesome.medifofo.model.SymptomData;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class SymptomListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private SymptomListAdapter adapter;
-    private int position = 0;
+    private int gridViewPosition = 0;
     private Context context;
 
     @Override
@@ -40,7 +44,7 @@ public class SymptomListActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        position = intent.getExtras().getInt("POSITION"); // Get gridView's position
+        gridViewPosition = intent.getExtras().getInt("POSITION"); // Get gridView's position
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_recycler_view);
         setSupportActionBar(toolbar);
@@ -49,13 +53,13 @@ public class SymptomListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        initRecyclerView(position);
+        initRecyclerView(gridViewPosition);
 
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        createDialog();
+                        dialogShow(position);
                     }
 
                     @Override
@@ -184,22 +188,60 @@ public class SymptomListActivity extends AppCompatActivity {
         }
     }
 
-    public void createDialog() {
-        final Dialog dialog = new Dialog(getApplicationContext());
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_more);
 
-        dialog.show();
+    void dialogShow(int position) {
+        final List<String> ListItems = new ArrayList<>();
+        ListItems.add("mild");
+        ListItems.add("moderate");
+        ListItems.add("severe");
+        ListItems.add("None of above");
 
-        Button dialogFinishButton = (Button) findViewById(R.id.button_symptom_finish);
-        dialogFinishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
+
+        final List SelectedItems = new ArrayList();
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(SymptomData.symptomList[gridViewPosition][position]);
+
+        builder.setMultiChoiceItems(items, null,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which,
+                                        boolean isChecked) {
+                        if (isChecked) {
+                            //사용자가 체크한 경우 리스트에 추가
+                            SelectedItems.add(which);
+                        } else if (SelectedItems.contains(which)) {
+                            //이미 리스트에 들어있던 아이템이면 제거
+                            SelectedItems.remove(Integer.valueOf(which));
+                        }
+                    }
+                });
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msg = "";
+                        for (int i = 0; i < SelectedItems.size(); i++) {
+                            int index = (int) SelectedItems.get(i);
+
+                            msg = msg + "\n" + (i + 1) + " : " + ListItems.get(index);
+                        }
+                        Toast.makeText(getApplicationContext(),
+                                "Total " + SelectedItems.size() + " Items Selected.\n" + msg, Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        System.out.println("POSITION: " + position); // recyclerView의 item
+        builder.show();
     }
-
 
 }
 

@@ -80,6 +80,8 @@
     <string name="phr_save_button">SAVE YOUR INFORMATION</string>
 
     <!-- String about treatment Dialog -->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
     <string name="dialog_title">Refine your symptoms</string>
     <string name="dialog_scale">● Please pick level about your sickness.</string>
     <string name="dialog_question">Question</string>

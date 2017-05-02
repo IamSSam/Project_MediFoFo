@@ -161,7 +161,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             case R.id.button_register:
                 attemptSignUp();
-                new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/patient_register_firebase.php");
+                new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/patient_register.php");
                 break;
         }
     }

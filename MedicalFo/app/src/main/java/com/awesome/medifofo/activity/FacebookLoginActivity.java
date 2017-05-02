@@ -31,6 +31,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -62,6 +63,7 @@ import java.util.List;
 public class FacebookLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener authStateListener;
     private CallbackManager callbackManager;
     private LoginButton facebookLoginButton;
@@ -93,6 +95,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.login_image);
         imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
         callbackManager = CallbackManager.Factory.create();
     }
 
@@ -135,9 +138,9 @@ public class FacebookLoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-                    
+                    Toast.makeText(getApplicationContext(), "Login Success", Toast.LENGTH_SHORT).show();
+
                     GraphRequest request = GraphRequest.newMeRequest(
                             token,
                             new GraphRequest.GraphJSONObjectCallback() {
@@ -157,10 +160,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
                                         tokenId = token.toString();
                                         emailId = email;
 
+                                        System.out.println("TOKEN : " + tokenId + ", EMAIL : " + emailId);
+
                                         /*
                                          * Save user information "sharedPreferenceFile"
-                                         * Information : name, gender, pictureURL
+                                         * Information : name, gender, pictureURL, email
                                          */
+
                                         SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString("NAME", name);
@@ -170,9 +176,10 @@ public class FacebookLoginActivity extends AppCompatActivity {
                                         editor.apply();
 
                                         goMainActivity();
+                                        new FacebookLoginActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/patient_register.php");
 
                                     } catch (Exception e) {
-                                        Log.d("TAG", "Error get userinfo: " + e.getMessage());
+                                        Toast.makeText(getApplicationContext(), "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -253,7 +260,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
             try {
                 JSONObject jobj = new JSONObject(result);
                 if (jobj.getString("error").equals("true"))
-                    Toast.makeText(FacebookLoginActivity.this, "이미 있는 아이디이거나 서버 오류입니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FacebookLoginActivity.this, "The Id already exists or Server error.", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(FacebookLoginActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
 
@@ -283,7 +290,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
             // 4. convert JSONObject to JSON to String
             json = jsonObject.toString();
 
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
             nameValuePair.add(new BasicNameValuePair("token_id", tokenId));
             nameValuePair.add(new BasicNameValuePair("email_id", emailId));
             nameValuePair.add(new BasicNameValuePair("platform", platform));

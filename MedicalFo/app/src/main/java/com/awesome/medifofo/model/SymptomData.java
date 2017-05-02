@@ -37,6 +37,12 @@ public class SymptomData {
     private static final String[] respiratory = {};
     private static final String[] heart = {};
 
+    public static String symptomList[][] = {
+            head, face, eye, nose, ear, mouth, jaw, neck, chest, belly, back, spine, arms, elbow, hands, finger, legs, hip, ankle,
+            foot, man, woman, digestive, respiratory, heart
+    };
+
+
     public static List<ListItem> getListData() {
         List<ListItem> data = new ArrayList<>();
 

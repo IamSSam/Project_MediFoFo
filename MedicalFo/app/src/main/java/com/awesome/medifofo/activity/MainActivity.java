@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userAge = (TextView) headerView.findViewById(R.id.navigation_my_age);
         firebaseAuth = FirebaseAuth.getInstance();
         accessToken = AccessToken.getCurrentAccessToken();
-
         final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
         gridView = (GridView) findViewById(R.id.gridView);
         gridView.invalidateViews();
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), SymptomListActivity.class);
-                intent.putExtra("POSITION", position); // Pass gridview's position
+                intent.putExtra("POSITION", position); // Pass gridView position
                 startActivity(intent);
             }
         });
