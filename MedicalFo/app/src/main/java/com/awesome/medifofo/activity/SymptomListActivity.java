@@ -1,6 +1,5 @@
 package com.awesome.medifofo.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,20 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.RecyclerItemClickListener;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
-import com.awesome.medifofo.model.ListItem;
 import com.awesome.medifofo.model.SymptomData;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import static com.awesome.medifofo.model.SymptomData.symptomList;
 
 public class SymptomListActivity extends AppCompatActivity {
 
@@ -54,34 +50,35 @@ public class SymptomListActivity extends AppCompatActivity {
         }
 
         initRecyclerView(gridViewPosition);
-
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        dialogShow(position);
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-
-                })
-        );
     }
 
 
-    private void initRecyclerView(int position) {
+    private void initRecyclerView(int gridViewPosition) {
         context = getApplicationContext();
         recyclerView = (RecyclerView) findViewById(R.id.rec_list);
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        switch (position) {
+        switch (gridViewPosition) {
             case 0:
                 adapter = new SymptomListAdapter(SymptomData.getListData(), this);
+                recyclerView.addOnItemTouchListener(
+                        new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                if (position == 2 || position == 4) {
+                                    Toast.makeText(getApplicationContext(), "There is no question in this symptom", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogShow(position);
+                                }
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                            }
+                        })
+                );
                 break;
             case 1:
                 adapter = new SymptomListAdapter(SymptomData.getListData2(), this);
@@ -188,23 +185,37 @@ public class SymptomListActivity extends AppCompatActivity {
         }
     }
 
+    public void dialogShow(int position) {
+        final List<String> listItems = new ArrayList<>();
 
-    void dialogShow(int position) {
-        final List<String> ListItems = new ArrayList<>();
-        ListItems.add("mild");
-        ListItems.add("moderate");
-        ListItems.add("severe");
-        ListItems.add("None of above");
+        switch (position) {
+            case 0:
+                listItems.add("mild");
+                listItems.add("moderate");
+                listItems.add("severe");
+                listItems.add("None of above");
+                break;
+            case 1:
+                listItems.add("or made worse by emotional stress");
+                listItems.add("or made worse by caffeine");
+                listItems.add("None of above");
+                break;
+            case 3:
+                listItems.add("receding hairline");
+                listItems.add("None of above");
+                break;
+            default:
+                break;
+        }
 
-        final CharSequence[] items = ListItems.toArray(new String[ListItems.size()]);
-
-        final List SelectedItems  = new ArrayList();
+        final CharSequence[] items = listItems.toArray(new String[listItems.size()]);
+        final List SelectedItems = new ArrayList();
         int defaultItem = 0;
         SelectedItems.add(defaultItem);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(SymptomData.symptomList[gridViewPosition][position]);
+        builder.setTitle(symptomList[gridViewPosition][position]);
         builder.setSingleChoiceItems(items, defaultItem,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -216,17 +227,25 @@ public class SymptomListActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         String msg = "";
 
                         if (!SelectedItems.isEmpty()) {
                             int index = (int) SelectedItems.get(0);
-                            msg = ListItems.get(index);
+                            msg = listItems.get(index);
                         }
                         Toast.makeText(getApplicationContext(),
                                 "Items Selected.\n" + msg, Toast.LENGTH_LONG)
                                 .show();
                     }
                 });
+
+        builder.setNeutralButton("Next", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
         builder.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -234,7 +253,7 @@ public class SymptomListActivity extends AppCompatActivity {
                     }
                 });
 
-        System.out.println("POSITION: " + position); // recyclerView의 item
+        Toast.makeText(getApplicationContext(), "POSITION: " + position, Toast.LENGTH_SHORT).show();
         builder.show();
     }
 

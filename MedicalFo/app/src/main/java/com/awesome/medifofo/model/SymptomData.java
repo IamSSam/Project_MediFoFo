@@ -42,7 +42,6 @@ public class SymptomData {
             foot, man, woman, digestive, respiratory, heart
     };
 
-
     public static List<ListItem> getListData() {
         List<ListItem> data = new ArrayList<>();
 

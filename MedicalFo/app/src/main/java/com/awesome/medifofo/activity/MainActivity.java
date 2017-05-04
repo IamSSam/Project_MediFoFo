@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -189,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void goFirstActivity() {
         startActivity(new Intent(this, FacebookLoginActivity.class));
     }
-
 
     @Override
     public void onBackPressed() {
