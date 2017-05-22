@@ -22,7 +22,6 @@ import com.awesome.medifofo.R;
 import com.awesome.medifofo.RecyclerItemClickListener;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
 import com.awesome.medifofo.model.ListItem;
-import com.awesome.medifofo.model.SymptomData;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -50,7 +49,7 @@ public class SymptomListActivity extends AppCompatActivity {
     private int gridViewPosition = 0;
     private Context context;
     private String partname[] = {
-            "head", "face", "eye", "nose", "ear", "mouth", "jaw", "neck", "chest", " belly", "back", "spine", "arms", "elbow", "hands", "finger", "legs", "hip", "ankle",
+            "head", "face", "eye", "nose", "ear", "mouth", "jaw", "neck", "chest", "belly", "back", "spine", "arms", "elbow", "hands", "finger", "legs", "hip", "ankle",
             "foot", "man", "woman", "digestive", "respiratory", "heart"
     };
 
@@ -83,7 +82,6 @@ public class SymptomListActivity extends AppCompatActivity {
 
         switch (gridViewPosition) {
             case 0:
-                adapter = new SymptomListAdapter(SymptomData.getListData(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 recyclerView.addOnItemTouchListener(
                         new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -106,90 +104,70 @@ public class SymptomListActivity extends AppCompatActivity {
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 2:
-                adapter = new SymptomListAdapter(SymptomData.getListData3(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 3:
-                adapter = new SymptomListAdapter(SymptomData.getListData4(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 4:
-                adapter = new SymptomListAdapter(SymptomData.getListData5(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 5:
-                adapter = new SymptomListAdapter(SymptomData.getListData6(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 6:
-                adapter = new SymptomListAdapter(SymptomData.getListData7(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 7:
-                adapter = new SymptomListAdapter(SymptomData.getListData8(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 8:
-                adapter = new SymptomListAdapter(SymptomData.getListData9(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 9:
-                adapter = new SymptomListAdapter(SymptomData.getListData10(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 10:
-                adapter = new SymptomListAdapter(SymptomData.getListData11(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 11:
-                adapter = new SymptomListAdapter(SymptomData.getListData12(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 12:
-                adapter = new SymptomListAdapter(SymptomData.getListData13(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 13:
-                adapter = new SymptomListAdapter(SymptomData.getListData14(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 14:
-                adapter = new SymptomListAdapter(SymptomData.getListData15(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 15:
-                adapter = new SymptomListAdapter(SymptomData.getListData16(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 16:
-                adapter = new SymptomListAdapter(SymptomData.getListData17(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 17:
-                adapter = new SymptomListAdapter(SymptomData.getListData18(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 18:
-                adapter = new SymptomListAdapter(SymptomData.getListData19(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 19:
-                adapter = new SymptomListAdapter(SymptomData.getListData20(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 20:
-                adapter = new SymptomListAdapter(SymptomData.getListData21(), this);
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 21:
-                adapter = new SymptomListAdapter(SymptomData.getListData22(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 22:
                 new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             default:
         }
-
-        recyclerView.setAdapter(adapter);
-
     }
 
 
@@ -315,11 +293,13 @@ public class SymptomListActivity extends AppCompatActivity {
                 Log.d("jsoncheck", result);
                 JSONArray jobj = new JSONArray(result);
                 List<ListItem> data = new ArrayList<>();
+
                 for (int i = 0; i < jobj.length(); i++) {
                     ListItem item = new ListItem();
                     item.setTitle(jobj.getJSONObject(i).getString("symptomname"));
                     data.add(item);
-                    adapter = new SymptomListAdapter(data, context);
+                    adapter = new SymptomListAdapter(data);
+                    recyclerView.setAdapter(adapter);
                 }
             } catch (JSONException e) {
                 Log.e("JSON Parser", "Error parsing data " + e.toString());

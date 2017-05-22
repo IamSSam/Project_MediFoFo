@@ -68,13 +68,6 @@
             android:label="@string/title_activity_reset_password"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar" />
-        <activity
-            android:name=".activity.DetailActivity"
-            android:label="@string/title_activity_reset_password"
-            android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustUnspecified"></activity>
-
     </application>
 
 </manifest>

@@ -25,18 +25,13 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
     private LayoutInflater layoutInflater;
     private ArrayList<ListItem> arrayList;
 
-    public SymptomListAdapter(List<ListItem> listData, Context context) {
-        this.context = context;
-        this.layoutInflater = LayoutInflater.from(context);
+    public SymptomListAdapter(List<ListItem> listData) {
         this.listData = listData;
-
-        this.arrayList = new ArrayList<ListItem>();
-        this.arrayList.addAll(listData);
     }
 
     @Override
     public ListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.content_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.content_list_item, parent, false);
         return new ListHolder(view);
     }
 
