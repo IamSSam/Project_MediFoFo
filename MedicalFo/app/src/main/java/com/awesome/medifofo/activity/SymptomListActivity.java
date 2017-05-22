@@ -3,6 +3,7 @@ package com.awesome.medifofo.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +21,27 @@ import android.widget.Toast;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.RecyclerItemClickListener;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
+import com.awesome.medifofo.model.ListItem;
 import com.awesome.medifofo.model.SymptomData;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.awesome.medifofo.model.SymptomData.symptomList;
 
 public class SymptomListActivity extends AppCompatActivity {
 
@@ -32,6 +49,10 @@ public class SymptomListActivity extends AppCompatActivity {
     private SymptomListAdapter adapter;
     private int gridViewPosition = 0;
     private Context context;
+    private String partname[] = {
+            "head", "face", "eye", "nose", "ear", "mouth", "jaw", "neck", "chest", " belly", "back", "spine", "arms", "elbow", "hands", "finger", "legs", "hip", "ankle",
+            "foot", "man", "woman", "digestive", "respiratory", "heart"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +84,7 @@ public class SymptomListActivity extends AppCompatActivity {
         switch (gridViewPosition) {
             case 0:
                 adapter = new SymptomListAdapter(SymptomData.getListData(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 recyclerView.addOnItemTouchListener(
                         new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
@@ -81,67 +103,87 @@ public class SymptomListActivity extends AppCompatActivity {
                 );
                 break;
             case 1:
-                adapter = new SymptomListAdapter(SymptomData.getListData2(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 2:
                 adapter = new SymptomListAdapter(SymptomData.getListData3(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 3:
                 adapter = new SymptomListAdapter(SymptomData.getListData4(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 4:
                 adapter = new SymptomListAdapter(SymptomData.getListData5(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 5:
                 adapter = new SymptomListAdapter(SymptomData.getListData6(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 6:
                 adapter = new SymptomListAdapter(SymptomData.getListData7(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 7:
                 adapter = new SymptomListAdapter(SymptomData.getListData8(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 8:
                 adapter = new SymptomListAdapter(SymptomData.getListData9(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 9:
                 adapter = new SymptomListAdapter(SymptomData.getListData10(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 10:
                 adapter = new SymptomListAdapter(SymptomData.getListData11(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 11:
                 adapter = new SymptomListAdapter(SymptomData.getListData12(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 12:
                 adapter = new SymptomListAdapter(SymptomData.getListData13(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 13:
                 adapter = new SymptomListAdapter(SymptomData.getListData14(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 14:
                 adapter = new SymptomListAdapter(SymptomData.getListData15(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 15:
                 adapter = new SymptomListAdapter(SymptomData.getListData16(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 16:
                 adapter = new SymptomListAdapter(SymptomData.getListData17(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 17:
                 adapter = new SymptomListAdapter(SymptomData.getListData18(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 18:
                 adapter = new SymptomListAdapter(SymptomData.getListData19(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 19:
                 adapter = new SymptomListAdapter(SymptomData.getListData20(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 20:
                 adapter = new SymptomListAdapter(SymptomData.getListData21(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             case 21:
                 adapter = new SymptomListAdapter(SymptomData.getListData22(), this);
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
                 break;
             default:
         }
@@ -215,7 +257,7 @@ public class SymptomListActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(symptomList[gridViewPosition][position]);
+        //builder.setTitle(symptomList[gridViewPosition][position]);
         builder.setSingleChoiceItems(items, defaultItem,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -255,6 +297,101 @@ public class SymptomListActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "POSITION: " + position, Toast.LENGTH_SHORT).show();
         builder.show();
+    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            return POST(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result.equals("Did not work!")) {
+                Toast.makeText(SymptomListActivity.this, "Fail. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            }
+            try {
+                Log.d("jsoncheck", result);
+                JSONArray jobj = new JSONArray(result);
+                List<ListItem> data = new ArrayList<>();
+                for (int i = 0; i < jobj.length(); i++) {
+                    ListItem item = new ListItem();
+                    item.setTitle(jobj.getJSONObject(i).getString("symptomname"));
+                    data.add(item);
+                    adapter = new SymptomListAdapter(data, context);
+                }
+            } catch (JSONException e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+            }
+        }
+    }
+
+    public String POST(String url) {
+        InputStream inputStream = null;
+        String result = "";
+
+        try {
+            // 1. create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // 2. make POST request to the given URL
+            HttpPost httpPost = new HttpPost(url);
+
+            String json = "";
+
+            // 3. build jsonObject
+            JSONObject jsonObject = new JSONObject();
+
+            // 4. convert JSONObject to JSON to String
+            json = jsonObject.toString();
+
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
+            nameValuePair.add(new BasicNameValuePair("partname", partname[gridViewPosition]));
+
+            // 5. set json to StringEntity
+            //StringEntity se = new StringEntity(json);
+
+            // 6. set httpPost Entity
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+
+            // 7. Set some headers to inform server about the type of the content
+            //httpPost.setHeader("Accept", "application/json");
+            //httpPost.setHeader("Content-type", "application/json");
+
+            // 8. Execute POST request to the given URL
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // 9. receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+
+            // 10. convert inputstream to string
+            if (inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            // Log.d("InputStream", e.getLocalizedMessage());
+        }
+        // Log.d("http", result);
+
+        // 11. return result
+        return result;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        Log.d("Ddd", inputStream.toString());
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
+        String line = "", result = "";
+        while ((line = bufferedReader.readLine()) != null)
+            result += line;
+        inputStream.close();
+
+        if (!result.contains("]"))
+            result += "]";
+        return result;
     }
 
 }

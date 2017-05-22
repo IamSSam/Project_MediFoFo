@@ -155,12 +155,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
                                         String pictureURL = "https://graph.facebook.com/" + id + "/picture?type=large";
                                         String birthday = object.getString("birthday");
                                         String birth[] = birthday.split("/");
-                                        String email = object.getString("email");
+                                        //String email = object.getString("email");
 
-                                        tokenId = token.toString();
-                                        emailId = email;
+                                        tokenId = id;
+                                        //emailId = email;
 
-                                        System.out.println("TOKEN : " + tokenId + ", EMAIL : " + emailId);
+                                        //System.out.println("TOKEN : " + tokenId + ", EMAIL : " + emailId);
 
                                         /*
                                          * Save user information "sharedPreferenceFile"
@@ -185,7 +185,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
                             });
 
                     Bundle parameters = new Bundle();
-                    parameters.putString("fields", "id,name,birthday,gender,email");
+                    parameters.putString("fields", "id,name,birthday,gender");
                     request.setParameters(parameters);
                     request.executeAsync();
 

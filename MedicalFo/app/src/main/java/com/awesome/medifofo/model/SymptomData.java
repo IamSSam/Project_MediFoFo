@@ -1,7 +1,21 @@
 package com.awesome.medifofo.model;
 
-import android.content.Intent;
+import android.os.AsyncTask;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,17 +51,12 @@ public class SymptomData {
     private static final String[] respiratory = {};
     private static final String[] heart = {};
 
-    public static String symptomList[][] = {
-            head, face, eye, nose, ear, mouth, jaw, neck, chest, belly, back, spine, arms, elbow, hands, finger, legs, hip, ankle,
-            foot, man, woman, digestive, respiratory, heart
-    };
-
     public static List<ListItem> getListData() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < head.length; i++) {
+        for (String aHead : head) {
             ListItem item = new ListItem();
-            item.setTitle(head[i]);
+            item.setTitle(aHead);
             data.add(item);
         }
 
@@ -57,9 +66,9 @@ public class SymptomData {
     public static List<ListItem> getListData2() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < face.length; i++) {
+        for (String aFace : face) {
             ListItem item = new ListItem();
-            item.setTitle(face[i]);
+            item.setTitle(aFace);
             data.add(item);
         }
 
@@ -69,9 +78,9 @@ public class SymptomData {
     public static List<ListItem> getListData3() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < eye.length; i++) {
+        for (String anEye : eye) {
             ListItem item = new ListItem();
-            item.setTitle(eye[i]);
+            item.setTitle(anEye);
             data.add(item);
         }
 
@@ -81,9 +90,9 @@ public class SymptomData {
     public static List<ListItem> getListData4() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < nose.length; i++) {
+        for (String aNose : nose) {
             ListItem item = new ListItem();
-            item.setTitle(nose[i]);
+            item.setTitle(aNose);
             data.add(item);
         }
 
@@ -93,9 +102,9 @@ public class SymptomData {
     public static List<ListItem> getListData5() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < ear.length; i++) {
+        for (String anEar : ear) {
             ListItem item = new ListItem();
-            item.setTitle(ear[i]);
+            item.setTitle(anEar);
             data.add(item);
         }
 
@@ -105,9 +114,9 @@ public class SymptomData {
     public static List<ListItem> getListData6() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < mouth.length; i++) {
+        for (String aMouth : mouth) {
             ListItem item = new ListItem();
-            item.setTitle(mouth[i]);
+            item.setTitle(aMouth);
             data.add(item);
         }
 
@@ -129,9 +138,9 @@ public class SymptomData {
     public static List<ListItem> getListData8() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < neck.length; i++) {
+        for (String aNeck : neck) {
             ListItem item = new ListItem();
-            item.setTitle(neck[i]);
+            item.setTitle(aNeck);
             data.add(item);
         }
 
@@ -141,9 +150,9 @@ public class SymptomData {
     public static List<ListItem> getListData9() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < chest.length; i++) {
+        for (String aChest : chest) {
             ListItem item = new ListItem();
-            item.setTitle(chest[i]);
+            item.setTitle(aChest);
             data.add(item);
         }
 
@@ -153,9 +162,9 @@ public class SymptomData {
     public static List<ListItem> getListData10() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < belly.length; i++) {
+        for (String aBelly : belly) {
             ListItem item = new ListItem();
-            item.setTitle(belly[i]);
+            item.setTitle(aBelly);
             data.add(item);
         }
 
@@ -165,9 +174,9 @@ public class SymptomData {
     public static List<ListItem> getListData11() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < back.length; i++) {
+        for (String aBack : back) {
             ListItem item = new ListItem();
-            item.setTitle(back[i]);
+            item.setTitle(aBack);
             data.add(item);
         }
 
@@ -177,9 +186,9 @@ public class SymptomData {
     public static List<ListItem> getListData12() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < spine.length; i++) {
+        for (String aSpine : spine) {
             ListItem item = new ListItem();
-            item.setTitle(spine[i]);
+            item.setTitle(aSpine);
             data.add(item);
         }
 
@@ -189,9 +198,9 @@ public class SymptomData {
     public static List<ListItem> getListData13() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < arms.length; i++) {
+        for (String arm : arms) {
             ListItem item = new ListItem();
-            item.setTitle(arms[i]);
+            item.setTitle(arm);
             data.add(item);
         }
 
@@ -201,9 +210,9 @@ public class SymptomData {
     public static List<ListItem> getListData14() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < elbow.length; i++) {
+        for (String anElbow : elbow) {
             ListItem item = new ListItem();
-            item.setTitle(elbow[i]);
+            item.setTitle(anElbow);
             data.add(item);
         }
 
@@ -213,9 +222,9 @@ public class SymptomData {
     public static List<ListItem> getListData15() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < hands.length; i++) {
+        for (String hand : hands) {
             ListItem item = new ListItem();
-            item.setTitle(hands[i]);
+            item.setTitle(hand);
             data.add(item);
         }
 
@@ -225,9 +234,9 @@ public class SymptomData {
     public static List<ListItem> getListData16() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < finger.length; i++) {
+        for (String aFinger : finger) {
             ListItem item = new ListItem();
-            item.setTitle(finger[i]);
+            item.setTitle(aFinger);
             data.add(item);
         }
 
@@ -237,9 +246,9 @@ public class SymptomData {
     public static List<ListItem> getListData17() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < legs.length; i++) {
+        for (String leg : legs) {
             ListItem item = new ListItem();
-            item.setTitle(legs[i]);
+            item.setTitle(leg);
             data.add(item);
         }
 
@@ -249,9 +258,9 @@ public class SymptomData {
     public static List<ListItem> getListData18() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < hip.length; i++) {
+        for (String aHip : hip) {
             ListItem item = new ListItem();
-            item.setTitle(hip[i]);
+            item.setTitle(aHip);
             data.add(item);
         }
 
@@ -261,9 +270,9 @@ public class SymptomData {
     public static List<ListItem> getListData19() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < ankle.length; i++) {
+        for (String aAnkle : ankle) {
             ListItem item = new ListItem();
-            item.setTitle(ankle[i]);
+            item.setTitle(aAnkle);
             data.add(item);
         }
 
@@ -273,9 +282,9 @@ public class SymptomData {
     public static List<ListItem> getListData20() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < foot.length; i++) {
+        for (String aFoot : foot) {
             ListItem item = new ListItem();
-            item.setTitle(foot[i]);
+            item.setTitle(aFoot);
             data.add(item);
         }
 
@@ -285,9 +294,9 @@ public class SymptomData {
     public static List<ListItem> getListData21() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < man.length; i++) {
+        for (String aMan : man) {
             ListItem item = new ListItem();
-            item.setTitle(man[i]);
+            item.setTitle(aMan);
             data.add(item);
         }
 
@@ -297,13 +306,15 @@ public class SymptomData {
     public static List<ListItem> getListData22() {
         List<ListItem> data = new ArrayList<>();
 
-        for (int i = 0; i < woman.length; i++) {
+        for (String aWoman : woman) {
             ListItem item = new ListItem();
-            item.setTitle(woman[i]);
+            item.setTitle(aWoman);
             data.add(item);
         }
 
         return data;
     }
+
+
 }
 

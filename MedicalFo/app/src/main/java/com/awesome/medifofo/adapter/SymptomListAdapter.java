@@ -1,8 +1,6 @@
 package com.awesome.medifofo.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.awesome.medifofo.R;
-import com.awesome.medifofo.activity.SymptomListActivity;
 import com.awesome.medifofo.model.ListItem;
-import com.google.android.gms.common.data.DataHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +29,7 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+
         this.arrayList = new ArrayList<ListItem>();
         this.arrayList.addAll(listData);
     }
@@ -47,7 +44,6 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
     public void onBindViewHolder(ListHolder holder, int position) {
         final ListItem item = listData.get(position);
         holder.title.setText(item.getTitle());
-
     }
 
     @Override
@@ -70,7 +66,6 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
         notifyDataSetChanged();
     }
 
-
     class ListHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
@@ -82,4 +77,6 @@ public class SymptomListAdapter extends RecyclerView.Adapter<SymptomListAdapter.
             container = view.findViewById(R.id.symptom_container);
         }
     }
+
+
 }
