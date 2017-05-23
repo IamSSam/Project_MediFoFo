@@ -22,23 +22,23 @@ import java.util.Date;
 
 public class PersonalHealthRecordActivity extends AppCompatActivity {
 
-    public EditText phrHeight;
-    public EditText phrWeight;
-    public EditText phrAbo;
-    public EditText phrMedicine;
-    public EditText phrAllergy;
-    public EditText phrHistory;
-    public EditText phrSleepTime;
-    public EditText phrDailyStride;
+    public TextView phrHeight;
+    public TextView phrWeight;
+    public TextView phrAbo;
+    public TextView phrMedicine;
+    public TextView phrAllergy;
+    public TextView phrHistory;
+    public TextView phrSleepTime;
+    public TextView phrDailyStride;
 
-    static Button saveButton;
+    private Button saveButton;
 
     String currentDateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phr);
+        setContentView(R.layout.activity_my_phr);
 
         initView();
 
@@ -65,18 +65,18 @@ public class PersonalHealthRecordActivity extends AppCompatActivity {
 
     }
 
-    public void initView(){
+    public void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_phr);
         setSupportActionBar(toolbar);
 
-        phrHeight = (EditText) findViewById(R.id.phr_height);
-        phrWeight = (EditText) findViewById(R.id.phr_weight);
-        phrAbo = (EditText) findViewById(R.id.phr_abo);
-        phrMedicine = (EditText) findViewById(R.id.phr_medicine);
-        phrAllergy = (EditText) findViewById(R.id.phr_allergy);
-        phrHistory = (EditText) findViewById(R.id.phr_history);
-        phrSleepTime = (EditText) findViewById(R.id.phr_sleepTime);
-        phrDailyStride = (EditText) findViewById(R.id.phr_dailyStride);
+        phrHeight = (TextView) findViewById(R.id.phr_height);
+        phrWeight = (TextView) findViewById(R.id.phr_weight);
+        phrAbo = (TextView) findViewById(R.id.phr_abo);
+        phrMedicine = (TextView) findViewById(R.id.phr_medicine);
+        phrAllergy = (TextView) findViewById(R.id.phr_allergy);
+        phrHistory = (TextView) findViewById(R.id.phr_history);
+        phrSleepTime = (TextView) findViewById(R.id.phr_sleepTime);
+        phrDailyStride = (TextView) findViewById(R.id.phr_dailyStride);
     }
 
     @Override

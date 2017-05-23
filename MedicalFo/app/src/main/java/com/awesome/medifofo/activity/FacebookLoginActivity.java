@@ -63,7 +63,6 @@ import java.util.List;
 public class FacebookLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener authStateListener;
     private CallbackManager callbackManager;
     private LoginButton facebookLoginButton;
@@ -95,7 +94,6 @@ public class FacebookLoginActivity extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.login_image);
         imageLoader.displayImage("drawable://" + R.drawable.medifofo, imageView);
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
         callbackManager = CallbackManager.Factory.create();
     }
 
@@ -230,15 +228,13 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private int calculateUserAge(String age) {
         Calendar current = Calendar.getInstance();
         int currentYear = current.get(Calendar.YEAR);
-        int userAge = currentYear - Integer.parseInt(age);
-        return userAge;
+        return currentYear - Integer.parseInt(age);
     }
 
     private void imageLoader() {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory()
-                .discCacheFileNameGenerator(new Md5FileNameGenerator())
                 .tasksProcessingOrder(QueueProcessingType.FIFO)
                 .writeDebugLogs()
                 .build();
@@ -328,7 +324,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     private static String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "", result = "";
+        String line, result = "";
         while ((line = bufferedReader.readLine()) != null)
             result += line;
         inputStream.close();

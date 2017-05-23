@@ -1,3 +1,4 @@
+/*
 package com.awesome.medifofo;
 
 import android.app.Activity;
@@ -12,10 +13,6 @@ import android.widget.Toast;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by yoonjae on 29/11/2016.
- */
-
 public class GPSHelper {
 
     private static Activity prevActivity;
@@ -23,20 +20,17 @@ public class GPSHelper {
     public static double latitude = -1;
     public static String hospital_type;
 
-
     public void initiateGPSservice(Context context, Activity activity, String hospital) {
         try {
             prevActivity = activity;
             hospital_type = hospital;
             Toast.makeText(context, "현재 위치를 받아오는 중 입니다...", Toast.LENGTH_SHORT).show();
 
-            final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, locationListener);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, locationListener);
 
         } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -76,3 +70,4 @@ public class GPSHelper {
         }
     };
 }
+*/

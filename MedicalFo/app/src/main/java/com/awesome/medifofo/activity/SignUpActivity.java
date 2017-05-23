@@ -20,12 +20,10 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awesome.medifofo.Person;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.SpinnerAdapter;
 import com.awesome.medifofo.model.CountryItem;
@@ -68,7 +66,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth firebaseAuth;
     private Animation animationShake;
 
-    private final String platform = "1"; // platform of firebase
+    private final String PLATFORM = "1"; // PLATFORM of firebase
+    private String phr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +185,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
-
     }
 
     private void attemptSignUp() {
@@ -206,6 +204,44 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String month = userMonth.getText().toString();
         String day = userDay.getText().toString();
         String age = userYear.getText().toString();
+
+        EditText editHeight = (EditText) findViewById(R.id.phr_height);
+        EditText editWeight = (EditText) findViewById(R.id.phr_weight);
+        EditText editAbo = (EditText) findViewById(R.id.phr_abo);
+        EditText editMedicine = (EditText) findViewById(R.id.phr_medicine);
+        EditText editAllergy = (EditText) findViewById(R.id.phr_allergy);
+        EditText editHistory = (EditText) findViewById(R.id.phr_history);
+        EditText editSleeptime = (EditText) findViewById(R.id.phr_sleepTime);
+        EditText editDailystride = (EditText) findViewById(R.id.phr_dailyStride);
+
+        String height = editHeight.getText().toString();
+        String weight = editWeight.getText().toString();
+        String abo = editAbo.getText().toString();
+        String medicine = editMedicine.getText().toString();
+        String allergy = editAllergy.getText().toString();
+        String history = editHistory.getText().toString();
+        String sleeptime = editSleeptime.getText().toString();
+        String dailystride = editDailystride.getText().toString();
+
+        if (height.isEmpty()) {
+            height = "no input";
+        } else if (weight.isEmpty()) {
+            weight = "no input";
+        } else if (abo.isEmpty()) {
+            abo = "no input";
+        } else if (medicine.isEmpty()) {
+            medicine = "no input";
+        } else if (allergy.isEmpty()) {
+            allergy = "no input";
+        } else if (history.isEmpty()) {
+            history = "no input";
+        } else if (sleeptime.isEmpty()) {
+            sleeptime = "no input";
+        } else if (dailystride.isEmpty()) {
+            dailystride = "no input";
+        }
+
+        phr = height + "cm, " + weight + "kg, " + abo + ", " + medicine + ", " + allergy + ", " + history + ", " + sleeptime + ", " + dailystride;
 
         boolean cancel = false;
         View focus = null;
@@ -298,9 +334,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         countriesName = Locale.getISOCountries();
         ArrayList<CountryItem> list = new ArrayList<>();
 
-        for (int i = 0; i < countriesName.length; i++) {
-            Locale object = new Locale("", countriesName[i]);
-            list.add(new CountryItem(object.getDisplayName() + " (" + countriesName[i] + ")"));
+        for (String aCountriesName : countriesName) {
+            Locale object = new Locale("", aCountriesName);
+            list.add(new CountryItem(object.getDisplayName() + " (" + aCountriesName + ")"));
         }
 
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_sign_up_country);
@@ -340,7 +376,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 else
                     Toast.makeText(SignUpActivity.this, "Registration successful.", Toast.LENGTH_SHORT).show();
 
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -369,9 +404,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             // 4. convert JSONObject to JSON to String
             json = jsonObject.toString();
 
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
             nameValuePair.add(new BasicNameValuePair("email_id", userEmailView.getText().toString()));
-            nameValuePair.add(new BasicNameValuePair("platform", platform));
+            nameValuePair.add(new BasicNameValuePair("PLATFORM", PLATFORM));
+            //nameValuePair.add(new BasicNameValuePair("phr", phr));
 
             // 5. set json to StringEntity
             //StringEntity se = new StringEntity(json);

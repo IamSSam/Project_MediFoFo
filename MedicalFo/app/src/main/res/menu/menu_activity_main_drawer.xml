@@ -15,8 +15,8 @@
                     android:title="@string/navigation_qna" />
 
                 <item
-                    android:id="@+id/navigation_share"
-                    android:icon="@drawable/ic_menu_share"
+                    android:id="@+id/navigation_phr"
+                    android:icon="@drawable/ic_menu_phr"
                     android:title="@string/navigation_share" />
                 <item
                     android:id="@+id/navigation_feedback"

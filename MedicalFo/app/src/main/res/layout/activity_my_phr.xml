@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/phr_height"
+                android:src="@drawable/ic_phr_person" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_input_layout_user_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/errorText">
+
+                    <TextView
+                        android:id="@+id/phr_height"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/text_margin_small"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:hint="@string/phr_height"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:textSize="7pt" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_input_layout_user_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/errorText">
+
+                    <TextView
+                        android:id="@+id/phr_weight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/text_margin_small"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:hint="@string/phr_weight"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:textSize="7pt" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/phr_blood"
+                android:src="@drawable/ic_phr_heart" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user_abo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorText">
+
+                <TextView
+                    android:id="@+id/phr_abo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/text_margin_small"
+                    android:layout_marginStart="@dimen/text_margin_small"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:hint="@string/phr_blood"
+                    android:inputType="text"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:textSize="7pt" />
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_phr_medicine"
+                android:contentDescription="@string/phr_medicine" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user_medicine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorText">
+
+                <TextView
+                    android:id="@+id/phr_medicine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/text_margin_small"
+                    android:layout_marginStart="@dimen/text_margin_small"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:hint="@string/phr_medicine"
+                    android:inputType="text"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:textSize="7pt" />
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/phr_allergy"
+                android:src="@drawable/ic_phr_allergy" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user_allergy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorText">
+
+                <TextView
+                    android:id="@+id/phr_allergy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/text_margin_small"
+                    android:layout_marginStart="@dimen/text_margin_small"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:hint="@string/phr_allergy"
+                    android:inputType="text"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:textSize="7pt" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/phr_history"
+                android:src="@drawable/ic_phr_history" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorText">
+
+                <TextView
+                    android:id="@+id/phr_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/text_margin_small"
+                    android:layout_marginStart="@dimen/text_margin_small"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:hint="@string/phr_history"
+                    android:inputType="text"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:textSize="7pt" />
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/phr_sleeptime"
+                android:src="@drawable/ic_phr_sleeptime" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user_sleeptime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorText">
+
+                <TextView
+                    android:id="@+id/phr_sleepTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/text_margin_small"
+                    android:layout_marginStart="@dimen/text_margin_small"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:hint="@string/phr_sleeptime"
+                    android:inputType="numberDecimal"
+                    android:maxLength="2"
+                    android:maxLines="1"
+                    android:textSize="7pt" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/phr_dailystride"
+                android:src="@drawable/ic_phr_stride" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_user_dailystride"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorText">
+
+                <TextView
+                    android:id="@+id/phr_dailyStride"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/text_margin_small"
+                    android:layout_marginStart="@dimen/text_margin_small"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:hint="@string/phr_dailystride"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
+                    android:maxLines="1"
+                    android:textSize="7pt" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

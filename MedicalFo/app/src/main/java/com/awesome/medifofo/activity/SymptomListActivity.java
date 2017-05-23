@@ -76,26 +76,97 @@ public class SymptomListActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         recyclerView = (RecyclerView) findViewById(R.id.rec_list);
         recyclerView.setHasFixedSize(true);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (position == 2 || position == 4) {
-                            Toast.makeText(getApplicationContext(), "There is no question in this symptom", Toast.LENGTH_SHORT).show();
-                        } else {
-                            dialogShow(position);
-                        }
-                    }
+        switch (gridViewPosition) {
+            case 0:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                recyclerView.addOnItemTouchListener(
+                        new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                if (position == 2 || position == 4 || position == 5 || position == 6 || position == 7 || position == 8) {
+                                    Toast.makeText(getApplicationContext(), "There is no question in this symptom", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogShow(position);
+                                }
+                            }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                    }
-                })
-        );
-
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                            }
+                        })
+                );
+                break;
+            case 1:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 2:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 3:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 4:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 5:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 6:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 7:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 8:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 9:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 10:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 11:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 12:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 13:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 14:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 15:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 16:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 17:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 18:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 19:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 20:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 21:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            case 22:
+                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+                break;
+            default:
+        }
     }
 
 
@@ -135,21 +206,30 @@ public class SymptomListActivity extends AppCompatActivity {
 
     public void dialogShow(int position) {
         final List<String> listItems = new ArrayList<>();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         switch (position) {
             case 0:
+                builder.setTitle("How severe is your agitation?");
                 listItems.add("mild");
                 listItems.add("moderate");
                 listItems.add("severe");
                 listItems.add("None of above");
                 break;
             case 1:
+                builder.setTitle("Anxiety brought on");
                 listItems.add("or made worse by emotional stress");
                 listItems.add("or made worse by caffeine");
                 listItems.add("None of above");
                 break;
             case 3:
+                builder.setTitle("Where are you experiencing bald spots (hair)?");
                 listItems.add("receding hairline");
+                listItems.add("None of above");
+                break;
+            case 8:
+                builder.setTitle("Bruising or discoloration associated with …");
+                listItems.add("recent injury or trauma");
                 listItems.add("None of above");
                 break;
             default:
@@ -161,9 +241,6 @@ public class SymptomListActivity extends AppCompatActivity {
         int defaultItem = 0;
         SelectedItems.add(defaultItem);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        //builder.setTitle(symptomList[gridViewPosition][position]);
         builder.setSingleChoiceItems(items, defaultItem,
                 new DialogInterface.OnClickListener() {
                     @Override

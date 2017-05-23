@@ -1,11 +1,15 @@
 package com.awesome.medifofo.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awesome.medifofo.FindHospitalActivity;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
@@ -34,7 +39,7 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
  * Created by Eunsik on 03/26/2017.
  */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private GridView gridView;
     private ImageView userPicture;
     private TextView userName, userAge;
@@ -47,37 +52,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
             R.drawable.jaw, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.spine,
             R.drawable.arm, R.drawable.elbow, R.drawable.hand, R.drawable.finger, R.drawable.leg,
-            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.man, R.drawable.woman,
+            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.man, R.drawable.woman, R.drawable.teeth,
             R.drawable.digestive, R.drawable.respiratory, R.drawable.heart
     };
 
     final String[ /* For UI */][ /* For Naver Maps */] st_place = {
             {"머리", "내과"},
             {"얼굴", "외과"},
-            {"식도", "내과"},
+            {"눈", "안과"},
+            {"코", "이비인후과"},
+            {"귀", "이비인후과"},
+            {"혀", "내과"},
+            {"턱", "내과"},
+            {"목", "소아과"},
             {"가슴", ""},
-            {"배", ""},
+            {"배", "내과"},
             {"등", "정형외과"},
-            {"다리", "정형외과"},
+            {"척추", "정형외과"},
             {"팔", "정형외과"},
+            {"팔꿈치", "정형외과"},
+            {"손", "외과"},
+            {"손가락", "정형외과"},
+            {"다리", "정형외과"},
             {"발", "정형외과"},
+            {"엉덩이", "비뇨기과"},
+            {"발바닥", "피부과"},
+            {"생식기 (남자)", "비교기과"},
+            {"생식기 (여자)", "산부인과"},
+            {"이빨", "치과"},
             {"위", "내과"},
             {"폐", "내과"},
-            {"손", "외과"},
-            {"간", "내과"},
-            {"엉덩이", "비뇨기과"},
-            {"턱", "내과"},
-            {"치아", "치과"},
-            {"생식기 (남자)", ""},
-            {"생식기 (여자)", ""},
-            {"목", "소아과"},
-            {"코", "소아과"},
-            {"발바닥", "피부과"},
-            {"손가락", "정형외과"},
-            {"혀", "내과"},
-            {"척추", "정형외과"},
-            {"귀", "이비인후과"},
-            {"팔근육", "정형외과"}
+            {"심장", "내과"}
     };
 
     @Override
@@ -200,9 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         Intent intent = new Intent();
-
         switch (item.getItemId()) {
 
             case R.id.navigation_about:
@@ -211,18 +214,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.navigation_qna:
-                intent.setClass(this, FacebookLoginActivity.class);
+                intent.setClass(this, PersonalHealthRecordActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.navigation_share:
+            case R.id.navigation_phr:
                 intent.setClass(this, FacebookLoginActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.navigation_feedback:
-                intent.setClass(this, FacebookLoginActivity.class);
-                startActivity(intent);
+                requestLocationPermission();
                 break;
 
             case R.id.navigation_settings:
@@ -245,6 +247,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void requestLocationPermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.READ_CONTACTS)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            goFindHospitalActivity();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    goFindHospitalActivity();
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(MainActivity.this, "동의하셔야 이용가능합니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    public void goFindHospitalActivity() {
+        Intent intent = new Intent();
+        intent.setClass(this, FindHospitalActivity.class);
+        startActivity(intent);
     }
 
 }
