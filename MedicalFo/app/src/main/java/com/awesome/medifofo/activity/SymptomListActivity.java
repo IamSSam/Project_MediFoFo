@@ -47,7 +47,6 @@ public class SymptomListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SymptomListAdapter adapter;
     private int gridViewPosition = 0;
-    private Context context;
     private String partname[] = {
             "head", "face", "eye", "nose", "ear", "mouth", "jaw", "neck", "chest", "belly", "back", "spine", "arms", "elbow", "hands", "finger", "legs", "hip", "ankle",
             "foot", "man", "woman", "digestive", "respiratory", "heart"
@@ -69,105 +68,34 @@ public class SymptomListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        initRecyclerView(gridViewPosition);
+        initRecyclerView();
     }
 
 
-    private void initRecyclerView(int gridViewPosition) {
-        context = getApplicationContext();
+    private void initRecyclerView() {
+        Context context = getApplicationContext();
         recyclerView = (RecyclerView) findViewById(R.id.rec_list);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        switch (gridViewPosition) {
-            case 0:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                recyclerView.addOnItemTouchListener(
-                        new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                if (position == 2 || position == 4) {
-                                    Toast.makeText(getApplicationContext(), "There is no question in this symptom", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    dialogShow(position);
-                                }
-                            }
+        new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        if (position == 2 || position == 4) {
+                            Toast.makeText(getApplicationContext(), "There is no question in this symptom", Toast.LENGTH_SHORT).show();
+                        } else {
+                            dialogShow(position);
+                        }
+                    }
 
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-                            }
-                        })
-                );
-                break;
-            case 1:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 2:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 3:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 4:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 5:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 6:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 7:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 8:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 9:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 10:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 11:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 12:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 13:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 14:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 15:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 16:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 17:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 18:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 19:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 20:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 21:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            case 22:
-                new SymptomListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_symptom_list.php");
-                break;
-            default:
-        }
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                    }
+                })
+        );
+
     }
 
 
