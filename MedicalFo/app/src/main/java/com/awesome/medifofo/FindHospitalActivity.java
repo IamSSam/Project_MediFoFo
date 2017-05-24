@@ -2,19 +2,12 @@ package com.awesome.medifofo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
@@ -27,6 +20,10 @@ import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.mapviewer.overlay.NMapMyLocationOverlay;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 
 public class FindHospitalActivity extends NMapActivity {
@@ -36,6 +33,7 @@ public class FindHospitalActivity extends NMapActivity {
     private NMapView mMapView;
     private NMapController mMapController;
     private static final String CLIENT_ID = "7rxySx5aIRXRGtWXULIS";
+    private static final String CLIENT_SECRET = "JGkB8R8zo5";
     private NMapMyLocationOverlay mMyLocationOverlay;
     private NMapLocationManager mMapLocationManager;
     private NMapCompassManager mMapCompassManager;
@@ -73,6 +71,8 @@ public class FindHospitalActivity extends NMapActivity {
 
         // create my location overlay
         mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
+        //startMyLocation();
+        getJSON();
     }
 
 
@@ -81,6 +81,9 @@ public class FindHospitalActivity extends NMapActivity {
 
         @Override
         public boolean onLocationChanged(NMapLocationManager locationManager, NGeoPoint myLocation) {
+
+            double longitude = myLocation.getLongitude();
+            double latitude = myLocation.getLatitude();
 
             if (mMapController != null) {
                 mMapController.animateTo(myLocation);
@@ -122,7 +125,7 @@ public class FindHospitalActivity extends NMapActivity {
             if (errorInfo == null) { // success
                 // restore map view state such as map center position and zoom level.
                 //restoreInstanceState();
-                mMapController.setMapCenter(new NGeoPoint(126.978371, 37.5666091), 11);
+                mMapController.setMapCenter(new NGeoPoint(126.978371, 37.5666091), 14);
 
             } else { // fail
                 Log.e("NMapViewer", "onFailedToInitializeWithError: " + errorInfo.toString());
@@ -157,6 +160,7 @@ public class FindHospitalActivity extends NMapActivity {
 
         }
     };
+
 
     private final NMapView.OnMapViewTouchEventListener onMapViewTouchEventListener = new NMapView.OnMapViewTouchEventListener() {
 
@@ -247,6 +251,41 @@ public class FindHospitalActivity extends NMapActivity {
     protected void onStop() {
         stopMyLocation();
         super.onStop();
+    }
+
+    private void getJSON() {
+
+        try {
+            String keyword = "정형외과";
+            String location = URLEncoder.encode(keyword, "UTF-8");
+
+            String apiURL = "http://igrus.mireene.com/medifofo/medi_nmap_search.php?location=" + location;
+            URL url = new URL(apiURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("X-Naver-Client-Id", CLIENT_ID);
+            connection.setRequestProperty("X-Naver-Client-Secret", CLIENT_SECRET);
+            int requestCode = connection.getResponseCode();
+            BufferedReader br;
+            if (requestCode == 200) {
+                br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            } else {
+                br = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+                Log.d("LINE: ", inputLine);
+            }
+            br.close();
+            System.out.println("RESPONSE: " + response.toString());
+
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+
+
     }
 
     /**
