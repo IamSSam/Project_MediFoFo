@@ -22,7 +22,7 @@ import com.nhn.android.mapviewer.overlay.NMapResourceProvider;
  */
 
 
-public class NMapViewerResourceProvider extends NMapResourceProvider implements
+class NMapViewerResourceProvider extends NMapResourceProvider implements
         NMapCalloutCustomOldOverlay.ResourceProvider {
     private static final String LOG_TAG = "NMapViewerResource";
     private static final boolean DEBUG = false;
@@ -229,8 +229,8 @@ public class NMapViewerResourceProvider extends NMapResourceProvider implements
     public Drawable[] getLocationDot() {
         Drawable[] drawable = new Drawable[2];
 
-        drawable[0] = mContext.getResources().getDrawable(R.drawable.ic_place_on);
-        drawable[1] = mContext.getResources().getDrawable(R.drawable.ic_place_off);
+        drawable[0] = mContext.getResources().getDrawable(R.drawable.ic_my_position);
+        drawable[1] = mContext.getResources().getDrawable(R.drawable.ic_my_position);
 
         for (int i = 0; i < drawable.length; i++) {
             int w = drawable[i].getIntrinsicWidth() / 2;
