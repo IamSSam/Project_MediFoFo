@@ -48,11 +48,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
 
-    private int image[] = {
+    private int image_man[] = {
             R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
             R.drawable.jaw, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.spine,
             R.drawable.arm, R.drawable.elbow, R.drawable.hand, R.drawable.finger, R.drawable.leg,
-            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.man, R.drawable.woman, R.drawable.teeth,
+            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.man, R.drawable.teeth,
+            R.drawable.digestive, R.drawable.respiratory, R.drawable.heart
+    };
+
+    private int image_woman[] = {
+            R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
+            R.drawable.jaw, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.spine,
+            R.drawable.arm, R.drawable.elbow, R.drawable.hand, R.drawable.finger, R.drawable.leg,
+            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.woman, R.drawable.teeth,
             R.drawable.digestive, R.drawable.respiratory, R.drawable.heart
     };
 
@@ -120,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userAge = (TextView) headerView.findViewById(R.id.navigation_my_age);
         firebaseAuth = FirebaseAuth.getInstance();
         accessToken = AccessToken.getCurrentAccessToken();
-        final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image);
+        final GridAdapter gridAdapter = new GridAdapter(getApplicationContext(), R.layout.row, image_man);
         gridView = (GridView) findViewById(R.id.gridView);
         gridView.invalidateViews();
         gridView.setAdapter(gridAdapter);
