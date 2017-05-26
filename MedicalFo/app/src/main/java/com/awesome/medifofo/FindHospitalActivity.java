@@ -60,6 +60,7 @@ public class FindHospitalActivity extends NMapActivity {
     private NMapOverlayManager mOverlayManager;
     private NMapViewerResourceProvider mMapViewerResourceProvider;
     int markerId = NMapPOIflagType.PIN;
+    private static String[] hospitalTitle, hospitalGeocodeX, hospitalGeocodeY;
 
     @Override
     protected void onDestroy() {
@@ -92,15 +93,16 @@ public class FindHospitalActivity extends NMapActivity {
         // create my location overlay
         mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
         //startMyLocation();
+        mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
+
         String keyword = "정형외과";
         try {
             String location = URLEncoder.encode(keyword, "UTF-8");
             new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_search.php?location=" + location);
+            showPOIData(hospitalTitle.length);
         } catch (Exception e) {
             e.getMessage();
         }
-
-        mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
     }
 
@@ -154,7 +156,7 @@ public class FindHospitalActivity extends NMapActivity {
             if (errorInfo == null) { // success
                 // restore map view state such as map center position and zoom level.
                 //restoreInstanceState();
-                mMapController.setMapCenter(new NGeoPoint(126.978371, 37.5666091), 14);
+                mMapController.setMapCenter(new NGeoPoint(126.978371, 37.5666091), 11);
 
             } else { // fail
                 Log.e("NMapViewer", "onFailedToInitializeWithError: " + errorInfo.toString());
@@ -362,35 +364,6 @@ public class FindHospitalActivity extends NMapActivity {
         super.onStop();
     }
 
-    private void getJSON() {
-
-        try {
-            String keyword = "정형외과";
-            String location = URLEncoder.encode(keyword, "UTF-8");
-
-            String apiURL = "http://igrus.mireene.com/medifofo/medi_nmap_search.php?location=" + location;
-            URL url = new URL(apiURL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("X-Naver-Client-Id", CLIENT_ID);
-            connection.setRequestProperty("X-Naver-Client-Secret", CLIENT_SECRET);
-            int requestCode = connection.getResponseCode();
-            BufferedReader br;
-            if (requestCode == 200) {
-                br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-            } else {
-                br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "UTF-8"));
-            }
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
-            }
-            br.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     /**
      * Container view class to rotate map view.
@@ -493,34 +466,118 @@ public class FindHospitalActivity extends NMapActivity {
 
             Log.d("MESSAGE", result);
 
-            NMapPOIdata poiData = new NMapPOIdata(2, mMapViewerResourceProvider); // # of item
-            poiData.beginPOIdata(2); // # of item
-            poiData.addPOIitem(127.0630205, 37.5091300, "Pizza 777-111", markerId, 0); // latitude, longitude, title
-            poiData.addPOIitem(127.061, 37.51, "Pizza 123-456", markerId, 0);
-            poiData.endPOIdata();
-
-            NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-
-            poiDataOverlay.showAllPOIdata(0);
-
-            poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
-
             try {
                 dialog.dismiss();
-
-                JSONObject object = new JSONObject(result);
-                Log.d("JSONOBJECT: ", object.toString());
+                String jsonFormattedString = result.replaceAll("\\\\n\\\\", "");
+                jsonFormattedString = jsonFormattedString.replaceAll("\\\\n", "");
+                jsonFormattedString = jsonFormattedString.replaceAll("\\\\", "");
+                jsonFormattedString = jsonFormattedString.replaceAll("\"\\{", "{");
+                jsonFormattedString = jsonFormattedString.replaceAll("\\}\"", "}");
+                jsonFormattedString = jsonFormattedString.replaceAll("\"n", "\"");
+                Log.d("FORMAT: ", jsonFormattedString);
+                JSONObject object = new JSONObject(jsonFormattedString);
                 JSONArray array = object.getJSONArray("items");
                 Log.d("JSONARRAY: ", array.toString());
 
+                hospitalTitle = new String[array.length()];
+
                 for (int i = 0; i < array.length(); i++) {
-                    Log.d("TAG: ", array.getJSONObject(i).getString("title") + "\n");
+                    hospitalTitle[i] = array.getJSONObject(i).getString("title");
+                    Log.d("[" + i + "]: ", hospitalTitle[i]);
+                    String address = array.getJSONObject(i).getString("roadAddress");
+                    new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + address);
+
                 }
 
             } catch (JSONException e) {
                 Log.e("Error: ", e.toString());
             }
         }
+    }
+
+    private class GeocodeAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String apiURL = urls[0];
+            try {
+
+                URL url = new URL(apiURL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("X-Naver-Client-Id", CLIENT_ID);
+                connection.setRequestProperty("X-Naver-Client-Secret", CLIENT_SECRET);
+                int requestCode = connection.getResponseCode();
+                BufferedReader br;
+                if (requestCode == 200) {
+                    br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+                } else {
+                    br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
+                }
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                br.close();
+                Log.d("RESPONE: ", response.toString());
+                return response.toString();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            try {
+                String jsonFormattedString = result.replaceAll("\\\\n", "");
+                jsonFormattedString = jsonFormattedString.replaceAll("\\\\", "");
+                jsonFormattedString = jsonFormattedString.replaceAll("\"\\{", "{");
+                jsonFormattedString = jsonFormattedString.replaceAll("\\}\"", "}");
+                jsonFormattedString = jsonFormattedString.replaceAll("\"n", "\"");
+                Log.d("GEOCODE: ", jsonFormattedString);
+                JSONObject object = new JSONObject(jsonFormattedString).getJSONObject("result");
+                JSONArray array = object.getJSONArray("items");
+
+
+                hospitalGeocodeX = new String[array.length()];
+                hospitalGeocodeY = new String[array.length()];
+
+                for (int i = 0; i < array.length(); i++) {
+                    String x = array.getJSONObject(i).getJSONObject("point").getString("x");
+                    String y = array.getJSONObject(i).getJSONObject("point").getString("y");
+                    hospitalGeocodeX[i] = x;
+                    hospitalGeocodeY[i] = y;
+                    Log.d("x[" + i + "] : ", hospitalGeocodeX[i]);
+                    Log.d("y[" + i + "] : ", hospitalGeocodeY[i]);
+                }
+
+
+            } catch (JSONException e) {
+                Log.e("Error: ", e.toString());
+            }
+        }
+    }
+
+    private void showPOIData(int length) {
+        NMapPOIdata poiData = new NMapPOIdata(length, mMapViewerResourceProvider); // # of item
+        poiData.beginPOIdata(length); // # of item
+
+        for (int i = 0; i < length; i++) {
+            poiData.addPOIitem(Double.parseDouble(hospitalGeocodeX[i]), Double.parseDouble(hospitalGeocodeY[i]), hospitalTitle[i], markerId, 0); // latitude, longitude, title
+        }
+
+        poiData.endPOIdata();
+
+        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+
+        poiDataOverlay.showAllPOIdata(0);
+
+        poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
     }
 
 }
