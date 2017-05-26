@@ -1,13 +1,11 @@
 package com.awesome.medifofo;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.AsyncTask;
-import android.os.Message;
-import android.provider.Settings;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,16 +32,11 @@ import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 public class FindHospitalActivity extends NMapActivity {
 
@@ -60,7 +53,8 @@ public class FindHospitalActivity extends NMapActivity {
     private NMapOverlayManager mOverlayManager;
     private NMapViewerResourceProvider mMapViewerResourceProvider;
     int markerId = NMapPOIflagType.PIN;
-    private static String[] hospitalTitle, hospitalGeocodeX, hospitalGeocodeY;
+    private String[] hospitalGeocodeX, hospitalGeocodeY;
+    private static boolean USE_XML_LAYOUT = false;
 
     @Override
     protected void onDestroy() {
@@ -70,10 +64,23 @@ public class FindHospitalActivity extends NMapActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMapView = new NMapView(this);
+
+        if (USE_XML_LAYOUT) {
+            setContentView(R.layout.mapview);
+            mMapView = (NMapView) findViewById(R.id.mapView);
+        } else {
+            // create map view
+            mMapView = new NMapView(this);
+
+            // create parent view to rotate map view
+            mMapContainerView = new MapContainerView(this);
+            mMapContainerView.addView(mMapView);
+
+            // set the activity content to the parent view
+            setContentView(mMapContainerView);
+        }
 
         mMapView.setClientId(CLIENT_ID);
-        setContentView(mMapView);
 
         mMapView.setClickable(true);
         mMapView.setOnMapStateChangeListener(onMapViewStateChangeListener);
@@ -94,18 +101,20 @@ public class FindHospitalActivity extends NMapActivity {
         mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
         //startMyLocation();
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
-
-        String keyword = "정형외과";
+        
         try {
-            String location = URLEncoder.encode(keyword, "UTF-8");
-            new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_search.php?location=" + location);
-            showPOIData(hospitalTitle.length);
+            for (int i = 0; i < FindHospital.hospitalTitle.length; i++) {
+                new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + FindHospital.hospitalAddress[i]);
+            }
+
+            showPOIData(FindHospital.hospitalTitle.length);
+
         } catch (Exception e) {
-            e.getMessage();
+            Log.e("Error: ", e.getMessage());
         }
 
-    }
 
+    }
 
     /* MyLocation Listener */
     private final NMapLocationManager.OnLocationChangeListener onMyLocationChangeListener = new NMapLocationManager.OnLocationChangeListener() {
@@ -357,13 +366,11 @@ public class FindHospitalActivity extends NMapActivity {
         }
     }
 
-
     @Override
     protected void onStop() {
         stopMyLocation();
         super.onStop();
     }
-
 
     /**
      * Container view class to rotate map view.
@@ -418,83 +425,6 @@ public class FindHospitalActivity extends NMapActivity {
         }
     }
 
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-        ProgressDialog dialog;
-
-        protected void onPreExecute() {
-
-            dialog = ProgressDialog.show(FindHospitalActivity.this, "", "Loading...");
-            dialog.setCancelable(true);
-        }
-
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String apiURL = urls[0];
-            try {
-
-                URL url = new URL(apiURL);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setRequestProperty("X-Naver-Client-Id", CLIENT_ID);
-                connection.setRequestProperty("X-Naver-Client-Secret", CLIENT_SECRET);
-                int requestCode = connection.getResponseCode();
-                BufferedReader br;
-                if (requestCode == 200) {
-                    br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-                } else {
-                    br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
-                }
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = br.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                br.close();
-                Log.d("RESPONE: ", response.toString());
-                return response.toString();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            Log.d("MESSAGE", result);
-
-            try {
-                dialog.dismiss();
-                String jsonFormattedString = result.replaceAll("\\\\n\\\\", "");
-                jsonFormattedString = jsonFormattedString.replaceAll("\\\\n", "");
-                jsonFormattedString = jsonFormattedString.replaceAll("\\\\", "");
-                jsonFormattedString = jsonFormattedString.replaceAll("\"\\{", "{");
-                jsonFormattedString = jsonFormattedString.replaceAll("\\}\"", "}");
-                jsonFormattedString = jsonFormattedString.replaceAll("\"n", "\"");
-                Log.d("FORMAT: ", jsonFormattedString);
-                JSONObject object = new JSONObject(jsonFormattedString);
-                JSONArray array = object.getJSONArray("items");
-                Log.d("JSONARRAY: ", array.toString());
-
-                hospitalTitle = new String[array.length()];
-
-                for (int i = 0; i < array.length(); i++) {
-                    hospitalTitle[i] = array.getJSONObject(i).getString("title");
-                    Log.d("[" + i + "]: ", hospitalTitle[i]);
-                    String address = array.getJSONObject(i).getString("roadAddress");
-                    new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + address);
-
-                }
-
-            } catch (JSONException e) {
-                Log.e("Error: ", e.toString());
-            }
-        }
-    }
-
     private class GeocodeAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -543,7 +473,6 @@ public class FindHospitalActivity extends NMapActivity {
                 JSONObject object = new JSONObject(jsonFormattedString).getJSONObject("result");
                 JSONArray array = object.getJSONArray("items");
 
-
                 hospitalGeocodeX = new String[array.length()];
                 hospitalGeocodeY = new String[array.length()];
 
@@ -555,8 +484,6 @@ public class FindHospitalActivity extends NMapActivity {
                     Log.d("x[" + i + "] : ", hospitalGeocodeX[i]);
                     Log.d("y[" + i + "] : ", hospitalGeocodeY[i]);
                 }
-
-
             } catch (JSONException e) {
                 Log.e("Error: ", e.toString());
             }
@@ -568,15 +495,13 @@ public class FindHospitalActivity extends NMapActivity {
         poiData.beginPOIdata(length); // # of item
 
         for (int i = 0; i < length; i++) {
-            poiData.addPOIitem(Double.parseDouble(hospitalGeocodeX[i]), Double.parseDouble(hospitalGeocodeY[i]), hospitalTitle[i], markerId, 0); // latitude, longitude, title
+            poiData.addPOIitem(Double.parseDouble(hospitalGeocodeX[i]), Double.parseDouble(hospitalGeocodeY[i]), FindHospital.hospitalTitle[i], markerId, 0); // latitude, longitude, title
         }
 
         poiData.endPOIdata();
 
         NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-
         poiDataOverlay.showAllPOIdata(0);
-
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
     }
 

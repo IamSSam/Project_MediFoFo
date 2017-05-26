@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awesome.medifofo.FindHospital;
 import com.awesome.medifofo.FindHospitalActivity;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
@@ -233,11 +234,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.navigation_feedback:
                 requestLocationPermission();
+
                 break;
 
             case R.id.navigation_settings:
-                intent.setClass(this, FacebookLoginActivity.class);
-                startActivity(intent);
                 break;
 
             case R.id.navigation_logout:
@@ -280,7 +280,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // result of the request.
             }
         } else {
-            goFindHospitalActivity();
+            FindHospital findHospital = new FindHospital();
+            findHospital.initiateFindHospital(MainActivity.this);
         }
     }
 
@@ -291,7 +292,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    goFindHospitalActivity();
+                    FindHospital findHospital = new FindHospital();
+                    findHospital.initiateFindHospital(MainActivity.this);
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
 
@@ -307,11 +309,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // permissions this app might request
         }
     }
-
-    public void goFindHospitalActivity() {
-        Intent intent = new Intent();
-        intent.setClass(this, FindHospitalActivity.class);
-        startActivity(intent);
-    }
-
 }
