@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
@@ -53,8 +54,12 @@ public class FindHospitalActivity extends NMapActivity {
     private NMapOverlayManager mOverlayManager;
     private NMapViewerResourceProvider mMapViewerResourceProvider;
     int markerId = NMapPOIflagType.PIN;
-    private String[] hospitalGeocodeX, hospitalGeocodeY;
-    private static boolean USE_XML_LAYOUT = false;
+    private String[] hospitalGeocodeX = new String[5];
+    private String[] hospitalGeocodeY = new String[5];
+    private static boolean USE_XML_LAYOUT = true;
+    private static int loop_count = 0;
+    private String[] hospitalTitle = null;
+    private String[] hospitalAddress = null;
 
     @Override
     protected void onDestroy() {
@@ -66,12 +71,11 @@ public class FindHospitalActivity extends NMapActivity {
         super.onCreate(savedInstanceState);
 
         if (USE_XML_LAYOUT) {
-            setContentView(R.layout.mapview);
+            setContentView(R.layout.activity_naver_map_viewer);
             mMapView = (NMapView) findViewById(R.id.mapView);
         } else {
             // create map view
             mMapView = new NMapView(this);
-
             // create parent view to rotate map view
             mMapContainerView = new MapContainerView(this);
             mMapContainerView.addView(mMapView);
@@ -101,18 +105,24 @@ public class FindHospitalActivity extends NMapActivity {
         mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
         //startMyLocation();
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
-        
-        try {
-            for (int i = 0; i < FindHospital.hospitalTitle.length; i++) {
-                new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + FindHospital.hospitalAddress[i]);
+
+        hospitalTitle = FindHospital.hospitalTitle;
+        hospitalAddress = FindHospital.hospitalAddress;
+
+        new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[loop_count]);
+
+
+        /*for (int i = 0; i < hospitalAddress.length; i++) {
+            new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[i]);
+        }*/
+
+        Button button = (Button) findViewById(R.id.hospital);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPOIData(hospitalTitle.length);
             }
-
-            showPOIData(FindHospital.hospitalTitle.length);
-
-        } catch (Exception e) {
-            Log.e("Error: ", e.getMessage());
-        }
-
+        });
 
     }
 
@@ -473,17 +483,14 @@ public class FindHospitalActivity extends NMapActivity {
                 JSONObject object = new JSONObject(jsonFormattedString).getJSONObject("result");
                 JSONArray array = object.getJSONArray("items");
 
-                hospitalGeocodeX = new String[array.length()];
-                hospitalGeocodeY = new String[array.length()];
 
-                for (int i = 0; i < array.length(); i++) {
-                    String x = array.getJSONObject(i).getJSONObject("point").getString("x");
-                    String y = array.getJSONObject(i).getJSONObject("point").getString("y");
-                    hospitalGeocodeX[i] = x;
-                    hospitalGeocodeY[i] = y;
-                    Log.d("x[" + i + "] : ", hospitalGeocodeX[i]);
-                    Log.d("y[" + i + "] : ", hospitalGeocodeY[i]);
-                }
+                String x = array.getJSONObject(loop_count).getJSONObject("point").getString("x");
+                String y = array.getJSONObject(loop_count).getJSONObject("point").getString("y");
+                hospitalGeocodeX[loop_count] = x;
+                hospitalGeocodeY[loop_count] = y;
+                Log.d("x[" + loop_count + "] : ", hospitalGeocodeX[loop_count]);
+                Log.d("y[" + loop_count + "] : ", hospitalGeocodeY[loop_count]);
+
             } catch (JSONException e) {
                 Log.e("Error: ", e.toString());
             }
@@ -491,11 +498,12 @@ public class FindHospitalActivity extends NMapActivity {
     }
 
     private void showPOIData(int length) {
+
         NMapPOIdata poiData = new NMapPOIdata(length, mMapViewerResourceProvider); // # of item
         poiData.beginPOIdata(length); // # of item
 
         for (int i = 0; i < length; i++) {
-            poiData.addPOIitem(Double.parseDouble(hospitalGeocodeX[i]), Double.parseDouble(hospitalGeocodeY[i]), FindHospital.hospitalTitle[i], markerId, 0); // latitude, longitude, title
+            poiData.addPOIitem(Double.parseDouble(hospitalGeocodeX[i]), Double.parseDouble(hospitalGeocodeY[i]), hospitalTitle[i], markerId, 0); // latitude, longitude, title
         }
 
         poiData.endPOIdata();

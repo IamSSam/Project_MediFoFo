@@ -234,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.navigation_feedback:
                 requestLocationPermission();
-
                 break;
 
             case R.id.navigation_settings:

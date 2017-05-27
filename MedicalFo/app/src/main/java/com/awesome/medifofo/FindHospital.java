@@ -17,34 +17,28 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static com.awesome.medifofo.FindHospitalActivity.*;
+
 public class FindHospital {
 
     private static final String CLIENT_ID = "7rxySx5aIRXRGtWXULIS";
     private static final String CLIENT_SECRET = "JGkB8R8zo5";
-    public static String[] hospitalTitle, hospitalAddress;
+    public static String[] hospitalTitle, hospitalAddress = null;
     private Activity previousActivity;
 
     public void initiateFindHospital(Activity previousActivity) {
         this.previousActivity = previousActivity;
 
         String keyword = "정형외과";
-        HttpAsyncTask httpAsyncTask = new HttpAsyncTask();
 
         try {
             String location = URLEncoder.encode(keyword, "UTF-8");
-            httpAsyncTask.execute("http://igrus.mireene.com/medifofo/medi_nmap_search.php?location=" + location);
+            new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_search.php?location=" + location);
         } catch (Exception e) {
             Log.e("Error: ", e.getMessage());
         }
 
-        if (httpAsyncTask.getStatus() == AsyncTask.Status.FINISHED) {
-            Intent intent = new Intent(previousActivity, FindHospitalActivity.class);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            previousActivity.startActivity(intent);
-        } else {
-            Log.e("Error", "Can not launch Activity");
-        }
+
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {
@@ -107,9 +101,13 @@ public class FindHospital {
                     Log.d("[" + i + "]: ", hospitalAddress[i]);
                 }
 
+                Intent intent = new Intent(previousActivity, FindHospitalActivity.class);
+                previousActivity.startActivity(intent);
+
             } catch (JSONException e) {
                 Log.e("Error: ", e.toString());
             }
+
         }
     }
 
