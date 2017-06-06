@@ -10,6 +10,7 @@
     <string name="title_activity_personal_health_record">Personal Health Record</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_find_hospital">Find Hospital</string>
+    <string name="title_activity_doctor_list">Doctor List</string>
     <string name="medifofo_logo">Medifofo logo</string>
     <string name="grid_row">grid row</string>
 

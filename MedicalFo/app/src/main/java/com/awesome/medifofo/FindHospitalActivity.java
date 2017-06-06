@@ -103,14 +103,13 @@ public class FindHospitalActivity extends NMapActivity {
 
         // create my location overlay
         mMyLocationOverlay = mOverlayManager.createMyLocationOverlay(mMapLocationManager, mMapCompassManager);
-        //startMyLocation();
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
         hospitalTitle = FindHospital.hospitalTitle;
         hospitalAddress = FindHospital.hospitalAddress;
 
+        //startMyLocation();
         new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[loop_count]);
-
 
         /*for (int i = 0; i < hospitalAddress.length; i++) {
             new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[i]);
@@ -273,6 +272,20 @@ public class FindHospitalActivity extends NMapActivity {
         }
     };
 
+    private void stopMyLocation() {
+        if (mMyLocationOverlay != null) {
+            mMapLocationManager.disableMyLocation();
+
+            if (mMapView.isAutoRotateEnabled()) {
+                mMyLocationOverlay.setCompassHeadingVisible(false);
+
+                mMapView.setAutoRotateEnabled(false, false);
+
+                mMapContainerView.requestLayout();
+            }
+        }
+    }
+
     private final NMapOverlayManager.OnCalloutOverlayListener onCalloutOverlayListener = new NMapOverlayManager.OnCalloutOverlayListener() {
 
         @Override
@@ -358,20 +371,6 @@ public class FindHospitalActivity extends NMapActivity {
 
                     return;
                 }
-            }
-        }
-    }
-
-    private void stopMyLocation() {
-        if (mMyLocationOverlay != null) {
-            mMapLocationManager.disableMyLocation();
-
-            if (mMapView.isAutoRotateEnabled()) {
-                mMyLocationOverlay.setCompassHeadingVisible(false);
-
-                mMapView.setAutoRotateEnabled(false, false);
-
-                mMapContainerView.requestLayout();
             }
         }
     }
@@ -484,8 +483,8 @@ public class FindHospitalActivity extends NMapActivity {
                 JSONArray array = object.getJSONArray("items");
 
 
-                String x = array.getJSONObject(loop_count).getJSONObject("point").getString("x");
-                String y = array.getJSONObject(loop_count).getJSONObject("point").getString("y");
+                String x = array.getJSONObject(0).getJSONObject("point").getString("x");
+                String y = array.getJSONObject(0).getJSONObject("point").getString("y");
                 hospitalGeocodeX[loop_count] = x;
                 hospitalGeocodeY[loop_count] = y;
                 Log.d("x[" + loop_count + "] : ", hospitalGeocodeX[loop_count]);
@@ -493,6 +492,11 @@ public class FindHospitalActivity extends NMapActivity {
 
             } catch (JSONException e) {
                 Log.e("Error: ", e.toString());
+            }
+
+            if (loop_count < 4) {
+                new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[loop_count]);
+                loop_count++;
             }
         }
     }

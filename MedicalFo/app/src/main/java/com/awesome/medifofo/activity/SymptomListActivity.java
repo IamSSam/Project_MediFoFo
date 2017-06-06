@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.RecyclerItemClickListener;
+import com.awesome.medifofo.adapter.DoctorListAdapter;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
 import com.awesome.medifofo.model.ListItem;
 
@@ -51,6 +52,7 @@ public class SymptomListActivity extends AppCompatActivity {
             "head", "face", "eye", "nose", "ear", "mouth", "jaw", "neck", "chest", "belly", "back", "spine", "arms", "elbow", "hands", "finger", "legs", "hip", "ankle",
             "foot", "man", "woman", "digestive", "respiratory", "heart"
     };
+    private List<ListItem> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,9 +206,9 @@ public class SymptomListActivity extends AppCompatActivity {
         }
     }
 
-    public void dialogShow(int position) {
+    public void dialogShow(final int position) {
         final List<String> listItems = new ArrayList<>();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         switch (position) {
             case 0:
@@ -253,15 +255,17 @@ public class SymptomListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String msg = "";
+                        String selectedItem = "";
 
                         if (!SelectedItems.isEmpty()) {
                             int index = (int) SelectedItems.get(0);
-                            msg = listItems.get(index);
+                            selectedItem = listItems.get(index);
                         }
-                        Toast.makeText(getApplicationContext(),
-                                "Items Selected.\n" + msg, Toast.LENGTH_LONG)
-                                .show();
+
+                        String questionText = partname[gridViewPosition] + "\nSymptom" + data.get(position).getTitle() + "\nQ: How severe is your agitation?\n" + "\nA: " + selectedItem;
+                        Intent intent = new Intent(SymptomListActivity.this, DoctorListActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), questionText, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -297,12 +301,13 @@ public class SymptomListActivity extends AppCompatActivity {
             try {
                 Log.d("jsoncheck", result);
                 JSONArray jobj = new JSONArray(result);
-                List<ListItem> data = new ArrayList<>();
+                data = new ArrayList<>();
 
                 for (int i = 0; i < jobj.length(); i++) {
                     ListItem item = new ListItem();
                     item.setTitle(jobj.getJSONObject(i).getString("symptomname"));
                     data.add(item);
+
                     adapter = new SymptomListAdapter(data);
                     recyclerView.setAdapter(adapter);
                 }

@@ -6,13 +6,22 @@ package com.awesome.medifofo.model;
 
 public class ListItem {
 
-    private String text;
+    private String text, hospitalName;
 
     public String getTitle() {
         return text;
     }
 
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
     public void setTitle(String text) {
         this.text = text;
     }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
 }
