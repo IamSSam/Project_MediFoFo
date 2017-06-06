@@ -46,8 +46,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public EditText userPassword;
     private Button manButton, womanButton;
     private AutoCompleteTextView userFirstName, userLastName, userEmailView, userYear, userMonth, userDay;
-    public String sharedPreferenceFile = "userSignUpFILE";
+    private static final String INFORMATION_TEXT = "information_text";
 
     private FirebaseAuth firebaseAuth;
     private Animation animationShake;
@@ -110,14 +112,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void saveUserInformation(String firstName, String lastName, String email, String gender, int age, String country) {
-        SharedPreferences sharedPreferences = getSharedPreferences(sharedPreferenceFile, Activity.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(INFORMATION_TEXT, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("FIRSTNAME", firstName);
-        editor.putString("LASTNAME", lastName);
-        editor.putString("EMAIL", email);
+        editor.putString("NAME", firstName + " " + lastName);
+        editor.putString("COUNTRY", country);
         editor.putString("GENDER", gender);
         editor.putInt("AGE", age);
-        editor.putString("COUNTRY", country);
+        editor.putString("EMAIL", email);
+        editor.putString("PHR", phr);
         editor.apply();
     }
 
@@ -204,7 +206,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String month = userMonth.getText().toString();
         String day = userDay.getText().toString();
         String age = userYear.getText().toString();
-
         EditText editHeight = (EditText) findViewById(R.id.phr_height);
         EditText editWeight = (EditText) findViewById(R.id.phr_weight);
         EditText editAbo = (EditText) findViewById(R.id.phr_abo);
@@ -311,6 +312,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             focus.requestFocus();
         } else {
             createUser(email, password);
+
             saveUserInformation(firstName, lastName, email, gender, calculateUserAge(), country);
         }
     }
@@ -407,7 +409,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
             nameValuePair.add(new BasicNameValuePair("email_id", userEmailView.getText().toString()));
             nameValuePair.add(new BasicNameValuePair("PLATFORM", PLATFORM));
-            //nameValuePair.add(new BasicNameValuePair("phr", phr));
+            //nameValuePair.add(new BasicNameValuePair("patient_name", patientName));
 
             // 5. set json to StringEntity
             //StringEntity se = new StringEntity(json);

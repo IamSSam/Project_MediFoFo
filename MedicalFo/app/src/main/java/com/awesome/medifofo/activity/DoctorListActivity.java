@@ -3,6 +3,7 @@ package com.awesome.medifofo.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -39,8 +40,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class DoctorListActivity extends AppCompatActivity {
@@ -48,6 +52,7 @@ public class DoctorListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DoctorListAdapter adapter;
     private List<ListItem> data;
+    private SharedPreferences information_text, question_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,13 @@ public class DoctorListActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        /**
+         * @Information_text
+         * NAME, COUNTRY, GENDER, AGE
+         * PHR = height + "cm, " + weight + "kg, " + abo + ", " + medicine + ", " + allergy + ", " + history + ", " + sleeptime + ", " + dailystride;
+         */
+        information_text = getSharedPreferences("information_text", MODE_PRIVATE);
+        question_text = getSharedPreferences("question_text", MODE_PRIVATE);
         initRecyclerView();
     }
 
@@ -73,6 +85,24 @@ public class DoctorListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         new DoctorListActivity.HttpAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_doctor_list.php");
+
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(context, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+
+                        data.get(position).getTitle();
+
+                        new DoctorListActivity.QueueAsyncTask().execute("http://igrus.mireene.com/medifofo/patient_treatment_queue.php");
+
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                    }
+                })
+        );
 
     }
 
@@ -128,7 +158,6 @@ public class DoctorListActivity extends AppCompatActivity {
             json = jsonObject.toString();
 
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
-            //nameValuePair.add(new BasicNameValuePair("partname", partname[gridViewPosition]));
 
             // 5. set json to StringEntity
             //StringEntity se = new StringEntity(json);
@@ -175,5 +204,84 @@ public class DoctorListActivity extends AppCompatActivity {
         return result;
     }
 
+    private class QueueAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            return POST1(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result.equals("Did not work!")) {
+                Toast.makeText(DoctorListActivity.this, "Fail. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public String POST1(String url) {
+        InputStream inputStream = null;
+        String result = "";
+
+        try {
+            // 1. create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // 2. make POST request to the given URL
+            HttpPost httpPost = new HttpPost(url);
+
+            String json = "";
+
+            // 3. build jsonObject
+            JSONObject jsonObject = new JSONObject();
+
+            // 4. convert JSONObject to JSON to String
+            json = jsonObject.toString();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            Date date = new Date();
+            String dateString = dateFormat.format(date);
+
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
+
+            nameValuePair.add(new BasicNameValuePair("information_text", information_text.getString("PHR", "")));
+            nameValuePair.add(new BasicNameValuePair("question_text", question_text.getString("question_text", "")));
+            nameValuePair.add(new BasicNameValuePair("sent_date", dateString));
+
+            // 5. set json to StringEntity
+            //StringEntity se = new StringEntity(json);
+
+            // 6. set httpPost Entity
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+
+            // 7. Set some headers to inform server about the type of the content
+            //httpPost.setHeader("Accept", "application/json");
+            //httpPost.setHeader("Content-type", "application/json");
+
+            // 8. Execute POST request to the given URL
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // 9. receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+
+            // 10. convert inputstream to string
+            if (inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            // Log.d("InputStream", e.getLocalizedMessage());
+        }
+        // Log.d("http", result);
+
+        // 11. return result
+        return result;
+    }
+
 }
+
+
 

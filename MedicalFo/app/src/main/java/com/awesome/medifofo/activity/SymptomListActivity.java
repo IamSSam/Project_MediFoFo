@@ -3,7 +3,9 @@ package com.awesome.medifofo.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +55,7 @@ public class SymptomListActivity extends AppCompatActivity {
             "foot", "man", "woman", "digestive", "respiratory", "heart"
     };
     private List<ListItem> data;
+    private static final String QUESTION_TEXT = "question_text";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,6 +266,11 @@ public class SymptomListActivity extends AppCompatActivity {
                         }
 
                         String questionText = partname[gridViewPosition] + "\nSymptom" + data.get(position).getTitle() + "\nQ: How severe is your agitation?\n" + "\nA: " + selectedItem;
+
+                        SharedPreferences sharedPreferences = getSharedPreferences(QUESTION_TEXT, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("question_text", questionText);
+                        editor.apply();
                         Intent intent = new Intent(SymptomListActivity.this, DoctorListActivity.class);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), questionText, Toast.LENGTH_LONG).show();

@@ -156,9 +156,10 @@ public class FacebookLoginActivity extends AppCompatActivity {
                                         //String email = object.getString("email");
 
                                         tokenId = id;
+                                        //patientName = name;
                                         //emailId = email;
 
-                                        //System.out.println("TOKEN : " + tokenId + ", EMAIL : " + emailId);
+                                        //System.out.println("TOKEN : " + tokenId + ", name : " + patientName);
 
                                         /*
                                          * Save user information "sharedPreferenceFile"
@@ -286,10 +287,11 @@ public class FacebookLoginActivity extends AppCompatActivity {
             // 4. convert JSONObject to JSON to String
             json = jsonObject.toString();
 
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(4);
             nameValuePair.add(new BasicNameValuePair("token_id", tokenId));
             nameValuePair.add(new BasicNameValuePair("email_id", emailId));
             nameValuePair.add(new BasicNameValuePair("platform", platform));
+            //nameValuePair.add(new BasicNameValuePair("patient_name", patientName));
 
             // 5. set json to StringEntity
             //StringEntity se = new StringEntity(json);
