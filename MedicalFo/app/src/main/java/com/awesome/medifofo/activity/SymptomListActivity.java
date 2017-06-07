@@ -265,7 +265,7 @@ public class SymptomListActivity extends AppCompatActivity {
                             selectedItem = listItems.get(index);
                         }
 
-                        String questionText = partname[gridViewPosition] + "\nSymptom" + data.get(position).getTitle() + "\nQ: How severe is your agitation?\n" + "\nA: " + selectedItem;
+                        String questionText = partname[gridViewPosition] + " " + data.get(position).getTitle() + " How severe is your agitation? " + selectedItem;
 
                         SharedPreferences sharedPreferences = getSharedPreferences(QUESTION_TEXT, MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();

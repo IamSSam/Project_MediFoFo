@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -69,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Animation animationShake;
 
     private final String PLATFORM = "1"; // PLATFORM of firebase
-    private String phr;
+    private String phr, phr_temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,36 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_sign_up);
 
         initView();
-        setMyCountry();
+
+        String[] countriesName;
+        countriesName = Locale.getISOCountries();
+        ArrayList<CountryItem> list = new ArrayList<>();
+
+        for (String aCountriesName : countriesName) {
+            Locale object = new Locale("", aCountriesName);
+            list.add(new CountryItem(object.getDisplayName() + " (" + aCountriesName + ")"));
+        }
+
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_sign_up_country);
+        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.content_spinner, R.id.country_name, list);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView countryText = (TextView) findViewById(R.id.country_name);
+                country = countryText.getText().toString();
+                Toast.makeText
+                        (getApplicationContext(), "Selected : " + country, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     public void initView() {
@@ -119,7 +149,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         editor.putString("GENDER", gender);
         editor.putInt("AGE", age);
         editor.putString("EMAIL", email);
-        editor.putString("PHR", phr);
+        String patientInformation = phr + ", " + firstName + " " + lastName + ", " + country + ", " + gender + ", " + age;
+        Log.d("PATIENT INFORMATION: ", patientInformation);
+        editor.putString("PHR", patientInformation);
         editor.apply();
     }
 
@@ -243,6 +275,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         phr = height + "cm, " + weight + "kg, " + abo + ", " + medicine + ", " + allergy + ", " + history + ", " + sleeptime + ", " + dailystride;
+        phr_temp = "175cm, 80kg, bloodtype: B, no medicine, no allergy, no history, eight hours, 10000steps";
 
         boolean cancel = false;
         View focus = null;
@@ -312,7 +345,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             focus.requestFocus();
         } else {
             createUser(email, password);
-
             saveUserInformation(firstName, lastName, email, gender, calculateUserAge(), country);
         }
     }
@@ -329,34 +361,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         Calendar current = Calendar.getInstance();
         int currentYear = current.get(Calendar.YEAR);
         return currentYear - Integer.parseInt(userYear.getText().toString());
-    }
-
-    private void setMyCountry() {
-        String[] countriesName;
-        countriesName = Locale.getISOCountries();
-        ArrayList<CountryItem> list = new ArrayList<>();
-
-        for (String aCountriesName : countriesName) {
-            Locale object = new Locale("", aCountriesName);
-            list.add(new CountryItem(object.getDisplayName() + " (" + aCountriesName + ")"));
-        }
-
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner_sign_up_country);
-        SpinnerAdapter adapter = new SpinnerAdapter(this, R.layout.content_spinner, R.id.country_name, list);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = spinner.getSelectedItem().toString();
-                country = selectedItem;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     private class HttpAsyncTask extends AsyncTask<String, Void, String> {

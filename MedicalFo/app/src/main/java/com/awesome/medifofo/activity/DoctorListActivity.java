@@ -1,5 +1,6 @@
 package com.awesome.medifofo.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -205,6 +206,13 @@ public class DoctorListActivity extends AppCompatActivity {
     }
 
     private class QueueAsyncTask extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(DoctorListActivity.this, "Just for seconds", "Searching for doctors...");
+            super.onPreExecute();
+        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -215,6 +223,9 @@ public class DoctorListActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if (result.equals("Did not work!")) {
                 Toast.makeText(DoctorListActivity.this, "Fail. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            }else{
+                progressDialog.dismiss();
+                Toast.makeText(DoctorListActivity.this, "Success Please wait for seconds.", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -238,16 +249,11 @@ public class DoctorListActivity extends AppCompatActivity {
             // 4. convert JSONObject to JSON to String
             json = jsonObject.toString();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat(
-                    "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date date = new Date();
-            String dateString = dateFormat.format(date);
 
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
+            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(3);
 
             nameValuePair.add(new BasicNameValuePair("information_text", information_text.getString("PHR", "")));
             nameValuePair.add(new BasicNameValuePair("question_text", question_text.getString("question_text", "")));
-            nameValuePair.add(new BasicNameValuePair("sent_date", dateString));
 
             // 5. set json to StringEntity
             //StringEntity se = new StringEntity(json);

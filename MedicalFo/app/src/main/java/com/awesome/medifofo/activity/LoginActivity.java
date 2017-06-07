@@ -118,9 +118,9 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
 
                             if (task.isSuccessful()) {
+//                                progressDialog.dismiss();
                                 Toast.makeText(LoginActivity.this, "Login Success",
                                         Toast.LENGTH_SHORT).show();
 

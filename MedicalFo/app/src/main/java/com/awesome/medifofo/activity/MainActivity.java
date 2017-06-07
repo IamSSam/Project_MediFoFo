@@ -148,11 +148,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadUserInformation() {
 
         if (firebaseAuth.getCurrentUser() != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences("userSignUpFILE", Activity.MODE_PRIVATE);
-            userPicture.setBackground(getDrawable(R.drawable.ic_no_image));
-            userName.setText(sharedPreferences.getString("FIRSTNAME", "") + " " + sharedPreferences.getString("LASTNAME", ""));
-            userAge.setText(sharedPreferences.getInt("AGE", 0) + " years old");
-        }
+        SharedPreferences sharedPreferences = getSharedPreferences("information_text", Activity.MODE_PRIVATE);
+        userPicture.setBackground(getDrawable(R.drawable.ic_no_image));
+        userName.setText(sharedPreferences.getString("NAME", ""));
+        userAge.setText(sharedPreferences.getInt("AGE", 0) + " years old");
+    }
 
         if (accessToken != null) {
             SharedPreferences sharedPreferences = getSharedPreferences("userFacebookFILE", Activity.MODE_PRIVATE);
