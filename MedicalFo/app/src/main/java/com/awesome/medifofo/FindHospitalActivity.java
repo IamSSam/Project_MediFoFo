@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,6 +61,7 @@ public class FindHospitalActivity extends NMapActivity {
     private static int loop_count = 0;
     private String[] hospitalTitle = null;
     private String[] hospitalAddress = null;
+    private Button currentLocationButton;
 
     @Override
     protected void onDestroy() {
@@ -108,18 +110,18 @@ public class FindHospitalActivity extends NMapActivity {
         hospitalTitle = FindHospital.hospitalTitle;
         hospitalAddress = FindHospital.hospitalAddress;
 
-        //startMyLocation();
         new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[loop_count]);
 
         /*for (int i = 0; i < hospitalAddress.length; i++) {
             new GeocodeAsyncTask().execute("http://igrus.mireene.com/medifofo/medi_nmap_geocode.php?address=" + hospitalAddress[i]);
         }*/
 
-        Button button = (Button) findViewById(R.id.hospital);
-        button.setOnClickListener(new View.OnClickListener() {
+        currentLocationButton = (Button) findViewById(R.id.currentLocation);
+        currentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPOIData(hospitalTitle.length);
+                startMyLocation();
+                //showPOIData(hospitalTitle.length);
             }
         });
 
@@ -283,6 +285,8 @@ public class FindHospitalActivity extends NMapActivity {
 
                 mMapContainerView.requestLayout();
             }
+
+            currentLocationButton.setBackgroundResource(R.drawable.ic_my_location);
         }
     }
 
@@ -358,6 +362,8 @@ public class FindHospitalActivity extends NMapActivity {
                 } else {
                     stopMyLocation();
                 }
+
+                currentLocationButton.setBackgroundResource(R.drawable.ic_my_location_current);
 
                 mMapView.postInvalidate();
             } else {

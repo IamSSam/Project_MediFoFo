@@ -78,7 +78,7 @@
             android:theme="@style/MediTheme.NoActionBar" />
         <activity
             android:name=".FindHospitalActivity"
-            android:label="@string/title_activity_reset_password"
+            android:label="@string/title_activity_find_hospital"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar" />
         <activity
@@ -86,6 +86,11 @@
             android:label="@string/title_activity_doctor_list"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar" />
+        <activity
+            android:name=".activity.SelectLocationActivity"
+            android:label="@string/title_activity_select_location"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

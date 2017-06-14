@@ -3,6 +3,7 @@
     <string name="app_name">MediFoFo</string>
     <string name="facebook_app_id">784689075028224</string>
 
+    <!-- Activity Titles -->
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="title_activity_login">Log In</string>
     <string name="title_activity_user_information">User Information</string>
@@ -10,6 +11,7 @@
     <string name="title_activity_personal_health_record">Personal Health Record</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_find_hospital">Find Hospital</string>
+    <string name="title_activity_select_location">Select Location</string>
     <string name="title_activity_doctor_list">Doctor List</string>
     <string name="medifofo_logo">Medifofo logo</string>
     <string name="grid_row">grid row</string>
