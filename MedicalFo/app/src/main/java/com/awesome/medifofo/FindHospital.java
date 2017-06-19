@@ -29,6 +29,7 @@ public class FindHospital {
     public void initiateFindHospital(Activity previousActivity) {
         this.previousActivity = previousActivity;
 
+        //TODO: keyword = 근처 지하철
         String keyword = "정형외과";
 
         try {

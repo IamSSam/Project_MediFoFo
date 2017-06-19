@@ -190,7 +190,6 @@ public class SymptomListActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 String text = s;
-                adapter.filter(text);
                 return false;
             }
         });

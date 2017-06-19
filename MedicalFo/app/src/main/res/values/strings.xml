@@ -45,7 +45,7 @@
     <string name="text_send_email">We\'ll send to you an Email to reset your password.</string>
     <string name="button_send">SEND</string>
 
-
+    <!-- String about Error -->
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">Please enter at least 8 characters</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -93,4 +93,8 @@
     <string name="dialog_comment">Comment</string>
     <string name="dialog_user_comment">Please tell your doctor what you want to say.</string>
     <string name="button_dialog_finish">Finish</string>
+
+    <string name="search_location_button">Select location</string>
+    <string name="search_location">ex) Location, Address</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

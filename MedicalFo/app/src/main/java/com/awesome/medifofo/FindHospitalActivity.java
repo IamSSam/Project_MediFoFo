@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.awesome.medifofo.activity.MapsActivity;
+import com.awesome.medifofo.activity.SearchLocationActivity;
 import com.nhn.android.maps.NMapActivity;
 import com.nhn.android.maps.NMapCompassManager;
 import com.nhn.android.maps.NMapController;
@@ -125,6 +126,13 @@ public class FindHospitalActivity extends NMapActivity {
             }
         });
 
+        Button searchButton = (Button) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(FindHospitalActivity.this, MapsActivity.class));
+            }
+        });
     }
 
     /* MyLocation Listener */
