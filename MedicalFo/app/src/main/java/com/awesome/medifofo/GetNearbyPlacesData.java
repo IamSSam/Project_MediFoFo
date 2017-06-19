@@ -53,8 +53,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             Log.d("PlaceReadTask", "showNearbyPlaces Entered");
             MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> place = nearByPlacesList.get(i);
-            double latitude = Double.parseDouble(place.get("latitude"));
-            double longitude = Double.parseDouble(place.get("longitude"));
+            double latitude = Double.parseDouble(place.get("lat"));
+            double longitude = Double.parseDouble(place.get("lng"));
             String placeName = place.get("place_name");
             String vicinity = place.get("vicinity");
             LatLng latLng = new LatLng(latitude, longitude);

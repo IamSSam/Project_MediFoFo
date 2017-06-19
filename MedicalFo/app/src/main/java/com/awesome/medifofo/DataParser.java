@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import noman.googleplaces.Place;
-
 /**
  * Created by Eunsik on 2017-06-19.
  */
@@ -78,8 +76,8 @@ public class DataParser {
             reference = googlePlaceJson.getString("reference");
             googlePlaceMap.put("place_name", placeName);
             googlePlaceMap.put("vicinity", vicinity);
-            googlePlaceMap.put("latitude", latitude);
-            googlePlaceMap.put("longitude", longitude);
+            googlePlaceMap.put("lat", latitude);
+            googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("reference", reference);
             Log.d("getPlace", "Putting Places");
         } catch (JSONException e) {
