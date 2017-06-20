@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Eunsik on 2017-06-19.
  */
 
-public class DataParser {
+public class PlaceDataParser {
     public List<HashMap<String, String>> parse(String jsonData) {
         JSONArray array = null;
         JSONObject object;

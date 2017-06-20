@@ -1,6 +1,14 @@
 package com.awesome.medifofo;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.AsyncTask;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +29,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     private String data;
     private GoogleMap mMap;
     private String url;
+    private Context context;
+
+    public GetNearbyPlacesData(Context c) {
+        this.context = c;
+    }
 
     @Override
     protected String doInBackground(Object... params) {
@@ -42,13 +55,21 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     protected void onPostExecute(String result) {
         Log.d("PlaceReadTask", "onPostExecute Entered");
         List<HashMap<String, String>> nearbyPlaceList = null;
-        DataParser parser = new DataParser();
+        PlaceDataParser parser = new PlaceDataParser();
         nearbyPlaceList = parser.parse(result);
         showNearbyPlaces(nearbyPlaceList);
         Log.d("PlaceReadTask", "onPostExecute Exit");
     }
 
     private void showNearbyPlaces(List<HashMap<String, String>> nearByPlacesList) {
+
+        Drawable markerIcon = ContextCompat.getDrawable(context, R.drawable.ic_local_hospital);
+        Bitmap bitmap = Bitmap.createBitmap(markerIcon.getIntrinsicWidth(),
+                markerIcon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        markerIcon.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        markerIcon.draw(canvas);
+
         for (int i = 0; i < nearByPlacesList.size(); i++) {
             Log.d("PlaceReadTask", "showNearbyPlaces Entered");
             MarkerOptions markerOptions = new MarkerOptions();
@@ -58,13 +79,16 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             String placeName = place.get("place_name");
             String vicinity = place.get("vicinity");
             LatLng latLng = new LatLng(latitude, longitude);
-            markerOptions.position(latLng);
-            markerOptions.title(placeName + " : " + vicinity);
+            markerOptions.position(latLng)
+                    .title(placeName + " : " + vicinity)
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+
             mMap.addMarker(markerOptions);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
     }
+
+
 }

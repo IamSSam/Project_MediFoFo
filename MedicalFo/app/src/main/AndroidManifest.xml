@@ -108,7 +108,9 @@
 
         <activity
             android:name="com.awesome.medifofo.activity.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_find_hospital"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar_" />
 
     </application>
 

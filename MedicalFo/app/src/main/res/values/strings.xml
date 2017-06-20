@@ -94,7 +94,7 @@
     <string name="dialog_user_comment">Please tell your doctor what you want to say.</string>
     <string name="button_dialog_finish">Finish</string>
 
-    <string name="search_location_button">Select location</string>
+    <string name="search_location_button">Find nearby hospital</string>
     <string name="search_location">ex) Location, Address</string>
     <string name="title_activity_maps">Map</string>
 </resources>
