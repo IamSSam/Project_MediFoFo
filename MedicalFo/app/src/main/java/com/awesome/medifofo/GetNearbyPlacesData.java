@@ -1,20 +1,27 @@
 package com.awesome.medifofo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
@@ -30,6 +37,55 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     private GoogleMap mMap;
     private String url;
     private Context context;
+
+    public static class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private final View markerView;
+        private final View markerContents;
+        private Activity currentActivity;
+
+        public CustomInfoWindowAdapter(Activity activity) {
+            currentActivity = activity;
+            markerView = currentActivity.getLayoutInflater().inflate(R.layout.content_info_window, null);
+            markerContents = currentActivity.getLayoutInflater().inflate(R.layout.content_info_window_contents, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            render(marker, markerView);
+            return markerView;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            render(marker, markerContents);
+            return markerContents;
+        }
+
+        private void render(Marker marker, View view) {
+            String title = marker.getTitle();
+            TextView titleUi = ((TextView) view.findViewById(R.id.marker_title));
+            if (title != null) {
+                // Spannable string allows us to edit the formatting of the text.
+                SpannableString titleText = new SpannableString(title);
+                titleText.setSpan(new ForegroundColorSpan(Color.BLACK), 0, titleText.length(), 0);
+                titleUi.setText(titleText);
+            } else {
+                titleUi.setText("");
+            }
+
+            String snippet = marker.getSnippet();
+            TextView snippetUi = ((TextView) view.findViewById(R.id.marker_snippet));
+            if (snippet != null && snippet.length() > 12) {
+                SpannableString snippetText = new SpannableString(snippet);
+                snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, 10, 0);
+                snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
+                snippetUi.setText(snippetText);
+            } else {
+                snippetUi.setText("");
+            }
+        }
+    }
 
     public GetNearbyPlacesData(Context c) {
         this.context = c;

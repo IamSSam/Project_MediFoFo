@@ -42,56 +42,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Map;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnInfoWindowClickListener {
 
-    class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-
-        private final View markerView;
-        private final View markerContents;
-
-        CustomInfoWindowAdapter() {
-            markerView = getLayoutInflater().inflate(R.layout.content_info_window, null);
-            markerContents = getLayoutInflater().inflate(R.layout.content_info_window_contents, null);
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-            render(marker, markerView);
-            return markerView;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            render(marker, markerContents);
-            return markerContents;
-        }
-
-        private void render(Marker marker, View view) {
-            String title = marker.getTitle();
-            TextView titleUi = ((TextView) view.findViewById(R.id.marker_title));
-            if (title != null) {
-                // Spannable string allows us to edit the formatting of the text.
-                SpannableString titleText = new SpannableString(title);
-                titleText.setSpan(new ForegroundColorSpan(Color.BLACK), 0, titleText.length(), 0);
-                titleUi.setText(titleText);
-            } else {
-                titleUi.setText("");
-            }
-
-            String snippet = marker.getSnippet();
-            TextView snippetUi = ((TextView) view.findViewById(R.id.marker_snippet));
-            if (snippet != null && snippet.length() > 12) {
-                SpannableString snippetText = new SpannableString(snippet);
-                snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, 10, 0);
-                snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
-                snippetUi.setText(snippetText);
-            } else {
-                snippetUi.setText("");
-            }
-        }
-    }
 
     private GoogleMap mMap = null;
     private GoogleApiClient mGoogleApiClient = null;
@@ -163,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(final GoogleMap map) {
         mMap = map;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
@@ -200,10 +155,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(getApplicationContext());
                 getNearbyPlacesData.execute(DataTransfer);
                 Toast.makeText(MapsActivity.this, "Nearby Hospital", Toast.LENGTH_LONG).show();
+
+                mMap.setInfoWindowAdapter(new GetNearbyPlacesData.CustomInfoWindowAdapter(MapsActivity.this));
+
             }
+
         });
-
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -380,7 +337,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-
+        Toast.makeText(this, "Click Info Window", Toast.LENGTH_SHORT).show();
     }
 
     @Override
