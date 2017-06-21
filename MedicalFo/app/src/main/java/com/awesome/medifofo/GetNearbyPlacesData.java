@@ -68,7 +68,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             if (title != null) {
                 // Spannable string allows us to edit the formatting of the text.
                 SpannableString titleText = new SpannableString(title);
-                titleText.setSpan(new ForegroundColorSpan(Color.BLACK), 0, titleText.length(), 0);
+                titleText.setSpan(new ForegroundColorSpan(Color.DKGRAY), 0, titleText.length(), 0);
                 titleUi.setText(titleText);
             } else {
                 titleUi.setText("");
@@ -78,7 +78,6 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             TextView snippetUi = ((TextView) view.findViewById(R.id.marker_snippet));
             if (snippet != null && snippet.length() > 12) {
                 SpannableString snippetText = new SpannableString(snippet);
-                snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, 10, 0);
                 snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
                 snippetUi.setText(snippetText);
             } else {
@@ -136,7 +135,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             String vicinity = place.get("vicinity");
             LatLng latLng = new LatLng(latitude, longitude);
             markerOptions.position(latLng)
-                    .title(placeName + " : " + vicinity)
+                    .title(placeName)
+                    .snippet(vicinity)
                     .icon(BitmapDescriptorFactory.fromBitmap(bitmap));
 
             mMap.addMarker(markerOptions);

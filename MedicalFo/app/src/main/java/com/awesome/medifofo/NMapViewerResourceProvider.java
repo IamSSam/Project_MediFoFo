@@ -352,8 +352,8 @@ class NMapViewerResourceProvider extends NMapResourceProvider implements
             NMapPOIitem poiItem = (NMapPOIitem) item;
 
             if (poiItem.showRightButton()) {
-                Drawable drawable = mContext.getResources().getDrawable(R.drawable.bg_speech);
-                return drawable;
+                //Drawable drawable = mContext.getResources().getDrawable(R.drawable.bg_speech);
+                //return drawable;
             }
         }
 

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -342,6 +343,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
+
+        String placeId = marker.getId();
+
+        TextView markerDetails = (TextView) findViewById(R.id.marker_details_title);
+        markerDetails.setText(marker.getTitle() + "\n" + marker.getSnippet());
+
+
         return false;
     }
 }
