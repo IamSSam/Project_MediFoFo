@@ -1,27 +1,23 @@
 package com.awesome.medifofo.activity;
 
 import android.Manifest;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.Interpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.Map;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener,
@@ -56,10 +51,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100;
     private static final int PLACE_PICKER_REQUEST = 1;
+    SlidingUpPanelLayout panelLayout = null;
 
+    LinearLayout markerDetailsLayout, markerInfoLayout;
+    TextView markerTitle, markerVicinity;
     Location mLastLocation;
     LocationRequest mLocationRequest;
-    Marker mCurrLocationMarker;
+    Marker mCurrLocationMarker, nearByMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -92,6 +90,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        markerDetailsLayout = (LinearLayout) findViewById(R.id.layout_marker_details);
 
     }
 
@@ -139,6 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Button hospitalButton = (Button) findViewById(R.id.button_hospital);
         hospitalButton.setOnClickListener(new View.OnClickListener() {
+
             final String HOSPITAL = "hospital";
 
             @Override
@@ -162,6 +163,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         });
+
+        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
+
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -213,9 +218,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("Latlang: ", String.valueOf(latitude) + ", " + String.valueOf(longitude));
 
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        googlePlacesUrl.append("location=" + latitude + "," + longitude);
+        googlePlacesUrl.append("location=").append(latitude).append(",").append(longitude);
         googlePlacesUrl.append("&radius=" + 5000);
-        googlePlacesUrl.append("&type=" + nearbyPlace);
+        googlePlacesUrl.append("&type=").append(nearbyPlace);
         googlePlacesUrl.append("&key=" + "AIzaSyCCTe--IEn-XC2SQ8aU21TvPo6U4YKj4zk");
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
@@ -273,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+        markerOptions.title("You are here ^^");
         markerOptions.alpha(0.7f);
 
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
@@ -338,18 +343,74 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onInfoWindowClick(Marker marker) {
+        nearByMarker = marker;
         Toast.makeText(this, "Click Info Window", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        String placeId = marker.getId();
+        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
-        TextView markerDetails = (TextView) findViewById(R.id.marker_details_title);
-        markerDetails.setText(marker.getTitle() + "\n" + marker.getSnippet());
+        markerTitle = (TextView) findViewById(R.id.marker_details_title);
+        markerTitle.setText(marker.getTitle());
+
+        markerVicinity = (TextView) findViewById(R.id.marker_details_vicinity);
+        markerVicinity.setText(marker.getSnippet());
+
+
+        //panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+
+        panelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState.toString().equals("EXPANDED")) {
+                    int colorFrom = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                    int colorTo = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+
+                    ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                    colorAnimation.setDuration(250); // milliseconds
+                    colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animator) {
+
+                            markerInfoLayout = (LinearLayout) findViewById(R.id.layout_marker_details_information);
+                            markerInfoLayout.setBackgroundColor((int) animator.getAnimatedValue());
+
+                            markerTitle.setTextColor(Color.WHITE);
+                            markerVicinity.setTextColor(Color.WHITE);
+                        }
+
+                    });
+                    colorAnimation.start();
+
+                    markerDetailsLayout.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    markerInfoLayout = (LinearLayout) findViewById(R.id.layout_marker_details_information);
+                    markerInfoLayout.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+
+                    markerTitle.setTextColor(Color.BLACK);
+                    markerVicinity.setTextColor(Color.DKGRAY);
+
+                    markerDetailsLayout.setVisibility(View.GONE);
+                }
+                Log.i("PanelState", "onPanelStateChanged " + newState);
+
+            }
+        });
 
 
         return false;
     }
+
+
 }

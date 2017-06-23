@@ -68,7 +68,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             if (title != null) {
                 // Spannable string allows us to edit the formatting of the text.
                 SpannableString titleText = new SpannableString(title);
-                titleText.setSpan(new ForegroundColorSpan(Color.DKGRAY), 0, titleText.length(), 0);
+                titleText.setSpan(new ForegroundColorSpan(Color.BLACK), 0, titleText.length(), 0);
                 titleUi.setText(titleText);
             } else {
                 titleUi.setText("");
@@ -76,9 +76,9 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             String snippet = marker.getSnippet();
             TextView snippetUi = ((TextView) view.findViewById(R.id.marker_snippet));
-            if (snippet != null && snippet.length() > 12) {
+            if (snippet != null) {
                 SpannableString snippetText = new SpannableString(snippet);
-                snippetText.setSpan(new ForegroundColorSpan(Color.BLUE), 12, snippet.length(), 0);
+                snippetText.setSpan(new ForegroundColorSpan(Color.BLACK), 0, snippet.length(), 0);
                 snippetUi.setText(snippetText);
             } else {
                 snippetUi.setText("");
@@ -131,6 +131,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             HashMap<String, String> place = nearByPlacesList.get(i);
             double latitude = Double.parseDouble(place.get("lat"));
             double longitude = Double.parseDouble(place.get("lng"));
+            String placeID = place.get("place_id");
             String placeName = place.get("place_name");
             String vicinity = place.get("vicinity");
             LatLng latLng = new LatLng(latitude, longitude);
@@ -143,6 +144,10 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+
+            String placeDetailsQuery = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeID +
+                    "&key=AIzaSyCCTe--IEn-XC2SQ8aU21TvPo6U4YKj4zk";
+
         }
     }
 
