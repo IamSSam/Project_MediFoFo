@@ -372,7 +372,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState.toString().equals("EXPANDED")) {
                     int colorFrom = ContextCompat.getColor(getApplicationContext(), R.color.white);
-                    int colorTo = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+                    int colorTo = ContextCompat.getColor(getApplicationContext(), R.color.light_blue_primary);
 
                     ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
                     colorAnimation.setDuration(250); // milliseconds
