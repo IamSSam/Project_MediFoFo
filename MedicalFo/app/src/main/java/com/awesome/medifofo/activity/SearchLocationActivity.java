@@ -27,7 +27,7 @@ public class SearchLocationActivity extends FragmentActivity implements GoogleAp
     private GoogleApiClient mGoogleApiClient;
     private static String TAG = "TAG";
     public static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 100;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +62,7 @@ public class SearchLocationActivity extends FragmentActivity implements GoogleAp
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
                 Log.i(TAG, "Place: " + place.getName());
+
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(this, data);
                 // TODO: Handle the error.

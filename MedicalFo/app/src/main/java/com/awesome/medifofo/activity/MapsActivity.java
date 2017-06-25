@@ -43,6 +43,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100;
     private static final int PLACE_PICKER_REQUEST = 1;
+    private Button slidingDownButton;
     SlidingUpPanelLayout panelLayout = null;
 
     LinearLayout markerDetailsLayout, markerInfoLayout;
@@ -97,7 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         markerDetailsLayout = (LinearLayout) findViewById(R.id.layout_marker_details);
-
+        slidingDownButton = (Button) findViewById(R.id.button_sliding_down);
     }
 
     private boolean checkGooglePlayServices() {
@@ -355,6 +357,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
+
         List<String> markerDetailList = GetNearbyPlacesData.placeDetailsList;
         for (int i = 0; i < markerDetailList.size(); i++) {
             Log.d("markerDetailList", markerDetailList.get(i));
@@ -406,7 +409,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         panelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
 
@@ -416,7 +418,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState.toString().equals("EXPANDED")) {
                     int colorFrom = ContextCompat.getColor(getApplicationContext(), R.color.white);
-                    int colorTo = ContextCompat.getColor(getApplicationContext(), R.color.light_blue_primary);
+                    int colorTo = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
 
                     ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
                     colorAnimation.setDuration(250); // milliseconds
@@ -430,13 +432,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             markerTitle.setTextColor(Color.WHITE);
                             markerVicinity.setTextColor(Color.WHITE);
+
                         }
 
                     });
+
                     colorAnimation.start();
-
                     markerDetailsLayout.setVisibility(View.VISIBLE);
-
 
                 } else {
                     markerInfoLayout = (LinearLayout) findViewById(R.id.layout_marker_details_information);
@@ -448,12 +450,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     markerDetailsLayout.setVisibility(View.GONE);
                 }
                 Log.i("PanelState", "onPanelStateChanged " + newState);
-
             }
         });
-
         return false;
     }
-
-
 }
