@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,10 +41,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMarkerClickListener,
         GoogleMap.OnInfoWindowClickListener {
-
 
     private GoogleMap mMap = null;
     private GoogleApiClient mGoogleApiClient = null;
@@ -54,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SlidingUpPanelLayout panelLayout = null;
 
     LinearLayout markerDetailsLayout, markerInfoLayout;
-    TextView markerTitle, markerVicinity;
+    TextView markerTitle, markerVicinity, markerPhoneNumber, markerWeek, markerSaturday, markerSunday, markerRating;
     Location mLastLocation;
     LocationRequest mLocationRequest;
     Marker mCurrLocationMarker, nearByMarker;
@@ -350,16 +355,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
+        List<String> markerDetailList = GetNearbyPlacesData.placeDetailsList;
+        for (int i = 0; i < markerDetailList.size(); i++) {
+            Log.d("markerDetailList", markerDetailList.get(i));
+        }
+        Log.d("For loop Entered Size", String.valueOf(markerDetailList.size()));
+
+        String markerID = marker.getId().substring(1, marker.getId().length());
+        int markerIndex = Integer.parseInt(markerID);
+        Log.d("MarkerIndex", String.valueOf(markerIndex));
+
+        Log.d("For loop Entered", markerDetailList.get(markerIndex - 1));
+
+        String markerInfo[] = markerDetailList.get(markerIndex - 1).split("%");
+
         panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 
         markerTitle = (TextView) findViewById(R.id.marker_details_title);
-        markerTitle.setText(marker.getTitle());
+        markerTitle.setText(markerInfo[0]);
+        //markerTitle.setText(marker.getId());
 
         markerVicinity = (TextView) findViewById(R.id.marker_details_vicinity);
-        markerVicinity.setText(marker.getSnippet());
+        markerVicinity.setText(markerInfo[1]);
 
+        markerRating = (TextView) findViewById(R.id.marker_details_rating);
+        markerRating.setText("Average: " + markerInfo[2]);
 
-        //panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        markerPhoneNumber = (TextView) findViewById(R.id.marker_details_phone_number);
+        markerPhoneNumber.setText(markerInfo[4]);
+
+        markerWeek = (TextView) findViewById(R.id.marker_details_week);
+        if (!markerInfo[5].isEmpty()) {
+            markerWeek.setText(markerInfo[5]);
+        } else {
+            markerWeek.setText("Unknown");
+        }
+
+        markerSaturday = (TextView) findViewById(R.id.marker_details_saturday);
+        if (!markerInfo[10].isEmpty()) {
+            markerSaturday.setText(markerInfo[10]);
+        } else {
+            markerSaturday.setText("Unknown");
+        }
+
+        markerSunday = (TextView) findViewById(R.id.marker_details_sunday);
+        if (!markerInfo[11].isEmpty()) {
+            markerSunday.setText(markerInfo[11]);
+        } else {
+            markerSunday.setText("Unknown");
+        }
 
         panelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 
@@ -407,7 +451,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-
 
         return false;
     }

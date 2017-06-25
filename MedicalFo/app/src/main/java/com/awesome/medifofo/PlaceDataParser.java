@@ -61,6 +61,7 @@ public class PlaceDataParser {
         String latitude = "";
         String longitude = "";
         String reference = "";
+        String place_id = "";
 
         Log.d("getPlace", "Entered");
 
@@ -74,11 +75,14 @@ public class PlaceDataParser {
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
             reference = googlePlaceJson.getString("reference");
+            place_id = googlePlaceJson.getString("place_id");
+
             googlePlaceMap.put("place_name", placeName);
             googlePlaceMap.put("vicinity", vicinity);
             googlePlaceMap.put("lat", latitude);
             googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("reference", reference);
+            googlePlaceMap.put("place_id", place_id);
             Log.d("getPlace", "Putting Places");
         } catch (JSONException e) {
             Log.d("getPlace", "Error");
