@@ -8,6 +8,7 @@
     <string name="title_activity_login">Log In</string>
     <string name="title_activity_user_information">User Information</string>
     <string name="title_activity_symptom_checker">Symptom Checker</string>
+    <string name="title_activity_comment">Comment</string>
     <string name="title_activity_personal_health_record">Personal Health Record</string>
     <string name="title_activity_reset_password">Reset Password</string>
     <string name="title_activity_find_hospital">Find Hospital</string>
@@ -97,4 +98,7 @@
     <string name="search_location_button">Find nearby hospital</string>
     <string name="search_location">ex) Location, Address</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="user_comment">Comment</string>
+    <string name="user_comment_title">Please write comment what you want to say.</string>
 </resources>

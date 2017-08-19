@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awesome.medifofo.FindHospital;
-import com.awesome.medifofo.FindHospitalActivity;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
@@ -50,19 +49,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
 
     private int image_man[] = {
-            R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
+            R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nose, R.drawable.ear, R.drawable.tongue,
             R.drawable.jaw, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.spine,
             R.drawable.arm, R.drawable.elbow, R.drawable.hand, R.drawable.finger, R.drawable.leg,
-            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.man, R.drawable.teeth,
-            R.drawable.digestive, R.drawable.respiratory, R.drawable.heart
+            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.male, R.drawable.teeth,
+            R.drawable.respiratory, R.drawable.heart
     };
 
     private int image_woman[] = {
-            R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nouse, R.drawable.ear, R.drawable.tongue,
+            R.drawable.head, R.drawable.face, R.drawable.eye, R.drawable.nose, R.drawable.ear, R.drawable.tongue,
             R.drawable.jaw, R.drawable.neck, R.drawable.breast, R.drawable.belly, R.drawable.back, R.drawable.spine,
             R.drawable.arm, R.drawable.elbow, R.drawable.hand, R.drawable.finger, R.drawable.leg,
-            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.woman, R.drawable.teeth,
-            R.drawable.digestive, R.drawable.respiratory, R.drawable.heart
+            R.drawable.hip, R.drawable.ankle, R.drawable.sole, R.drawable.female, R.drawable.teeth,
+            R.drawable.respiratory, R.drawable.heart
     };
 
     final String[ /* For UI */][ /* For Naver Maps */] st_place = {
@@ -233,8 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.navigation_feedback:
-                intent.setClass(this, MapsActivity.class);
-                startActivity(intent);
+                requestLocationPermission();
                 break;
 
             case R.id.navigation_settings:
@@ -280,8 +278,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // result of the request.
             }
         } else {
-            FindHospital findHospital = new FindHospital();
-            findHospital.initiateFindHospital(MainActivity.this);
+            Intent intent = new Intent();
+            intent.setClass(this, WebViewActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -292,10 +291,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    FindHospital findHospital = new FindHospital();
-                    findHospital.initiateFindHospital(MainActivity.this);
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    Intent intent = new Intent();
+                    intent.setClass(this, WebViewActivity.class);
+                    startActivity(intent);
 
                 } else {
 

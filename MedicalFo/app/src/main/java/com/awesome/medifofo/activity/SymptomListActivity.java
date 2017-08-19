@@ -270,7 +270,7 @@ public class SymptomListActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("question_text", questionText);
                         editor.apply();
-                        Intent intent = new Intent(SymptomListActivity.this, DoctorListActivity.class);
+                        Intent intent = new Intent(SymptomListActivity.this, CommentActivity.class);
                         startActivity(intent);
                         Toast.makeText(getApplicationContext(), questionText, Toast.LENGTH_LONG).show();
                     }

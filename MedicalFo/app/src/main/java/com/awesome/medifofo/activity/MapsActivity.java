@@ -57,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 100;
     private static final int PLACE_PICKER_REQUEST = 1;
-    private Button slidingDownButton;
+    //private Button slidingDownButton;
     SlidingUpPanelLayout panelLayout = null;
 
     LinearLayout markerDetailsLayout, markerInfoLayout;
@@ -99,7 +99,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         panelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         markerDetailsLayout = (LinearLayout) findViewById(R.id.layout_marker_details);
-        slidingDownButton = (Button) findViewById(R.id.button_sliding_down);
+        //slidingDownButton = (Button) findViewById(R.id.button_sliding_down);
     }
 
     private boolean checkGooglePlayServices() {
@@ -217,9 +217,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             return false;
         } else {
-            return true;
-        }
+        return true;
     }
+}
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
         Log.d("Latlang: ", String.valueOf(latitude) + ", " + String.valueOf(longitude));
