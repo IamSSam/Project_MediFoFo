@@ -42,7 +42,7 @@ public class WebViewActivity extends AppCompatActivity implements GeolocationPer
         webView.setWebChromeClient(geoclient);
         String origin = "";
         geoclient.onGeolocationPermissionsShowPrompt(origin, this);
-        webView.loadUrl("http://igrus.mireene.com/medifofo_web/webview2/webview.html");
+        webView.loadUrl("http:igrus.mireene.com/medifofo_web/webview2/webview.html");
     }
 
     @Override

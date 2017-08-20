@@ -412,7 +412,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(6);
             nameValuePair.add(new BasicNameValuePair("email_id", userEmailView.getText().toString()));
-            nameValuePair.add(new BasicNameValuePair("PLATFORM", PLATFORM));
+            nameValuePair.add(new BasicNameValuePair("platform", PLATFORM));
             //nameValuePair.add(new BasicNameValuePair("patient_name", patientName));
 
             // 5. set json to StringEntity

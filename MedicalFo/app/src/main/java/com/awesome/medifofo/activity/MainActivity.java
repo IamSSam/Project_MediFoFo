@@ -2,10 +2,14 @@ package com.awesome.medifofo.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,14 +31,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awesome.medifofo.FindHospital;
+import com.awesome.medifofo.FindHospitalActivity;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /*
  * Created by Eunsik on 03/26/2017.
@@ -45,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView userName, userAge;
     private FirebaseAuth firebaseAuth;
     private AccessToken accessToken;
+    double longitude, latitude;
 
     private DrawerLayout drawerLayout;
 
@@ -108,6 +126,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void initView() {
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        longitude = location.getLongitude();
+        latitude = location.getLatitude();
+
+        Toast.makeText(MainActivity.this, String.valueOf(longitude) + ", " + String.valueOf(latitude), Toast.LENGTH_LONG).show();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
@@ -143,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
 
     public void loadUserInformation() {
 
@@ -280,6 +317,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             Intent intent = new Intent();
             intent.setClass(this, WebViewActivity.class);
+
+            new HttpAsyncTask().execute("igrus.mireene.com/medifofo_web/webview2/php/coordinate.php?lat=" + latitude + "&lng=" + latitude);
+
             startActivity(intent);
         }
     }
@@ -307,4 +347,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // permissions this app might request
         }
     }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... urls) {
+            String apiURL = urls[0];
+            try {
+
+                URL url = new URL(apiURL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                int requestCode = connection.getResponseCode();
+                BufferedReader br;
+                if (requestCode == 200) {
+                    br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+                } else {
+                    br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
+                }
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                br.close();
+                Log.d("RESPONE: ", response.toString());
+                return response.toString();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+    }
+
 }
