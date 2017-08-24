@@ -97,9 +97,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 TextView countryText = (TextView) findViewById(R.id.country_name);
                 country = countryText.getText().toString();
-                Toast.makeText
-                        (getApplicationContext(), "Selected : " + country, Toast.LENGTH_SHORT)
-                        .show();
+                //Toast.makeText(getApplicationContext(), "Selected : " + country, Toast.LENGTH_SHORT).show();
             }
 
             @Override

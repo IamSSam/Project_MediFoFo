@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -87,33 +86,15 @@
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar" />
         <activity
-            android:name=".FindHospitalActivity"
-            android:label="@string/title_activity_find_hospital"
-            android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar" />
-        <activity
-            android:name=".activity.DoctorListActivity"
-            android:label="@string/title_activity_doctor_list"
-            android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar" />
-        <activity
             android:name=".activity.SearchLocationActivity"
             android:label="@string/title_activity_select_location"
             android:parentActivityName=".activity.IntroActivity"
             android:theme="@style/MediTheme.NoActionBar" />
         <activity
-            android:name=".activity.MapsActivity"
-            android:label="@string/title_activity_find_hospital"
-            android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar_" />
-        <activity
-            android:name=".activity.WebViewActivity"
-            android:label="@string/title_activity_symptom_checker"
-            android:parentActivityName=".activity.IntroActivity"
-            android:theme="@style/MediTheme.NoActionBar_" />
-        <activity
             android:name=".activity.CommentActivity"
-            android:label="@string/title_activity_symptom_checker"></activity>
+            android:label="@string/title_activity_comment"
+            android:parentActivityName=".activity.IntroActivity"
+            android:theme="@style/MediTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

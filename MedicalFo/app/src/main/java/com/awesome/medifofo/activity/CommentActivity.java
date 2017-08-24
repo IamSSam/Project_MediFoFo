@@ -3,9 +3,11 @@ package com.awesome.medifofo.activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +15,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awesome.medifofo.R;
@@ -45,7 +46,6 @@ public class CommentActivity extends AppCompatActivity {
     private static final String CLIENT_SECRET = "JGkB8R8zo5";
     private SharedPreferences information_text, question_text;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,17 +54,29 @@ public class CommentActivity extends AppCompatActivity {
 
         information_text = getSharedPreferences("information_text", MODE_PRIVATE);
         question_text = getSharedPreferences("question_text", MODE_PRIVATE);
-        Log.d("information_text ", information_text.getString("PHR", ""));
-        Log.d("question_text", question_text.getString("question_text", ""));
+        //Log.d("information_text ", information_text.getString("PHR", ""));
+        //Log.d("question_text", question_text.getString("question_text", ""));
+
+        initView();
 
         Button buttonComment = (Button) findViewById(R.id.button_send_comment);
         buttonComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendCommentToDoctor();
-                //finish();
+
             }
         });
+    }
+
+    private void initView() {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_comment);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void sendCommentToDoctor() {
@@ -88,7 +100,7 @@ public class CommentActivity extends AppCompatActivity {
             focus.requestFocus();
         } else {
             new HttpAsyncTask().execute("http://igrus.mireene.com/medifofo_web/php/papa.php?comment=" + userComment);
-            //finish();
+
         }
     }
 
@@ -164,6 +176,7 @@ public class CommentActivity extends AppCompatActivity {
             } else {
                 progressDialog.dismiss();
                 Toast.makeText(CommentActivity.this, "Success Please wait for seconds.", Toast.LENGTH_SHORT).show();
+                CommentActivity.this.finish();
             }
         }
     }

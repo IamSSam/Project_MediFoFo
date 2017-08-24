@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.RecyclerItemClickListener;
-import com.awesome.medifofo.adapter.DoctorListAdapter;
 import com.awesome.medifofo.adapter.SymptomListAdapter;
 import com.awesome.medifofo.model.ListItem;
 
@@ -215,9 +213,9 @@ public class SymptomListActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 builder.setTitle("How severe is your agitation?");
-                listItems.add("mild");
-                listItems.add("moderate");
-                listItems.add("severe");
+                listItems.add("mild(0~3)");
+                listItems.add("moderate(4~7)");
+                listItems.add("severe(8~10)");
                 listItems.add("None of above");
                 break;
             case 1:
@@ -264,6 +262,7 @@ public class SymptomListActivity extends AppCompatActivity {
                             selectedItem = listItems.get(index);
                         }
 
+                        //Toast.makeText(SymptomListActivity.this, selectedItem.toString(), Toast.LENGTH_LONG).show();
                         String questionText = partname[gridViewPosition] + " " + data.get(position).getTitle() + " How severe is your agitation? " + selectedItem;
 
                         SharedPreferences sharedPreferences = getSharedPreferences(QUESTION_TEXT, MODE_PRIVATE);
@@ -272,7 +271,7 @@ public class SymptomListActivity extends AppCompatActivity {
                         editor.apply();
                         Intent intent = new Intent(SymptomListActivity.this, CommentActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), questionText, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), questionText, Toast.LENGTH_LONG).show();
                     }
                 });
 

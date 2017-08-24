@@ -1,71 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/symptom_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    tools:context="com.awesome.medifofo.activity.SearchLocationActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/cardview_shadow_end_color"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:theme="@style/MediTheme.AppBarOverlay">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/button_hospital"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:background="@color/main_background"
-                android:text="@string/search_location_button"
-                android:textColor="@color/colorPrimary"
-                android:textSize="6pt" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/button_search_place"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:background="@drawable/ic_menu_search" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/sliding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="100dp"
-        sothree:umanoShadowHeight="4dp">
-
-        <fragment
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_search_location"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            tools:context="com.awesome.medifofo.activity.MapsActivity" />
+            android:layout_height="?attr/actionBarSize"
+            android:popupTheme="@style/MediTheme.PopupOverlay"
+            app:layout_scrollFlags="scroll|enterAlways" />
 
-        <include layout="@layout/content_marker_details" />
+    </android.support.design.widget.AppBarLayout>
 
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    <include layout="@layout/content_marker_details" />
 
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+
+

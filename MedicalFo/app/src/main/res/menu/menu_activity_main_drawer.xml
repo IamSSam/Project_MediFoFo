@@ -3,25 +3,20 @@
 
     <group android:checkableBehavior="none">
 
-        <item android:title="@string/navigation_about">
+        <item android:title="@string/navigation_about_us">
             <menu>
                 <item
                     android:id="@+id/navigation_about"
                     android:icon="@drawable/ic_menu_about"
                     android:title="@string/navigation_about_us" />
                 <item
-                    android:id="@+id/navigation_qna"
-                    android:icon="@drawable/ic_menu_qna"
-                    android:title="@string/navigation_qna" />
-
-                <item
                     android:id="@+id/navigation_phr"
                     android:icon="@drawable/ic_menu_phr"
-                    android:title="@string/navigation_share" />
+                    android:title="@string/navigation_phr" />
                 <item
                     android:id="@+id/navigation_feedback"
-                    android:icon="@drawable/ic_menu_feedback"
-                    android:title="@string/navigation_feedback" />
+                    android:icon="@drawable/ic_place_off"
+                    android:title="@string/navigation_search" />
 
             </menu>
         </item>

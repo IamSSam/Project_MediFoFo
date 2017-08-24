@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -20,7 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,22 +27,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awesome.medifofo.FindHospital;
-import com.awesome.medifofo.FindHospitalActivity;
 import com.awesome.medifofo.R;
 import com.awesome.medifofo.adapter.GridAdapter;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -62,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView userName, userAge;
     private FirebaseAuth firebaseAuth;
     private AccessToken accessToken;
-    double longitude, latitude;
 
     private DrawerLayout drawerLayout;
 
@@ -138,11 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return;
         }
 
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        longitude = location.getLongitude();
-        latitude = location.getLatitude();
-
-        Toast.makeText(MainActivity.this, String.valueOf(longitude) + ", " + String.valueOf(latitude), Toast.LENGTH_LONG).show();
+        //Toast.makeText(MainActivity.this, String.valueOf(longitude) + ", " + String.valueOf(latitude), Toast.LENGTH_LONG).show();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
@@ -218,8 +202,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            //case R.id.main_about:
-
+            case R.id.main_search:
+                requestLocationPermission();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -254,27 +239,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.navigation_about:
-                intent.setClass(this, FacebookLoginActivity.class);
-                startActivity(intent);
+                Toast.makeText(MainActivity.this, "This section is not ready.", Toast.LENGTH_LONG).show();
+                //intent.setClass(this, AboutUsActivity.class);
+                //startActivity(intent);
                 break;
-
-            case R.id.navigation_qna:
+            case R.id.navigation_phr:
                 intent.setClass(this, PersonalHealthRecordActivity.class);
                 startActivity(intent);
                 break;
-
-            case R.id.navigation_phr:
-                intent.setClass(this, FacebookLoginActivity.class);
-                startActivity(intent);
-                break;
-
             case R.id.navigation_feedback:
                 requestLocationPermission();
                 break;
-
             case R.id.navigation_settings:
+                Toast.makeText(MainActivity.this, "This section is not ready.", Toast.LENGTH_LONG).show();
                 break;
-
             case R.id.navigation_logout:
                 if (firebaseAuth.getCurrentUser() != null) {
                     this.firebaseLogOut();
@@ -316,9 +294,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             Intent intent = new Intent();
-            intent.setClass(this, WebViewActivity.class);
-
-            new HttpAsyncTask().execute("igrus.mireene.com/medifofo_web/webview2/php/coordinate.php?lat=" + latitude + "&lng=" + latitude);
+            intent.setClass(this, SearchLocationActivity.class);
 
             startActivity(intent);
         }
@@ -332,56 +308,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent();
-                    intent.setClass(this, WebViewActivity.class);
+                    intent.setClass(this, SearchLocationActivity.class);
                     startActivity(intent);
 
                 } else {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(MainActivity.this, "동의하셔야 이용가능합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "If you want use, you have to agree.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             // other 'case' lines to check for other
             // permissions this app might request
-        }
-    }
-
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... urls) {
-            String apiURL = urls[0];
-            try {
-
-                URL url = new URL(apiURL);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                int requestCode = connection.getResponseCode();
-                BufferedReader br;
-                if (requestCode == 200) {
-                    br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-                } else {
-                    br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
-                }
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = br.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                br.close();
-                Log.d("RESPONE: ", response.toString());
-                return response.toString();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
         }
     }
 

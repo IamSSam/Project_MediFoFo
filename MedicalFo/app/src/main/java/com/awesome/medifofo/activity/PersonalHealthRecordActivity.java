@@ -44,21 +44,15 @@ public class PersonalHealthRecordActivity extends AppCompatActivity {
 
         //setInformationIfExist();
 
-        saveButton = (Button) findViewById(R.id.button_register);
+        saveButton = (Button) findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
-                SimpleDateFormat sdfNow = new SimpleDateFormat("0yyyy-MM-dd");
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy-MM-dd");
                 currentDateTime = sdfNow.format(date);
 
-                /*
-                new HttpAsyncTask().execute("http://igrus.mireene.com/applogin/personInfo.php/?userid=" + Person.userId + "&height=" + PersonalInfoFragment.phrHeight.getText().toString()
-                        + "&weight=" + PersonalInfoFragment.phrWeight.getText().toString() + "&abo=" + PersonalInfoFragment.phrAbo.getText().toString() + "&medicine=" + PersonalInfoFragment.phrMedicine.getText().toString()
-                        + "&allergy=" + PersonalInfoFragment.phrAllergy.getText().toString() + "&history=" + PersonalInfoFragment.phrHistory.getText().toString() + "&sleeptime=" + PersonalInfoFragment.phrSleepTime.getText().toString()
-                        + "&dailystride=" + PersonalInfoFragment.phrDailyStride.getText().toString() + "&date=" + currentDateTime.toString());
-                */
             }
         });
 
@@ -96,34 +90,5 @@ public class PersonalHealthRecordActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    /*
-    private void setInformationIfExist() {
-        if (!Person.d_height.equals("-1")) {
-            phrHeight.setText(Person.d_height, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_weight.equals("-1")) {
-            phrWeight.setText(Person.d_weight, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_abo.equals("-1")) {
-            phrAbo.setText(Person.d_abo, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_medicine.equals("-1")) {
-            phrMedicine.setText(Person.d_medicine, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_allergy.equals("-1")) {
-            phrAllergy.setText(Person.d_allergy, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_history.equals("-1")) {
-            phrHistory.setText(Person.d_history, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_sleeptime.equals("-1")) {
-            phrSleepTime.setText(Person.d_sleeptime, TextView.BufferType.EDITABLE);
-        }
-        if (!Person.d_dailystride.equals("-1")) {
-            phrDailyStride.setText(Person.d_dailystride, TextView.BufferType.EDITABLE);
-        }
-    }
-    */
 
 }
